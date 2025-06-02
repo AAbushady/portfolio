@@ -1,7 +1,7 @@
 ---
 title: Violet Twilight v0.2
 publishDate: 2024-09-12 00:00:00
-img: https://cdn-uploads.huggingface.co/production/uploads/64adfd277b5ff762771e4571/P962FQhRG4I8nbU_DJolY.png
+img: \assets\P962FQhRG4I8nbU_DJolY.png
 img_alt: White haired anime girl with a stalf and a green scarf, dressed in a monk garb. She stands infront of a violet tinted moon with a cloudy backdrop.
 description: |
   Strong local LLM solution that can be run on consumer hardware!

@@ -1,7 +1,7 @@
 ---
 title: sillytavern-to-sharegpt
 publishDate: 2024-05-17 00:00:00
-img: /assets/stock-2.jpg
+img: /assets/sts-screenshot.png
 img_alt: A bright pink sheet of paper used to wrap flowers curves in front of rich blue background
 description: |
   A TypeScript application that converts SillyTavern chat logs into formats suitable for LLM fine-tuning and sharing.
