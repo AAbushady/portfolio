@@ -26,9 +26,27 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+// Create structured data for the project
+const creativeWorkSchema = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": entry.data.title,
+  "description": entry.data.description,
+  "creator": {
+    "@type": "Person",
+    "name": "Alex Abushady"
+  },
+  "datePublished": entry.data.publishDate.toISOString(),
+  "url": `https://alexabushady.com/work/${entry.id}/`,
+  "keywords": entry.data.tags,
+  ...(entry.data.img && {
+    "image": `https://alexabushady.com${entry.data.img}`
+  })
+};
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description}>
+<BaseLayout title={entry.data.title} description={entry.data.description} structuredData={creativeWorkSchema}>
 	<div class="stack gap-20">
 		<div class="stack gap-15">
 			<header>

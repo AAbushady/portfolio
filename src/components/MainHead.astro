@@ -4,11 +4,13 @@ import '../styles/global.css';
 interface Props {
 	title?: string | undefined;
 	description?: string | undefined;
+	structuredData?: object | undefined;
 }
 
 const {
 	title = 'Alex Abushady: Portfolio',
 	description = 'The personal site of Alex Abushady',
+	structuredData,
 } = Astro.props;
 ---
 
@@ -25,6 +27,50 @@ const {
 	href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,700;1,400&family=Rubik:wght@500;600&display=swap"
 	rel="stylesheet"
 />
+
+<!-- JSON-LD structured data for Person schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Alex Abushady",
+  "jobTitle": "Software Engineer",
+  "url": "https://alexabushady.com",
+  "sameAs": [
+    "https://github.com/alexabushady",
+    "https://linkedin.com/in/alexabushady"
+  ],
+  "knowsAbout": [
+    "Software Engineering",
+    "Machine Learning",
+    "Large Language Models",
+    "Python",
+    "JavaScript",
+    "React",
+    "Node.js",
+    "Data Science",
+    "C#",
+    "Video Games"
+  ],
+  "alumniOf": {
+    "@type": "EducationalOrganization",
+    "name": "St. Petersburg"
+  },
+  "hasOccupation": {
+    "@type": "Occupation",
+    "name": "Software Engineer",
+    "occupationLocation": {
+      "@type": "Place",
+      "name": "United States"
+    }
+  }
+}
+</script>
+
+{structuredData && (
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+)}
+
 <script is:inline>
 	// This code is inlined in the head to make dark mode instant & blocking.
 	const getThemePreference = () => {
