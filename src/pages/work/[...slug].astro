@@ -46,7 +46,13 @@ const creativeWorkSchema = {
 };
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.description} structuredData={creativeWorkSchema}>
+<BaseLayout 
+	title={entry.data.title} 
+	description={entry.data.description} 
+	structuredData={creativeWorkSchema}
+	ogImage={entry.data.img}
+	ogType="article"
+>
 	<div class="stack gap-20">
 		<div class="stack gap-15">
 			<header>
