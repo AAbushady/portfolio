@@ -2,7 +2,7 @@
 title: Violet Twilight v0.2
 publishDate: 2024-09-12 00:00:00
 img: \assets\P962FQhRG4I8nbU_DJolY.png
-img_alt: White haired anime girl with a stalf and a green scarf, dressed in a monk garb. She stands infront of a violet tinted moon with a cloudy backdrop.
+img_alt: White-haired anime girl in monk garb with staff and green scarf, violet moon backdrop
 description: |
   A fine-tuned language model optimized for local deployment on consumer hardware, providing strong performance for conversational AI applications without requiring expensive cloud infrastructure.
 tags:
