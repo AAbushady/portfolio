@@ -2,68 +2,7 @@
 
 ## Critical Issues (High Priority)
 
-### 3. No structured data ✅
-**Status:** Completed  
-**Priority:** Critical  
-**Implementation:**
-- ✅ Added JSON-LD Person schema to MainHead component
-- ✅ Added CreativeWork schema to individual project pages
-- ✅ Included relevant properties (name, jobTitle, worksFor, etc.)
-- ⚠️ Validate with Google's Rich Results Test (pending)
-
-### 4. Limited Open Graph tags ❌
-**Status:** Not Started  
-**Priority:** Critical  
-
-**Step-by-Step Implementation:**
-
-1. **Update MainHead Component**
-   - Location: `src/components/MainHead.astro`
-   - Add Open Graph meta tags:
-     ```astro
-     <meta property="og:title" content={title} />
-     <meta property="og:description" content={description} />
-     <meta property="og:type" content="website" />
-     <meta property="og:url" content={Astro.url.href} />
-     <meta property="og:site_name" content="Alex Abushady" />
-     <meta property="og:locale" content="en_US" />
-     ```
-
-2. **Create Default OG Image**
-   - Design a 1200x630px image for optimal sharing
-   - Include: Your name, role, and brand colors
-   - Save as: `public/assets/og-default.png`
-   - Add to MainHead: `<meta property="og:image" content="/assets/og-default.png" />`
-   - Add dimensions: 
-     ```astro
-     <meta property="og:image:width" content="1200" />
-     <meta property="og:image:height" content="630" />
-     ```
-
-3. **Add Project-Specific OG Images**
-   - For each project in `src/content/work/`:
-     - Create or optimize existing images to 1200x630px
-     - Save in respective project folders
-   - Update work pages (`src/pages/work/[...slug].astro`):
-     - Pass project image to MainHead component
-     - Fallback to default OG image if none specified
-
-4. **Add Page-Type Specific Tags**
-   - Homepage: `og:type="website"`
-   - Project pages: `og:type="article"`
-   - Add article-specific tags for projects:
-     ```astro
-     <meta property="article:author" content="Alex Abushady" />
-     <meta property="article:published_time" content={publishDate} />
-     ```
-
-5. **Testing & Validation**
-   - Test with [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
-   - Test with [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)
-   - Verify each page shows correct preview
-   - Check for any warnings or errors
-
-### 5. No Twitter Card meta tags ❌
+### 1. No Twitter Card meta tags ❌
 **Status:** Not Started  
 **Priority:** Critical  
 
@@ -118,143 +57,7 @@
 
 ## Moderate Issues (Medium Priority)
 
-### 6. Generic meta descriptions ❌
-**Status:** Not Started  
-**Priority:** Medium  
-
-**Step-by-Step Implementation:**
-
-1. **Audit Current Meta Descriptions**
-   - Check MainHead component for existing description handling
-   - List all pages that need unique descriptions:
-     - Homepage (`src/pages/index.astro`)
-     - Work page (`src/pages/work.astro`) 
-     - About page (`src/pages/about.astro`)
-     - Individual project pages
-
-2. **Write SEO-Optimized Descriptions**
-   - **Homepage**: 
-     ```
-     "Software engineer specializing in AI/ML and full-stack development. 
-     Explore my portfolio featuring LLM applications, developer tools, and 
-     innovative technical projects."
-     ```
-     (155 characters)
-   
-   - **Work Page**:
-     ```
-     "Browse my software engineering projects including AI applications, 
-     developer tools, and full-stack solutions. See code, demos, and 
-     technical details."
-     ```
-     (152 characters)
-   
-   - **About Page**:
-     ```
-     "Learn about Alex Abushady, a software engineer passionate about AI, 
-     machine learning, and building innovative solutions. Background, 
-     skills, and experience."
-     ```
-     (158 characters)
-
-3. **Update Page Components**
-   - Add description prop to each page's MainHead:
-     ```astro
-     ---
-     const pageDescription = "Your optimized description here";
-     ---
-     <MainHead 
-       title="Page Title" 
-       description={pageDescription}
-     />
-     ```
-
-4. **Dynamic Descriptions for Projects**
-   - Use project description from frontmatter
-   - Truncate to 160 characters if needed
-   - Add ellipsis for truncated descriptions
-   - Example implementation:
-     ```astro
-     const metaDescription = entry.data.description.length > 160 
-       ? entry.data.description.substring(0, 157) + "..."
-       : entry.data.description;
-     ```
-
-5. **Best Practices Checklist**
-   - ✓ Length: 150-160 characters
-   - ✓ Include primary keywords naturally
-   - ✓ Unique for each page
-   - ✓ Action-oriented language
-   - ✓ Accurate page summary
-   - ✓ No keyword stuffing
-
-6. **Testing & Validation**
-   - Use [SERP Preview Tool](https://www.highervisibility.com/seo/tools/serp-snippet-optimizer/)
-   - Check character count
-   - Verify descriptions in browser dev tools
-   - Test how they appear in Google search results
-
-### 7. No canonical URLs ❌
-**Status:** Not Started  
-**Priority:** Medium  
-
-**Step-by-Step Implementation:**
-
-1. **Understand Canonical URLs**
-   - Purpose: Tell search engines the preferred URL for a page
-   - Prevents duplicate content penalties
-   - Essential for SEO when content is accessible via multiple URLs
-
-2. **Add Canonical Tag to MainHead**
-   - Location: `src/components/MainHead.astro`
-   - Implementation:
-     ```astro
-     ---
-     const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-     ---
-     <link rel="canonical" href={canonicalURL} />
-     ```
-
-3. **Ensure Site URL is Configured**
-   - Check `astro.config.mjs`:
-     ```js
-     export default defineConfig({
-       site: 'https://alexabushady.com',
-       // other config...
-     });
-     ```
-   - This provides the base URL for canonical generation
-
-4. **Handle Special Cases**
-   - **Trailing slashes**: Ensure consistency
-     ```astro
-     const canonicalPath = Astro.url.pathname.replace(/\/$/, '') || '/';
-     const canonicalURL = new URL(canonicalPath, Astro.site);
-     ```
-   
-   - **Index pages**: Canonical should point to directory
-     - `/work/index.html` → `https://alexabushady.com/work/`
-     - `/index.html` → `https://alexabushady.com/`
-
-5. **Testing Implementation**
-   - Build the site: `npm run build`
-   - Check generated HTML for canonical tags
-   - Verify URLs are absolute, not relative
-   - Ensure each page has exactly one canonical tag
-
-6. **Common Pitfalls to Avoid**
-   - ❌ Using relative URLs (`/about/` instead of `https://alexabushady.com/about/`)
-   - ❌ Multiple canonical tags on one page
-   - ❌ Canonical pointing to non-existent pages
-   - ❌ HTTP canonicals when site is HTTPS
-
-7. **Validation**
-   - Use browser dev tools to inspect canonical tags
-   - Check Google Search Console for canonical issues
-   - Test with SEO tools like Screaming Frog
-   - Ensure canonicals match actual page URLs
-
-### 8. No alt text fallback ❌
+### 2. No alt text fallback ❌
 **Status:** Not Started  
 **Priority:** Medium  
 
@@ -325,7 +128,7 @@
      - Chrome DevTools Lighthouse
    - Ensure all images have appropriate alt text
 
-### 9. No heading hierarchy validation ❌
+### 3. No heading hierarchy validation ❌
 **Status:** Not Started  
 **Priority:** Medium  
 
@@ -421,7 +224,7 @@
 
 ## Minor Issues (Low Priority)
 
-### 10. Font loading optimization ❌
+### 4. Font loading optimization ❌
 **Status:** Not Started  
 **Priority:** Low  
 
@@ -500,7 +303,7 @@
    - Test on slow connections (3G throttling)
    - Verify text remains readable during load
 
-### 11. No lang attribute specificity ❌
+### 5. No lang attribute specificity ❌
 **Status:** Not Started  
 **Priority:** Low  
 
@@ -558,11 +361,45 @@
    - Verify in browser language settings
    - Use Google Search Console to check hreflang (if implemented)
 
+### 6. OG Image Optimization ❌
+**Status:** Not Started  
+**Priority:** Low  
+
+**Step-by-Step Implementation:**
+
+1. **Create Proper Default OG Image**
+   - Design a 1200x630px image specifically for social media sharing
+   - Include: Your name, role, and brand colors
+   - Save as: `public/assets/og-default.png`
+   - Replace current temporary usage of `IMG_0714.JPG`
+
+2. **Design Considerations**
+   - Optimal dimensions: 1200x630px (1.91:1 aspect ratio)
+   - File size: Under 5MB (ideally under 1MB)
+   - Format: PNG or JPG (avoid SVG for social media)
+   - Text should be readable at small sizes
+   - Include professional headshot if desired
+
+3. **Create Project-Specific OG Images**
+   - For each project, create or optimize images to 1200x630px
+   - Ensure consistent branding across all project images
+   - Include project title and brief description overlay
+
+4. **Testing & Validation**
+   - Test with [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+   - Test with [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)
+   - Verify images display correctly at various sizes
+   - Check loading speed and optimization
+
 ## Completed ✅
-- Initial SEO audit and issue identification
-- SEO tracking system setup
-- Missing robots.txt (✅ Created in public/robots.txt)
-- Missing sitemap.xml (✅ Configured @astrojs/sitemap integration)
+- **Initial SEO audit and issue identification**
+- **SEO tracking system setup**
+- **Missing robots.txt** - Created in public/robots.txt
+- **Missing sitemap.xml** - Configured @astrojs/sitemap integration
+- **No structured data** - Added JSON-LD Person and CreativeWork schemas
+- **Limited Open Graph tags** - Added complete OG meta tags to MainHead component
+- **Generic meta descriptions** - Updated all page descriptions to 100+ characters
+- **No canonical URLs** - Added canonical link tags to prevent duplicate content
 
 ## Notes
 - Focus on Critical issues first for maximum SEO impact

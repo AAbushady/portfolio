@@ -54,3 +54,7 @@ Portfolio projects are organized in subdirectories under `src/content/work/`:
 - Individual project `.md` files for main projects
 
 Projects are automatically sorted by `publishDate` in descending order on the homepage, displaying the 4 most recent projects.
+
+#### Working Guidelines
+
+Keep track of tasks that need to be done in relevant TODO files. "Features" should be listed out and then broken into smaller tasks to keep track. The subsequent tasks should have clear instructions on what needs to be done step by step. When a feature is completed it should be cleared from the TODO file.
