@@ -4,7 +4,7 @@ publishDate: 2020-01-13 00:00:00
 img: \assets\resume_screenshot.png
 img_alt: Screenshot of Alex Abushady's resume.
 description: |
-  My Resume.
+  Professional resume showcasing my software engineering experience, technical skills, and career achievements in full-stack development.
 tags:
   - Work History
   - Dev

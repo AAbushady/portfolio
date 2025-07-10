@@ -4,7 +4,7 @@ publishDate: 2024-12-09 00:00:00
 img: \assets\bxSj4jO0KBqUgAbH3zuNjCje.jpg
 img_alt: Cyberpunk 2077 logo with the default female V in the behind it, the backgrop is Night City with a strong yellow hue.
 description: |
-  Use a locally hosted LLM to chat with in-game characters in Cyberpunk 2077.
+  An innovative integration that connects locally hosted large language models to Cyberpunk 2077, enabling dynamic conversations with in-game characters through AI-powered text generation for enhanced roleplaying experiences.
 tags:
   - Fork
   - Gaming
