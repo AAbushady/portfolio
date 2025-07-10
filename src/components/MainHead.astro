@@ -8,6 +8,9 @@ interface Props {
 	ogImage?: string | undefined;
 	ogType?: string | undefined;
 	publishDate?: Date | undefined;
+	twitterCard?: 'summary' | 'summary_large_image' | undefined;
+	twitterImage?: string | undefined;
+	twitterImageAlt?: string | undefined;
 }
 
 const {
@@ -17,10 +20,14 @@ const {
 	ogImage = '/assets/IMG_0714.JPG',
 	ogType = 'website',
 	publishDate,
+	twitterCard = 'summary_large_image',
+	twitterImage,
+	twitterImageAlt = 'Alex Abushady - Software Engineer Portfolio',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
+const twitterImageURL = new URL(twitterImage || ogImage, Astro.site);
 ---
 
 <meta charset="UTF-8" />
@@ -48,6 +55,13 @@ const ogImageURL = new URL(ogImage, Astro.site);
 	<meta property="article:published_time" content={publishDate.toISOString()} />
 	<meta property="article:author" content="Alex Abushady" />
 )}
+
+<!-- Twitter Card Tags -->
+<meta name="twitter:card" content={twitterCard} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={twitterImageURL.href} />
+<meta name="twitter:image:alt" content={twitterImageAlt} />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL.href} />
