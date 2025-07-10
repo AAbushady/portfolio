@@ -7,6 +7,7 @@ interface Props {
 	structuredData?: object | undefined;
 	ogImage?: string | undefined;
 	ogType?: string | undefined;
+	publishDate?: Date | undefined;
 }
 
 const {
@@ -15,6 +16,7 @@ const {
 	structuredData,
 	ogImage = '/assets/og-default.svg',
 	ogType = 'website',
+	publishDate,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -40,6 +42,12 @@ const ogImageURL = new URL(ogImage, Astro.site);
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="Alex Abushady - Software Engineer Portfolio" />
 <meta property="og:author" content="Alex Abushady" />
+
+<!-- Article-specific meta tags -->
+{ogType === 'article' && publishDate && (
+	<meta property="article:published_time" content={publishDate.toISOString()} />
+	<meta property="article:author" content="Alex Abushady" />
+)}
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL.href} />

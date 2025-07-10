@@ -13,14 +13,15 @@ interface Props {
 	structuredData?: object | undefined;
 	ogImage?: string | undefined;
 	ogType?: string | undefined;
+	publishDate?: Date | undefined;
 }
 
-const { title, description, structuredData, ogImage, ogType } = Astro.props;
+const { title, description, structuredData, ogImage, ogType, publishDate } = Astro.props;
 ---
 
 <html lang="en">
 	<head>
-		<MainHead title={title} description={description} structuredData={structuredData} ogImage={ogImage} ogType={ogType} />
+		<MainHead title={title} description={description} structuredData={structuredData} ogImage={ogImage} ogType={ogType} publishDate={publishDate} />
 	</head>
 	<body>
 		<div class="stack backgrounds">
