@@ -10,6 +10,6 @@ tags:
   - Tool
 ---
 
-When working with LLMs and finetuning, sometimes you use a model for a while, and you think to yourself "Wow! This was great! I wish I could implement this in a future dataset!".
+When working with LLMs and fine-tuning, sometimes you use a model for a while, and you think to yourself "Wow! This was great! I wish I could implement this in a future dataset!".
 
-Well, now you can! Using [sillytavern-to-sharegpt](https://github.com/AAbushady/sillytavern-to-sharegpt) allows for easy conversion of chats into your desired format, whether that be Alpaca, ShareGPT, or something entirely different. Adding new formats is quite simple as well, thanks to each conversion type being it's own typescript file, allow for seperation of concerns and clarity when coding for each type.
+Well, now you can! Using [sillytavern-to-sharegpt](https://github.com/AAbushady/sillytavern-to-sharegpt) allows for easy conversion of chats into your desired format, whether that be Alpaca, ShareGPT, or something entirely different. Adding new formats is quite simple as well, thanks to each conversion type being it's own typescript file, allow for separation of concerns and clarity when coding for each type.
