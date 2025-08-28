@@ -119,7 +119,7 @@ const twitterImageURL = new URL(twitterImage || ogImage, Astro.site);
 )}
 
 <script is:inline>
-	// This code is inlined in the head to make dark mode instant & blocking.
+	// This code is inline in the head to make dark mode instant & blocking.
 	const getThemePreference = () => {
 		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
 			return localStorage.getItem('theme');
