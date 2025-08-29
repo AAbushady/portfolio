@@ -112,8 +112,15 @@ import Hero from '../components/Hero.astro';
 	}
 
 	.content ul {
-		columns: 2;
-		column-gap: 1.5rem;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.5rem;
+		list-style-type: disc;
+		padding-left: 1.2rem;
+	}
+
+	.content ul li {
+		break-inside: avoid;
 	}
 
 	@media (min-width: 50em) {
@@ -129,6 +136,11 @@ import Hero from '../components/Hero.astro';
 		section {
 			display: contents;
 			font-size: var(--text-lg);
+		}
+
+		.content ul {
+			grid-template-columns: 1fr 1fr;
+			column-gap: 1.5rem;
 		}
 	}
 </style>
