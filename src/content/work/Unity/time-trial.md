@@ -18,6 +18,7 @@ Starting with a pure racing prototype to get the speed and movement right:
 - Arcade-style vehicle controller tuned for aggressive, momentum-based racing
 - High-speed physics that will translate to both vehicle and mech modes
 - Control responsiveness that can handle the chaos of combat at 200mph+
+- Countdown and Lap timer
 
 Future additions will include:
 - Weapon systems and combat mechanics
