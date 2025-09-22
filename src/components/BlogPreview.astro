@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import Pill from './Pill.astro';
 
 interface Props {
 	post: CollectionEntry<'blog'>;
@@ -11,14 +12,13 @@ const { data, id } = Astro.props.post;
 <article class="card">
 	<div class="content">
 		<h3><a href={`/blog/${id}/`}>{data.title}</a></h3>
-		<p class="description">{data.description}</p>
-		<div class="meta">
-			<time>{data.publishDate.toLocaleDateString()}</time>
-		</div>
 		<div class="tags">
 			{data.tags.map((tag) => (
-				<span class="tag">{tag}</span>
+				<Pill>{tag}</Pill>
 			))}
+		</div>
+		<div class="meta">
+			<time>{data.publishDate.toLocaleDateString()}</time>
 		</div>
 	</div>
 	{data.img && (
@@ -90,15 +90,6 @@ const { data, id } = Astro.props.post;
 		display: flex;
 		gap: 0.25rem;
 		flex-wrap: wrap;
-	}
-
-	.tag {
-		background: var(--accent-subtle);
-		color: var(--accent-text-over);
-		padding: 0.125rem 0.5rem;
-		border-radius: 0.25rem;
-		font-size: var(--text-xs);
-		font-weight: 500;
 	}
 
 	img {

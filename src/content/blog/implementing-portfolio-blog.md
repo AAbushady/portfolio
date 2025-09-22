@@ -4,8 +4,6 @@ description: "How I implemented a blog system within my portfolio to track proje
 publishDate: 2025-09-22 12:00:00
 tags: ["Astro", "Web Development", "Portfolio", "Content Management"]
 status: "published"
-img: "/assets/portfolio-blog-preview.jpg"
-img_alt: "Screenshot showing the new blog interface integrated into the portfolio"
 ---
 
 ## Why Add a Blog to My Portfolio?
