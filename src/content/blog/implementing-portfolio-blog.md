@@ -32,7 +32,6 @@ blog: defineCollection({
     publishDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()),
-    project: z.string().optional(), // Link to related work project
     status: z.enum(['draft', 'published']).default('published'),
     img: z.string().optional(),
     img_alt: z.string().optional().default('Blog post preview'),
@@ -43,7 +42,6 @@ blog: defineCollection({
 The key additions for development blogging:
 
 - **`updatedDate`**: Track when posts are revised as projects evolve
-- **`project`**: Link blog posts to related portfolio projects
 - **`status`**: Support draft posts for work-in-progress documentation
 
 ### Component Architecture
