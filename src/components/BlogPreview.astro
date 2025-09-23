@@ -18,7 +18,7 @@ const { data, id } = Astro.props.post;
 			))}
 		</div>
 		<div class="meta">
-		<time>{(data.updatedDate || data.publishDate).toLocaleDateString()}</time>
+		<time>{data.updatedDate ? `Updated: ${data.updatedDate.toLocaleDateString()}` : `Published: ${data.publishDate.toLocaleDateString()}`}</time>
 		</div>
 	</div>
 	{data.img && (

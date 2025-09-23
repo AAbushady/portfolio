@@ -2,6 +2,7 @@
 title: "Building a Development Blog with Astro Content Collections"
 description: "How I implemented a blog system within my portfolio to track project development progress and share technical insights."
 publishDate: 2025-09-22 12:00:00
+updatedDate: 2025-09-23 12:00:00
 tags: ["Astro", "Web Development", "Portfolio", "Content Management"]
 status: "published"
 ---
