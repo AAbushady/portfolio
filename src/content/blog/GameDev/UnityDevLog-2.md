@@ -1,12 +1,15 @@
 ---
-title: "Unity Dev Log #1"
-description: "Learning Unity by prototyping systems for a larger project."
-publishDate: 2025-09-27 07:21:00
-tags: ["Game Dev", "Unity", "Prototyping", "C#"]
-status: "published"
-img: \assets\UnityDevLog-1\Screenshot 2025-09-27 073715.png
+title: "Unity Dev Log #2"
+description: "Transformation and Weapons: The Beginning"
+publishDate: 2025-10-11 00:00:01
+tags: ["Game Dev", "Unity", "C#"]
+status: "draft"
+img: |
 ---
 
+Today's blog post the focus will be on the [WeaponsTest](/work/unity/weaponstest) project and the work I've done so far in creating a virtual firing range to test Transformation and Weapons systems of the player vehicle.
+
+--- OLD
 For a few weeks now I've been working on a game that I've been thinking about for a while... The concept being "Combat Racing Mechs that Transform". The idea seems incredibly lofty, especially for someone like me who has no real experience using Unity! That being said I would not be deterred! Instead I decided to build small bite sized pieces of my game in prototypes that would allow me to have quick easy wins in learning Unity. The other advantage to this approach being I could test features in isolation before integrating them into the main project. This would allow me to nail down the "feel" before I have to worry about messing things up by fine-tuning.
 
 To start we have two projects; there's [Time-Trial](/work/unity/time-trial), which allows me to worry about movement and race time/laps, and [WeaponsTest](/work/unity/weaponstest), which lets me create the Transformations and Weapons systems in isolation. Every racing game needs a few fundamental things: something that moves, a way to start the race, and something to race against. So that's where I started with Time-Trial.
