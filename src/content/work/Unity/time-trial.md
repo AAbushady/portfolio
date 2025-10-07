@@ -10,7 +10,7 @@ tags:
   - C#
 ---
 
-The first phase of an [ambitious combat racing project](https://github.com/AAbushady/Time-Trial) inspired by IGPX and Twisted Metal. This time-trial prototype establishes the high-speed racing foundation before adding transformation mechanics and vehicle combat.
+The first phase of an ambitious combat racing project inspired by IGPX, Mario Kart, and Twisted Metal. This [time-trial](https://github.com/AAbushady/Time-Trial) prototype establishes the high-speed racing foundation before adding transformation mechanics and vehicle combat.
 
 Building toward a game where high-speed racing meets mech combat. Think Twisted Metal's vehicular mayhem combined with transformation mechanics, and mech combat of IGPX. But first, I need to nail the fundamentals.
 
