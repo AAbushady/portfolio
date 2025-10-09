@@ -9,49 +9,49 @@ img: |
 
 Today's blog post the focus will be on the [WeaponsTest](/work/unity/weaponstest) project and the work I've done so far in creating a virtual firing range to test Transformation and Weapons systems of the player vehicle.
 
---- OLD
-For a few weeks now I've been working on a game that I've been thinking about for a while... The concept being "Combat Racing Mechs that Transform". The idea seems incredibly lofty, especially for someone like me who has no real experience using Unity! That being said I would not be deterred! Instead I decided to build small bite sized pieces of my game in prototypes that would allow me to have quick easy wins in learning Unity. The other advantage to this approach being I could test features in isolation before integrating them into the main project. This would allow me to nail down the "feel" before I have to worry about messing things up by fine-tuning.
-
-To start we have two projects; there's [Time-Trial](/work/unity/time-trial), which allows me to worry about movement and race time/laps, and [WeaponsTest](/work/unity/weaponstest), which lets me create the Transformations and Weapons systems in isolation. Every racing game needs a few fundamental things: something that moves, a way to start the race, and something to race against. So that's where I started with Time-Trial.
-
-![Gif for Unity countdown timer and car movement](/assets/UnityDevLog-1/TimeTrialCountdown.gif)
-
-Leveraging Claude Code with the "Learning" model output-style, I was able to quickly put together a working Game Manager that took care of the Countdown Timer, as well as locking the player movement and running the lap timer on GO. Using my existing Software Engineering knowledge, I was able to rein Claude in when it attempted to create multiple scripts and advised me to make multiple managers in Unity. I felt it was much cleaner to make one interface that linked to Unity's Game Manager; then create classes for the different "systems" and link them to the RaceManager class which is ultimately what the GameManager in Unity consumed.
-
-```csharp
-private void SetupSystems()
-{
-    // Auto-find UI components if not assigned
-    if (countdownText == null)
-        countdownText = GameObject.Find("CountdownText")?.GetComponent<Text>();
-    if (timerText == null)
-        timerText = GameObject.Find("TimerText")?.GetComponent<Text>();
-    if (audioSource == null)
-        audioSource = GetComponent<AudioSource>();
-    // Initialize internal systems
-    countdown = new CountdownSystem(this, countdownText, audioSource,
-                                  countBeep, goBeep, countdownDuration);
-    timer = new TimerSystem(timerText);
-    // Validate setup
-    if (countdownText == null)
-        Debug.LogWarning("RaceManager: No countdown text found. Create UI Text named 'CountdownText'");
-    if (timerText == null)
-        Debug.LogWarning("RaceManager: No timer text found. Create UI Text named 'TimerText'");
-}
-```
-
-**Current Features:**
-- A car that moves (it's literally a cube, but it responds to WASD)
-- Proper race start sequence with countdown
-- A timer that tracks your lap time
-- "Opponents" you can ram into (they just fall over for now)
-
-![GIF of ramming into an NPC](/assets/UnityDevLog-1/TimeTrialCrash.gif)
-
-The NPCs don't move yet, but having something to collide with makes the world feel less empty. Plus it's oddly satisfying to knock them over.
-
-I'm working on adding weapons and refining the transformation system; right now "transformation" just makes the cube taller, but you have to start somewhere.
-
 ![GIF transforming into and out of "robot mode"](/assets/UnityDevLog-1/WeaponsTestTransform.gif)
 
-The goal isn't necessarily to build the next great racing game. It's to learn Unity by building something I actually want to play.
+Starting this time around I primarily focused on getting the aiming in a good spot; I wanted to start with using the mouse to aim the robot making it face the direction of wherever the player was aiming. Beginning with a Raycast from the main camera, I was able to achieve the desired effect of "facing" where I'm aiming. This was great! However, I hit a couple of small snags with my original implementation. When I tried to aim at the sky, or past my character I couldn't achieve the desired effect; additionally, aiming at the edge of my Player prefab caused it to spin erratically! Not ideal...
+
+To solve the sky aiming issue, I opted to use a "fallback". Essentially what we're doing is if the Raycast doesn't have a valid "hit" we'll create a "farpoint" vector which we can then use to calculate the direction we would have used with the Raycast hit. This solved a good chunk of the issues, but there was still the problem of "self" hits. Wanting to continue using the "Raycast" approach, I opted for taking an array of Raycast hits as opposed to just the first hit and decide "valid" hit on the first hit that wasn't the Player itself OR a child of it. This will help when things like missles are being fired about by the player to avoid destroying your own ordinance.
+
+![GIF showing Raycast aiming in action]()
+
+There are of course still more optimzations that can be done, and even right away I'd argue the use of "magic numbers" on the 100f should probably be a settable property on the script itself; but here is a code snippet of the HandleMouseLook() method used in aiming.
+
+```csharp
+void HandleMouseLook()
+{
+    Vector3 targetPosition;
+    RaycastHit? validHit = null;
+    Vector3 mousePosition = Input.mousePosition;
+    Ray aimingRay = playerCamera.ScreenPointToRay(mousePosition);
+
+    // Debug: visualize the ray in Scene view
+    Debug.DrawRay(aimingRay.origin, aimingRay.direction * 100f, Color.red);
+
+    // Get ALL hits along the ray
+    RaycastHit[] hits = Physics.RaycastAll(aimingRay, Mathf.Infinity);
+
+    foreach (RaycastHit hit in hits)
+    {
+        if (hit.collider.gameObject != gameObject && !hit.transform.IsChildOf(transform))
+        {
+            validHit = hit;
+            break;
+        }
+    }
+
+    if (validHit.HasValue)
+    {
+        targetPosition = new Vector3(validHit.Value.point.x, transform.position.y, validHit.Value.point.z);
+    }
+    else
+    {
+        Vector3 farPoint = aimingRay.origin + aimingRay.direction * 100f;
+        targetPosition = new Vector3(farPoint.x, transform.position.y, farPoint.z);
+    }
+
+    transform.LookAt(targetPosition);
+}
+```
