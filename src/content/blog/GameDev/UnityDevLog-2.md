@@ -1,9 +1,9 @@
 ---
 title: "Unity Dev Log #2"
 description: "Transformation and Weapons: The Beginning"
-publishDate: 2025-10-11 00:00:01
+publishDate: 2025-10-11 07:48:00
 tags: ["Game Dev", "Unity", "C#"]
-status: "draft"
+status: "published"
 ---
 
 Today's blog post the focus will be on the [WeaponsTest](/work/unity/weaponstest) project and the work I've done so far in creating a virtual firing range to test Transformation and Weapons systems of the player vehicle.
