@@ -27,12 +27,22 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
+// Dynamic years calculation (started Jan 2020)
+const years = new Date().getFullYear() - 2020;
+// Plain text for SEO/meta tags
+const descriptionText = entry.data.description.replace('{{yearsOfExperience}}', `${years}+`);
+// HTML version with span for client-side JS updates
+const descriptionHtml = entry.data.description.replace(
+  '{{yearsOfExperience}}',
+  `<span class="years-exp">${years}+</span>`
+);
+
 // Create structured data for the project
 const creativeWorkSchema = {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
   "name": entry.data.title,
-  "description": entry.data.description,
+  "description": descriptionText,
   "creator": {
     "@type": "Person",
     "name": "Alex Abushady"
@@ -46,9 +56,9 @@ const creativeWorkSchema = {
 };
 ---
 
-<BaseLayout 
-	title={entry.data.title} 
-	description={entry.data.description} 
+<BaseLayout
+	title={entry.data.title}
+	description={descriptionText}
 	structuredData={creativeWorkSchema}
 	ogImage={entry.data.img}
 	ogType="article"
@@ -64,7 +74,7 @@ const creativeWorkSchema = {
 							<div class="tags">
 								{entry.data.tags.map((t) => <Pill>{t}</Pill>)}
 							</div>
-							<p class="description">{entry.data.description}</p>
+							<p class="description" set:html={descriptionHtml} />
 						</div>
 					</Hero>
 				</div>

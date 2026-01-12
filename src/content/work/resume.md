@@ -4,7 +4,7 @@ publishDate: 2020-01-13 00:00:00
 img: \assets\resume_screenshot.png
 img_alt: Screenshot of Alex Abushady's resume.
 description: |
-  5+ years of full-stack development experience building enterprise systems that handle millions of requests, with a focus on performance optimization, system architecture, and team collaboration.
+  {{yearsOfExperience}} years of full-stack development experience building enterprise systems that handle millions of requests, with a focus on performance optimization, system architecture, and team collaboration.
 tags:
   - Enterprise
   - Full-Stack
@@ -12,7 +12,7 @@ tags:
   - Performance
 ---
 
-Over the past 5+ years, I've been building production systems for enterprise environments, with experience ranging from API development handling 50M+ annual requests to architectural redesigns that significantly improve system performance. My work has involved everything from individual contributor roles developing customer-facing applications to technical leadership positions managing engineering teams and complex system migrations.
+Over the past {{yearsOfExperience}} years, I've been building production systems for enterprise environments, with experience ranging from API development handling 50M+ annual requests to architectural redesigns that significantly improve system performance. My work has involved everything from individual contributor roles developing customer-facing applications to technical leadership positions managing engineering teams and complex system migrations.
 
 The systems I've worked on span billing platforms, insurance workflows, and customer management tools - all requiring high availability and fault tolerance. I've found that some of the most impactful work comes from optimizing existing systems rather than building from scratch. For instance, rearchitecting legacy flows using modern patterns can reduce code redundancy by 50% while significantly improving development velocity.
 
