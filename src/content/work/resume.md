@@ -1,7 +1,7 @@
 ---
 title: Resume
 publishDate: 2020-01-13 00:00:00
-img: \assets\resume_screenshot.png
+img: \assets\og-default.png
 img_alt: Screenshot of Alex Abushady's resume.
 description: |
   {{yearsOfExperience}} years of full-stack development experience building enterprise systems that handle millions of requests, with a focus on performance optimization, system architecture, and team collaboration.
