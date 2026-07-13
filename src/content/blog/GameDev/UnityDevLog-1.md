@@ -4,7 +4,7 @@ description: "Learning Unity by prototyping systems for a larger project."
 publishDate: 2025-09-27 07:21:00
 tags: ["Game Dev", "Unity", "Prototyping", "C#"]
 status: "published"
-img: /assets/UnityDevLog-1/countdown-screenshot.png
+img: ../../../assets/countdown-screenshot.png
 ---
 
 For a few weeks now I've been working on a game that I've been thinking about for a while... The concept being "Combat Racing Mechs that Transform". The idea seems incredibly lofty, especially for someone like me who has no real experience using Unity! That being said I would not be deterred! Instead I decided to build small bite sized pieces of my game in prototypes that would allow me to have quick easy wins in learning Unity. The other advantage to this approach being I could test features in isolation before integrating them into the main project. This would allow me to nail down the "feel" before I have to worry about messing things up by fine-tuning.

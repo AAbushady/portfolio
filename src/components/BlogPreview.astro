@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import Pill from './Pill.astro';
 
 interface Props {
@@ -26,7 +27,12 @@ const { data, id } = Astro.props.post;
 		</div>
 	</div>
 	{data.img && (
-		<img src={data.img} alt={data.img_alt || `Preview of ${data.title}`} loading="lazy" decoding="async" />
+		<Image
+			src={data.img}
+			alt={data.img_alt || `Preview of ${data.title}`}
+			widths={[480, 960]}
+			sizes="(min-width: 50em) 30vw, 90vw"
+		/>
 	)}
 </article>
 

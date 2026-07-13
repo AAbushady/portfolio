@@ -1,7 +1,7 @@
 ---
 title: Time-Trial Prototype
 publishDate: 2025-08-28 00:00:00
-img: /assets/time-trial.png
+img: ../../../assets/time-trial.png
 img_alt: Unity editor showing the Time-Trial prototype, a red block car with wheels facing two blue NPC cars on a green field
 description: |
   Unity racing game prototype exploring arcade-style vehicle movement, Rigidbody-based collision handling, and high-speed gameplay mechanics. Built to learn Unity's input system and component architecture.

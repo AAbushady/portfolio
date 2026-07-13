@@ -1,7 +1,7 @@
 ---
 title: WeaponsTest Prototype
 publishDate: 2025-09-21 00:00:00
-img: /assets/weaponstest.png
+img: ../../../assets/weaponstest.png
 img_alt: Unity game view of the WeaponsTest prototype showing the player transformed into a tall red robot block on a green firing range
 description: |
   Unity firing range prototype vehicle transformation, weapons handling, and combat mechanics.
