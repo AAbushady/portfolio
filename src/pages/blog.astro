@@ -29,7 +29,7 @@ const blogPosts = (await getCollection('blog'))
 				{
 					blogPosts.map((post) => (
 						<li>
-							<BlogPreview post={post} />
+							<BlogPreview post={post} headingLevel="h2" />
 						</li>
 					))
 				}

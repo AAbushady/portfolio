@@ -4,13 +4,16 @@ import { Image } from 'astro:assets';
 
 interface Props {
 	project: CollectionEntry<'work'>;
+	/** Heading level for the project title, matched to the page's outline. */
+	headingLevel?: 'h2' | 'h3';
 }
 
 const { data, id } = Astro.props.project;
+const Heading = Astro.props.headingLevel ?? 'h3';
 ---
 
 <a class="card" href={`/work/${id}/`}>
-	<span class="title">{data.title}</span>
+	<Heading class="title">{data.title}</Heading>
 	<Image
 		src={data.img}
 		alt={data.img_alt || `Preview of ${data.title}`}
@@ -48,6 +51,9 @@ const { data, id } = Astro.props.project;
 		background: var(--gray-999);
 		color: var(--gray-200);
 		border-radius: 0.375rem;
+		/* Neutralize UA heading styles; the card sets the typography. */
+		font-size: inherit;
+		font-weight: inherit;
 	}
 
 	img {

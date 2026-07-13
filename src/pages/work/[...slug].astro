@@ -85,7 +85,14 @@ const creativeWorkSchema = {
 			<main class="wrapper">
 				<div class="stack gap-10 content">
 					{entry.data.img && (
-						<Image src={entry.data.img} alt={imgAlt} widths={[720, 1440]} sizes="(min-width: 50em) 65ch, 100vw" />
+						<Image
+							src={entry.data.img}
+							alt={imgAlt}
+							widths={[720, 1440]}
+							sizes="(min-width: 50em) 65ch, 100vw"
+							loading="eager"
+							fetchpriority="high"
+						/>
 					)}
 					<div class="content">
 						<Content />

@@ -8,7 +8,7 @@ status: "published"
 
 Today's blog post the focus will be on the [WeaponsTest](/work/unity/weaponstest/) project and the work I've done so far in creating a virtual firing range to test Transformation and Weapons systems of the player vehicle.
 
-<video autoplay loop muted playsinline aria-label="Vehicle transforming into and out of robot mode"><source src="/assets/UnityDevLog-1/WeaponsTestTransform.mp4" type="video/mp4" /></video>
+<video width="426" height="240" autoplay loop muted playsinline aria-label="Vehicle transforming into and out of robot mode"><source src="/assets/UnityDevLog-1/WeaponsTestTransform.mp4" type="video/mp4" /></video>
 
 In my last dev log, I implemented a rudimentary transformation from car to robot mode, something simple that just swapped prefabs, nothing crazy yet! Now I need to start getting this robot(block) combat ready. Before I can create weapons, I need to get an aiming foundation set up. As mentioned in the last blog, WeaponsTest maintains the idea of creating multiple projects to prototype systems and incorporating them into the main game later down the line for a cleaner, and easier way to iterate.
 
@@ -16,7 +16,7 @@ Starting this time around I primarily focused on getting the aiming in a good sp
 
 To solve the sky aiming issue, I opted to use a "fallback". Essentially what we're doing is if the Raycast doesn't have a valid "hit" I'll create a "farpoint" vector which I can then use to calculate the direction we would have used with the Raycast hit. This solved a good chunk of the issues, but there was still the problem of "self" hits. Wanting to continue using the "Raycast" approach, I opted for taking an array of Raycast hits as opposed to just the first hit and decide "valid" hit on the first hit that wasn't the Player itself OR a child of it. This will help when things like missiles are being fired about by the player to avoid destroying your own ordnance.
 
-<video autoplay loop muted playsinline aria-label="Robot mode following the mouse cursor using Raycast aiming"><source src="/assets/UnityDevLog-2/WeaponsTestAiming.mp4" type="video/mp4" /></video>
+<video width="426" height="240" autoplay loop muted playsinline aria-label="Robot mode following the mouse cursor using Raycast aiming"><source src="/assets/UnityDevLog-2/WeaponsTestAiming.mp4" type="video/mp4" /></video>
 
 Some tech debt to acknowledge that can be quickly fixed is the use of magic numbers for the 100f of calculating the "farpoint" variable. Ideally you'd want to expose the variable to unity, allowing designers to change the variable without a code change; a common pattern within Unity.
 

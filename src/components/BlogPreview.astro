@@ -6,14 +6,17 @@ import { formatDate } from '../utils/format';
 
 interface Props {
 	post: CollectionEntry<'blog'>;
+	/** Heading level for the post title, matched to the page's outline. */
+	headingLevel?: 'h2' | 'h3';
 }
 
 const { data, id } = Astro.props.post;
+const Heading = Astro.props.headingLevel ?? 'h3';
 ---
 
 <article class="card">
 	<div class="content">
-		<h3><a href={`/blog/${id}/`}>{data.title}</a></h3>
+		<Heading class="title"><a href={`/blog/${id}/`}>{data.title}</a></Heading>
 		<div class="tags">
 			{data.tags.map((tag) => (
 				<Pill>{tag}</Pill>
@@ -62,20 +65,20 @@ const { data, id } = Astro.props.post;
 		gap: 1rem;
 	}
 
-	h3 {
+	.title {
 		margin: 0;
 		font-size: var(--text-lg);
 		font-family: var(--font-brand);
 		font-weight: 500;
 	}
 
-	h3 a {
+	.title a {
 		color: var(--gray-0);
 		text-decoration: none;
 		transition: color var(--theme-transition);
 	}
 
-	h3 a:hover {
+	.title a:hover {
 		color: var(--accent-regular);
 	}
 

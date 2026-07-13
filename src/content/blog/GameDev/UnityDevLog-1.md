@@ -11,7 +11,7 @@ For a few weeks now I've been working on a game that I've been thinking about fo
 
 To start we have two projects; there's [Time-Trial](/work/unity/time-trial/), which allows me to worry about movement and race time/laps, and [WeaponsTest](/work/unity/weaponstest/), which lets me create the Transformations and Weapons systems in isolation. Every racing game needs a few fundamental things: something that moves, a way to start the race, and something to race against. So that's where I started with Time-Trial.
 
-<video autoplay loop muted playsinline aria-label="Unity countdown timer counting down before the car starts moving"><source src="/assets/UnityDevLog-1/TimeTrialCountdown.mp4" type="video/mp4" /></video>
+<video width="426" height="240" autoplay loop muted playsinline aria-label="Unity countdown timer counting down before the car starts moving"><source src="/assets/UnityDevLog-1/TimeTrialCountdown.mp4" type="video/mp4" /></video>
 
 Leveraging Claude Code with the "Learning" model output-style, I was able to quickly put together a working Game Manager that took care of the Countdown Timer, as well as locking the player movement and running the lap timer on GO. Using my existing Software Engineering knowledge, I was able to rein Claude in when it attempted to create multiple scripts and advised me to make multiple managers in Unity. I felt it was much cleaner to make one interface that linked to Unity's Game Manager; then create classes for the different "systems" and link them to the RaceManager class which is ultimately what the GameManager in Unity consumed.
 
@@ -43,12 +43,12 @@ private void SetupSystems()
 - A timer that tracks your lap time
 - "Opponents" you can ram into (they just fall over for now)
 
-<video autoplay loop muted playsinline aria-label="Player car ramming into an NPC car and knocking it over"><source src="/assets/UnityDevLog-1/TimeTrialCrash.mp4" type="video/mp4" /></video>
+<video width="426" height="240" autoplay loop muted playsinline aria-label="Player car ramming into an NPC car and knocking it over"><source src="/assets/UnityDevLog-1/TimeTrialCrash.mp4" type="video/mp4" /></video>
 
 The NPCs don't move yet, but having something to collide with makes the world feel less empty. Plus it's oddly satisfying to knock them over.
 
 I'm working on adding weapons and refining the transformation system; right now "transformation" just makes the cube taller, but you have to start somewhere.
 
-<video autoplay loop muted playsinline aria-label="Vehicle transforming into and out of robot mode"><source src="/assets/UnityDevLog-1/WeaponsTestTransform.mp4" type="video/mp4" /></video>
+<video width="426" height="240" autoplay loop muted playsinline aria-label="Vehicle transforming into and out of robot mode"><source src="/assets/UnityDevLog-1/WeaponsTestTransform.mp4" type="video/mp4" /></video>
 
 The goal isn't necessarily to build the next great racing game. It's to learn Unity by building something I actually want to play.

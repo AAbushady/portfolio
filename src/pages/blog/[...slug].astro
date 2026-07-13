@@ -91,7 +91,14 @@ const blogPostSchema = {
 			<main class="wrapper">
 				<div class="stack gap-10 content">
 					{entry.data.img && (
-						<Image src={entry.data.img} alt={imgAlt} widths={[720, 1440]} sizes="(min-width: 50em) 65ch, 100vw" />
+						<Image
+							src={entry.data.img}
+							alt={imgAlt}
+							widths={[720, 1440]}
+							sizes="(min-width: 50em) 65ch, 100vw"
+							loading="eager"
+							fetchpriority="high"
+						/>
 					)}
 					<div class="content">
 						<Content />
@@ -105,16 +112,24 @@ const blogPostSchema = {
 
 <script>
 	// Demo videos replace GIFs and autoplay like them; for users who prefer
-	// reduced motion, stop the autoplay and surface the native controls instead.
-	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+	// reduced motion, stop the autoplay and surface the native controls
+	// instead. Runs again on `change` so enabling the OS setting mid-visit
+	// stops the videos without a reload.
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	const stopAutoplay = () => {
+		if (!reducedMotion.matches) return;
 		for (const video of document.querySelectorAll('video')) {
-			if (video.autoplay) {
+			if (video.autoplay || !video.paused) {
 				video.removeAttribute('autoplay');
 				video.pause();
 				video.controls = true;
 			}
 		}
-	}
+	};
+
+	stopAutoplay();
+	reducedMotion.addEventListener('change', stopAutoplay);
 </script>
 
 <style>
