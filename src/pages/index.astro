@@ -50,7 +50,7 @@ const blogPosts = (await getCollection('blog', ({ data }) => data.status === 'pu
 					alt="Alex Abushady smiling in a blue shirt, wearing glasses."
 					width="480"
 					height="620"
-					src="assets/IMG_0714.JPG"
+					src="/assets/alex-headshot.jpg"
 				/>
 			</header>
 
@@ -238,24 +238,4 @@ const blogPosts = (await getCollection('blog', ({ data }) => data.status === 'pu
 	}
 
 	/* ====================================================== */
-
-	.mention-card {
-		display: flex;
-		height: 7rem;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
-		border: 1px solid var(--gray-800);
-		border-radius: 1.5rem;
-		color: var(--gray-300);
-		background: var(--gradient-subtle);
-		box-shadow: var(--shadow-sm);
-	}
-
-	@media (min-width: 50em) {
-		.mention-card {
-			border-radius: 1.5rem;
-			height: 9.5rem;
-		}
-	}
 </style>

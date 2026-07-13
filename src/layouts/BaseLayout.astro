@@ -12,35 +12,63 @@ interface Props {
 	description?: string | undefined;
 	structuredData?: object | undefined;
 	ogImage?: string | undefined;
+	ogImageAlt?: string | undefined;
 	ogType?: string | undefined;
 	publishDate?: Date | undefined;
 }
 
-const { title, description, structuredData, ogImage, ogType, publishDate } = Astro.props;
+const { title, description, structuredData, ogImage, ogImageAlt, ogType, publishDate } = Astro.props;
 ---
 
 <html lang="en-US">
 	<head>
-		<MainHead title={title} description={description} structuredData={structuredData} ogImage={ogImage} ogType={ogType} publishDate={publishDate} />
+		<MainHead title={title} description={description} structuredData={structuredData} ogImage={ogImage} ogImageAlt={ogImageAlt} ogType={ogType} publishDate={publishDate} />
 	</head>
 	<body>
 		<div class="stack backgrounds">
+			<a class="skip-link" href="#main-content">Skip to content</a>
 			<Nav />
-			<slot />
+			<div id="main-content" tabindex="-1">
+				<slot />
+			</div>
 			<Footer />
 		</div>
 
 		<script>
+			import { yearsOfExperience } from '../utils/experience';
+
 			// Add "loaded" class once the document has completely loaded.
 			addEventListener('load', () => document.documentElement.classList.add('loaded'));
 
-			// Update years of experience dynamically (career started 2020)
+			// Refresh the build-time years-of-experience value in case the
+			// deployed page is older than the current year.
 			document.querySelectorAll('.years-exp').forEach(el => {
-				el.textContent = (new Date().getFullYear() - 2020) + '+';
+				el.textContent = yearsOfExperience() + '+';
 			});
 		</script>
 
 		<style>
+			.skip-link {
+				position: absolute;
+				z-index: 10000;
+				top: 0.5rem;
+				left: 0.5rem;
+				padding: 0.5rem 1rem;
+				border-radius: 999rem;
+				background-color: var(--accent-regular);
+				color: var(--accent-text-over);
+				text-decoration: none;
+				transform: translateY(-200%);
+			}
+
+			.skip-link:focus {
+				transform: none;
+			}
+
+			#main-content {
+				outline: none;
+			}
+
 			:root {
 				--_placeholder-bg: linear-gradient(transparent, transparent);
 				--bg-image-main: url('/assets/backgrounds/bg-main-light-800w.jpg');

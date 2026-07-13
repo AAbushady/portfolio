@@ -1,5 +1,5 @@
 ---
-title: Aphrodite-Engine-Provider
+title: Aphrodite Engine Provider
 publishDate: 2024-06-04 00:00:00
 img: /assets/aphrodite-engine-screenshot.png
 img_alt: Screenshot of README page for aphrodite-engine-provider fork.

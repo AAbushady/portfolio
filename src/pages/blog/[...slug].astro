@@ -28,6 +28,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const imgAlt = entry.data.img_alt || `${entry.data.title} blog preview`;
 
 // Create structured data for the blog post
 const blogPostSchema = {
@@ -46,7 +47,7 @@ const blogPostSchema = {
   "url": `https://alexabushady.com/blog/${entry.id}/`,
   "keywords": entry.data.tags,
   ...(entry.data.img && {
-    "image": `https://alexabushady.com${entry.data.img}`
+    "image": new URL(entry.data.img, Astro.site).href
   })
 };
 ---
@@ -56,6 +57,7 @@ const blogPostSchema = {
 	description={entry.data.description}
 	structuredData={blogPostSchema}
 	ogImage={entry.data.img}
+	ogImageAlt={entry.data.img ? imgAlt : undefined}
 	ogType="article"
 	publishDate={entry.data.publishDate}
 >
@@ -86,7 +88,7 @@ const blogPostSchema = {
 			</header>
 			<main class="wrapper">
 				<div class="stack gap-10 content">
-					{entry.data.img && <img src={entry.data.img} alt={entry.data.img_alt || `${entry.data.title} blog preview`} />}
+					{entry.data.img && <img src={entry.data.img} alt={imgAlt} />}
 					<div class="content">
 						<Content />
 					</div>
@@ -96,6 +98,20 @@ const blogPostSchema = {
 		<ContactCTA />
 	</div>
 </BaseLayout>
+
+<script>
+	// Demo videos replace GIFs and autoplay like them; for users who prefer
+	// reduced motion, stop the autoplay and surface the native controls instead.
+	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		for (const video of document.querySelectorAll('video')) {
+			if (video.autoplay) {
+				video.removeAttribute('autoplay');
+				video.pause();
+				video.controls = true;
+			}
+		}
+	}
+</script>
 
 <style>
 	header {
@@ -166,11 +182,17 @@ const blogPostSchema = {
 		hyphens: auto;
 	}
 
-	.content :global(img) {
+	.content :global(img),
+	.content :global(video) {
 		border-radius: 1.5rem;
 		box-shadow: var(--shadow-sm);
 		background: var(--gradient-subtle);
 		border: 1px solid var(--gray-800);
+	}
+
+	.content :global(video) {
+		width: 100%;
+		height: auto;
 	}
 
 	.content :global(blockquote) {

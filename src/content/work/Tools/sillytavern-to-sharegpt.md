@@ -1,5 +1,5 @@
 ---
-title: sillytavern-to-sharegpt
+title: SillyTavern to ShareGPT
 publishDate: 2024-05-17 00:00:00
 img: /assets/sts-screenshot.png
 img_alt: Screenshot of code snippet from the linked sillytavern-to-sharegpt application

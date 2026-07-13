@@ -8,6 +8,7 @@ import Hero from '../../components/Hero.astro';
 import Icon from '../../components/Icon.astro';
 import Pill from '../../components/Pill.astro';
 import { render } from 'astro:content';
+import { yearsOfExperience } from '../../utils/experience';
 
 interface Props {
 	entry: CollectionEntry<'work'>;
@@ -27,8 +28,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
-// Dynamic years calculation (started Jan 2020)
-const years = new Date().getFullYear() - 2020;
+const years = yearsOfExperience();
 // Plain text for SEO/meta tags
 const descriptionText = entry.data.description.replace('{{yearsOfExperience}}', `${years}+`);
 // HTML version with span for client-side JS updates
@@ -36,6 +36,7 @@ const descriptionHtml = entry.data.description.replace(
   '{{yearsOfExperience}}',
   `<span class="years-exp">${years}+</span>`
 );
+const imgAlt = entry.data.img_alt || `${entry.data.title} project preview`;
 
 // Create structured data for the project
 const creativeWorkSchema = {
@@ -51,7 +52,7 @@ const creativeWorkSchema = {
   "url": `https://alexabushady.com/work/${entry.id}/`,
   "keywords": entry.data.tags,
   ...(entry.data.img && {
-    "image": `https://alexabushady.com${entry.data.img}`
+    "image": new URL(entry.data.img, Astro.site).href
   })
 };
 ---
@@ -61,6 +62,7 @@ const creativeWorkSchema = {
 	description={descriptionText}
 	structuredData={creativeWorkSchema}
 	ogImage={entry.data.img}
+	ogImageAlt={imgAlt}
 	ogType="article"
 	publishDate={entry.data.publishDate}
 >
@@ -81,7 +83,7 @@ const creativeWorkSchema = {
 			</header>
 			<main class="wrapper">
 				<div class="stack gap-10 content">
-					{entry.data.img && <img src={entry.data.img} alt={entry.data.img_alt || `${entry.data.title} project preview`} />}
+					{entry.data.img && <img src={entry.data.img} alt={imgAlt} />}
 					<div class="content">
 						<Content />
 					</div>

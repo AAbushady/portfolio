@@ -6,28 +6,26 @@ interface Props {
 	description?: string | undefined;
 	structuredData?: object | undefined;
 	ogImage?: string | undefined;
+	ogImageAlt?: string | undefined;
 	ogType?: string | undefined;
 	publishDate?: Date | undefined;
-	twitterCard?: 'summary' | 'summary_large_image' | undefined;
-	twitterImage?: string | undefined;
-	twitterImageAlt?: string | undefined;
 }
 
 const {
 	title = 'Alex Abushady: Portfolio',
 	description = 'Alex Abushady is a Full stack software engineer exploring game development through Unity, game modding, and backend systems. Building tools and interactive experiences',
 	structuredData,
-	ogImage = '/assets/og-default.png',
+	ogImage = '/assets/og-default.jpg',
+	ogImageAlt = 'Alex Abushady - Software Engineer Portfolio',
 	ogType = 'website',
 	publishDate,
-	twitterCard = 'summary_large_image',
-	twitterImage,
-	twitterImageAlt = 'Alex Abushady - Software Engineer Portfolio',
 } = Astro.props;
 
+// The default OG image is generated at exactly 1200x630; per-page images vary,
+// so only claim dimensions when serving the default.
+const isDefaultOgImage = !Astro.props.ogImage;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
-const twitterImageURL = new URL(twitterImage || ogImage, Astro.site);
 ---
 
 <meta charset="UTF-8" />
@@ -46,9 +44,11 @@ const twitterImageURL = new URL(twitterImage || ogImage, Astro.site);
 <meta property="og:site_name" content="Alex Abushady" />
 <meta property="og:locale" content="en_US" />
 <meta name="image" property="og:image" content={ogImageURL.href} />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Alex Abushady - Software Engineer Portfolio" />
+{isDefaultOgImage && (
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+)}
+<meta property="og:image:alt" content={ogImageAlt} />
 <meta property="og:author" content="Alex Abushady" />
 
 <!-- Article-specific meta tags -->
@@ -58,11 +58,11 @@ const twitterImageURL = new URL(twitterImage || ogImage, Astro.site);
 )}
 
 <!-- Twitter Card Tags -->
-<meta name="twitter:card" content={twitterCard} />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={twitterImageURL.href} />
-<meta name="twitter:image:alt" content={twitterImageAlt} />
+<meta name="twitter:image" content={ogImageURL.href} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL.href} />
@@ -84,8 +84,9 @@ const twitterImageURL = new URL(twitterImage || ogImage, Astro.site);
   "jobTitle": "Software Engineer",
   "url": "https://alexabushady.com",
   "sameAs": [
-    "https://github.com/alexabushady",
-    "https://linkedin.com/in/alexabushady"
+    "https://github.com/AAbushady",
+    "https://linkedin.com/in/alexabushady",
+    "https://x.com/Epiculous214"
   ],
   "knowsAbout": [
     "Software Engineering",
@@ -101,7 +102,7 @@ const twitterImageURL = new URL(twitterImage || ogImage, Astro.site);
   ],
   "alumniOf": {
     "@type": "EducationalOrganization",
-    "name": "St. Petersburg"
+    "name": "St. Petersburg College"
   },
   "hasOccupation": {
     "@type": "Occupation",

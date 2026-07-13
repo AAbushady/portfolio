@@ -10,7 +10,7 @@ Hey readers! Remember when I said we'd be adding weapons? Well, bullets are work
 
 Conceptually awesome, right? Great way to attack and defend. Well on my first implementation it was also a great way to have your driver play "Clothes Dryer Simulator"...
 
-![GIF of bullet causing car to flip around](/assets/UnityDevLog-3/WeaponsTestBulletMishap.gif)
+<video autoplay loop muted playsinline aria-label="Bullet collision sending the player car spinning wildly"><source src="/assets/UnityDevLog-3/WeaponsTestBulletMishap.mp4" type="video/mp4" /></video>
 
 Luckily, the fix is super simple! And a core feature of Unity, so neat! Setting IsTrigger on the bullet collider let the bullet fly through and not impact the player shooting. Sadly I did lose the neat visual aspect of bullets making the NPC target knock around on impact. With that done, I moved on to switching from Spacebar to fire to what I felt was more natural for this use case, left mouse button to fire. I set up a rapid fire when you hold down the button! Except... it was too rapid... you know that game "Snake" it basically looked like that was coming out of my mech and flying into my opponent! Not machine gun fire at all... This one was a pretty simple fix too honestly though, a simple delay (based on time of course to account for framerate differences!) allowed me to make more realistic machine gun fire!
 
@@ -87,7 +87,7 @@ I hear you asking, "okay, so what was this refactor" and "must have been crazy r
 
 With that solved, I moved on to enhance the aiming. In the last blog, I had locked and flattened the Y-axis. Undoing that, while allowing for aiming at the sky did make things awkward in that the whole "robot" block would tilt. I kind of felt like this was okay for now in a prototype though, ideally we'd have multiple parts make up the mech with independent pitch, and yaw movement to make that look more visually appealing.
 
-![GIF of robot tilting while shooting](/assets/UnityDevLog-3/WeaponsTestTilt.gif)
+<video autoplay loop muted playsinline aria-label="Robot block tilting as it aims and shoots at the sky"><source src="/assets/UnityDevLog-3/WeaponsTestTilt.mp4" type="video/mp4" /></video>
 
 So, remember that whole we lose the punch of the bullets by turning on "Is Trigger"? Next up, I fixed that! When I'm playing a game with gunplay one thing I'm not a huge fan of is floaty weapons that don't really look like they do anything. I like my guns punchy and impactful (think Call of Duty Modern Warfare 1 remake). Granted I'm not quite that level yet, I like to think I did a good job restoring SOME of the impact of the bullet... literally!
 
@@ -143,4 +143,4 @@ Being new to 3rd party Asset packs though... I did run into a little hiccup. My 
 
 All that said, that wraps up simple gunfire in WeaponsTest! We can now shoot our light machine gun style bullets and they impact the game world! Some performance optimizations I can hit on in the future, I did notice a bit of a possible memory leak on the bullets and muzzle flashes. I'm going to need to look at that of course, implementing object pooling would go a long way.
 
-![GIF of firing effects](/assets/UnityDevLog-3/WeaponsTestBulletsGO.gif)
+<video autoplay loop muted playsinline aria-label="Machine gun firing with muzzle flash and impact effects"><source src="/assets/UnityDevLog-3/WeaponsTestBulletsGO.mp4" type="video/mp4" /></video>

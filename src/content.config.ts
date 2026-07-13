@@ -11,7 +11,7 @@ export const collections = {
 			publishDate: z.coerce.date(),
 			tags: z.array(z.string()),
 			img: z.string(),
-			img_alt: z.string().optional().default('Portfolio project preview'),
+			img_alt: z.string().optional(),
 		}),
 	}),
 	blog: defineCollection({
@@ -25,7 +25,7 @@ export const collections = {
 			tags: z.array(z.string()),
 			status: z.enum(['draft', 'published']).default('published'),
 			img: z.string().optional(),
-			img_alt: z.string().optional().default('Blog post preview'),
+			img_alt: z.string().optional(),
 		}),
 	}),
 };
