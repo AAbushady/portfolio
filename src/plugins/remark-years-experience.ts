@@ -1,17 +1,16 @@
 import { findAndReplace } from 'mdast-util-find-and-replace';
-import { yearsOfExperience } from '../utils/experience';
+import { substituteYears } from '../utils/experience';
 
 /**
- * Replaces {{yearsOfExperience}} with a span that JS can update client-side.
- * Build-time value serves as fallback if JS is disabled.
+ * Replaces {{yearsOfExperience}} in markdown bodies with a span that JS can
+ * update client-side. Build-time value serves as fallback if JS is disabled.
  */
 export function remarkYearsExperience() {
-  const years = yearsOfExperience();
   return (tree: any) => {
     findAndReplace(tree, [
-      [/\{\{yearsOfExperience\}\}/g, () => ({
+      [/\{\{yearsOfExperience\}\}/g, (match: string) => ({
         type: 'html',
-        value: `<span class="years-exp">${years}+</span>`
+        value: substituteYears(match, { html: true })
       })]
     ]);
   };

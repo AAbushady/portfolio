@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { jsonLdSerialize } from '../utils/schema';
 
 interface Props {
 	title?: string | undefined;
@@ -26,6 +27,43 @@ const {
 const isDefaultOgImage = !Astro.props.ogImage;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
+
+const personSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: 'Alex Abushady',
+	jobTitle: 'Software Engineer',
+	url: new URL('/', Astro.site).href,
+	sameAs: [
+		'https://github.com/AAbushady',
+		'https://linkedin.com/in/alexabushady',
+		'https://x.com/Epiculous214',
+	],
+	knowsAbout: [
+		'Software Engineering',
+		'Machine Learning',
+		'Large Language Models',
+		'Python',
+		'JavaScript',
+		'React',
+		'Node.js',
+		'Data Science',
+		'C#',
+		'Video Games',
+	],
+	alumniOf: {
+		'@type': 'EducationalOrganization',
+		name: 'St. Petersburg College',
+	},
+	hasOccupation: {
+		'@type': 'Occupation',
+		name: 'Software Engineer',
+		occupationLocation: {
+			'@type': 'Place',
+			name: 'United States',
+		},
+	},
+};
 ---
 
 <meta charset="UTF-8" />
@@ -76,47 +114,10 @@ const ogImageURL = new URL(ogImage, Astro.site);
 <link rel="preload" href="/fonts/rubik-600.woff2" as="font" type="font/woff2" crossorigin />
 
 <!-- JSON-LD structured data for Person schema -->
-<script is:inline type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Alex Abushady",
-  "jobTitle": "Software Engineer",
-  "url": "https://alexabushady.com",
-  "sameAs": [
-    "https://github.com/AAbushady",
-    "https://linkedin.com/in/alexabushady",
-    "https://x.com/Epiculous214"
-  ],
-  "knowsAbout": [
-    "Software Engineering",
-    "Machine Learning",
-    "Large Language Models",
-    "Python",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "Data Science",
-    "C#",
-    "Video Games"
-  ],
-  "alumniOf": {
-    "@type": "EducationalOrganization",
-    "name": "St. Petersburg College"
-  },
-  "hasOccupation": {
-    "@type": "Occupation",
-    "name": "Software Engineer",
-    "occupationLocation": {
-      "@type": "Place",
-      "name": "United States"
-    }
-  }
-}
-</script>
+<script is:inline type="application/ld+json" set:html={jsonLdSerialize(personSchema)}></script>
 
 {structuredData && (
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')}></script>
+  <script is:inline type="application/ld+json" set:html={jsonLdSerialize(structuredData)}></script>
 )}
 
 <script is:inline>
