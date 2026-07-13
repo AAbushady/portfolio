@@ -114,6 +114,11 @@ const ogImageURL = new URL(ogImage, Astro.site);
 )}
 
 <script is:inline>
+	// Mark that scripts run at all, so CSS can gate JS-dependent behavior
+	// (e.g. collapsing the nav into the hamburger). Inline so it cannot fail
+	// separately from scripting being enabled.
+	document.documentElement.classList.add('js');
+
 	// This code is inline in the head to make dark mode instant & blocking.
 	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 

@@ -37,42 +37,13 @@ const ariaCurrent = (href: string): 'page' | 'true' | null => {
 			Alex Abushady
 		</a>
 		<menu-button>
-			<template>
-				<button class="menu-button" aria-expanded="false">
-					<span class="sr-only">Menu</span>
-					<Icon icon="list" />
-				</button>
-			</template>
+			<button class="menu-button" aria-expanded="false" aria-controls="menu-content">
+				<span class="sr-only">Menu</span>
+				<Icon icon="list" />
+			</button>
 		</menu-button>
 	</div>
-	<noscript>
-		<ul class="nav-items">
-			{
-				textLinks.map(({ label, href }) => (
-					<li>
-						<a aria-current={ariaCurrent(href)} class="link" href={href}>
-							{label}
-						</a>
-					</li>
-				))
-			}
-		</ul>
-	</noscript>
-	<noscript>
-		<div class="menu-footer">
-			<div class="socials">
-				{
-					iconLinks.map(({ href, icon, label }) => (
-						<a href={href} class="social">
-							<span class="sr-only">{label}</span>
-							<Icon icon={icon} />
-						</a>
-					))
-				}
-			</div>
-		</div>
-	</noscript>
-	<div id="menu-content" hidden>
+	<div id="menu-content" class="menu-content">
 		<ul class="nav-items">
 			{
 				textLinks.map(({ label, href }) => (
@@ -104,35 +75,38 @@ const ariaCurrent = (href: string): 'page' | 'true' | null => {
 </nav>
 
 <script>
+	// Visibility is CSS-driven: without JS the menu renders in the page flow,
+	// and `html.js` (set inline in MainHead) collapses it into this button.
 	class MenuButton extends HTMLElement {
 		constructor() {
 			super();
 
-			// Inject menu toggle button when JS runs.
-			this.appendChild(this.querySelector('template')!.content.cloneNode(true));
 			const btn = this.querySelector('button')!;
-
-			// Hide menu (shown by default to support no-JS browsers).
 			const menu = document.getElementById('menu-content')!;
-			menu.hidden = true;
-			// Add "menu-content" class in JS to avoid covering content in non-JS browsers.
-			menu.classList.add('menu-content');
 
 			/** Set whether the menu is currently expanded or collapsed. */
 			const setExpanded = (expand: boolean) => {
 				btn.setAttribute('aria-expanded', expand ? 'true' : 'false');
-				menu.hidden = !expand;
+				menu.classList.toggle('open', expand);
 			};
 
 			// Toggle menu visibility when the menu button is clicked.
-			btn.addEventListener('click', () => setExpanded(menu.hidden));
+			btn.addEventListener('click', () => setExpanded(!menu.classList.contains('open')));
 
-			// Hide menu button for large screens.
-			const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
-				setExpanded(e.matches);
-				btn.hidden = e.matches;
-			};
+			// Close with Escape and hand focus back to the button.
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && menu.classList.contains('open')) {
+					setExpanded(false);
+					btn.focus();
+				}
+			});
+
+			// Reset the mobile state when crossing into the desktop layout,
+			// where CSS shows the menu inline and hides this button.
 			const mediaQueries = window.matchMedia('(min-width: 50em)');
+			const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
+				if (e.matches) setExpanded(false);
+			};
 			handleViewports(mediaQueries);
 			mediaQueries.addEventListener('change', handleViewports);
 		}
@@ -165,9 +139,11 @@ const ariaCurrent = (href: string): 'page' | 'true' | null => {
 		text-decoration: none;
 	}
 
+	/* The button can only operate the menu when JS runs; without it the menu
+	   renders in the page flow, so the button stays hidden. */
 	.menu-button {
 		position: relative;
-		display: flex;
+		display: none;
 		border: 0;
 		border-radius: 999rem;
 		padding: 0.5rem;
@@ -184,8 +160,8 @@ const ariaCurrent = (href: string): 'page' | 'true' | null => {
 			radial-gradient(var(--gray-900), var(--gray-800) 150%);
 	}
 
-	.menu-button[hidden] {
-		display: none;
+	:global(html.js) .menu-button {
+		display: flex;
 	}
 
 	.menu-button::before {
@@ -197,7 +173,14 @@ const ariaCurrent = (href: string): 'page' | 'true' | null => {
 		z-index: -1;
 	}
 
-	.menu-content {
+	/* Collapsed by default only when JS can expand it again; the class is set
+	   inline in MainHead before first paint, so there is no open-menu flash. */
+	:global(html.js) .menu-content {
+		display: none;
+	}
+
+	:global(html.js) .menu-content.open {
+		display: block;
 		position: absolute;
 		left: 0;
 		right: 0;
@@ -265,6 +248,11 @@ const ariaCurrent = (href: string): 'page' | 'true' | null => {
 		height: calc(var(--icon-size) + 2 * var(--icon-padding));
 	}
 
+	/* The toggle is a JS control; don't render a dead button without it. */
+	:global(html:not(.js)) .theme-toggle {
+		display: none;
+	}
+
 	@media (min-width: 50em) {
 		nav {
 			display: grid;
@@ -282,8 +270,16 @@ const ariaCurrent = (href: string): 'page' | 'true' | null => {
 			font-size: var(--text-lg);
 		}
 
-		.menu-content {
+		/* Beat the mobile collapsed/open rules regardless of JS state. */
+		.menu-content,
+		:global(html.js) .menu-content,
+		:global(html.js) .menu-content.open {
 			display: contents;
+			position: static;
+		}
+
+		:global(html.js) .menu-button {
+			display: none;
 		}
 
 		.nav-items {
