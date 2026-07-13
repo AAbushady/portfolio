@@ -42,6 +42,7 @@ const Heading = Astro.props.headingLevel ?? 'h3';
 
 <style>
 	.card {
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		background: var(--gradient-subtle);
@@ -80,6 +81,14 @@ const Heading = Astro.props.headingLevel ?? 'h3';
 
 	.title a:hover {
 		color: var(--accent-regular);
+	}
+
+	/* Stretch the title link's hit area over the whole card, keeping the
+	   accessible link name short (just the title). */
+	.title a::after {
+		content: '';
+		position: absolute;
+		inset: 0;
 	}
 
 	.description {
