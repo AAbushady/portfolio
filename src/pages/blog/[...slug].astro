@@ -9,6 +9,7 @@ import Hero from '../../components/Hero.astro';
 import Icon from '../../components/Icon.astro';
 import Pill from '../../components/Pill.astro';
 import { render } from 'astro:content';
+import { formatDate } from '../../utils/format';
 
 interface Props {
 	entry: CollectionEntry<'blog'>;
@@ -69,12 +70,12 @@ const blogPostSchema = {
 					<a class="back-link" href="/blog/"><Icon icon="arrow-left" /> Blog</a>
 					<Hero title={entry.data.title} align="start">
 						<div class="post-meta">
-							<time class="publish-date">
-								Published: {entry.data.publishDate.toLocaleDateString()}
+							<time class="publish-date" datetime={entry.data.publishDate.toISOString()}>
+								Published: {formatDate(entry.data.publishDate)}
 							</time>
 							{entry.data.updatedDate && (
-								<time class="updated-date">
-									Updated: {entry.data.updatedDate.toLocaleDateString()}
+								<time class="updated-date" datetime={entry.data.updatedDate.toISOString()}>
+									Updated: {formatDate(entry.data.updatedDate)}
 								</time>
 							)}
 						</div>
