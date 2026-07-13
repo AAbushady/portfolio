@@ -33,7 +33,6 @@ const ogImageURL = new URL(ogImage, Astro.site);
 <meta name="viewport" content="width=device-width" />
 <meta name="generator" content={Astro.generator} />
 <meta name="author" content="Alex Abushady" />
-<meta http-equiv="content-language" content="en-US">
 <title>{title}</title>
 
 <!-- Open Graph Tags -->
@@ -49,7 +48,6 @@ const ogImageURL = new URL(ogImage, Astro.site);
 	<meta property="og:image:height" content="630" />
 )}
 <meta property="og:image:alt" content={ogImageAlt} />
-<meta property="og:author" content="Alex Abushady" />
 
 <!-- Article-specific meta tags -->
 {ogType === 'article' && publishDate && (
@@ -112,7 +110,7 @@ const ogImageURL = new URL(ogImage, Astro.site);
 </script>
 
 {structuredData && (
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')}></script>
 )}
 
 <script is:inline>

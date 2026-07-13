@@ -6,7 +6,7 @@ tags: ["Game Dev", "Unity", "C#"]
 status: "published"
 ---
 
-Hey readers! Remember when I said we'd be adding weapons? Well, bullets are working now... after some interesting failures along the way. Kicking things off I added some rudimentary bullets in the form of a capsule prefab to [WeaponsTest](/work/unity/weaponstest). Why bullets? Well imagine this! Driving down the track your opponent overtakes you and you want to pester them, so you pull behind them and just start shooting. Their car/mech is losing health so they switch to mech form and fire off a volley of missiles! Reflexively you transform in turn and begin shooting missiles out of the sky with these light machine gun bullets.
+Hey readers! Remember when I said we'd be adding weapons? Well, bullets are working now... after some interesting failures along the way. Kicking things off I added some rudimentary bullets in the form of a capsule prefab to [WeaponsTest](/work/unity/weaponstest/). Why bullets? Well imagine this! Driving down the track your opponent overtakes you and you want to pester them, so you pull behind them and just start shooting. Their car/mech is losing health so they switch to mech form and fire off a volley of missiles! Reflexively you transform in turn and begin shooting missiles out of the sky with these light machine gun bullets.
 
 Conceptually awesome, right? Great way to attack and defend. Well on my first implementation it was also a great way to have your driver play "Clothes Dryer Simulator"...
 

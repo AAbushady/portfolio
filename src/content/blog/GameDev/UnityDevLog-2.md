@@ -6,7 +6,7 @@ tags: ["Game Dev", "Unity", "C#"]
 status: "published"
 ---
 
-Today's blog post the focus will be on the [WeaponsTest](/work/unity/weaponstest) project and the work I've done so far in creating a virtual firing range to test Transformation and Weapons systems of the player vehicle.
+Today's blog post the focus will be on the [WeaponsTest](/work/unity/weaponstest/) project and the work I've done so far in creating a virtual firing range to test Transformation and Weapons systems of the player vehicle.
 
 <video autoplay loop muted playsinline aria-label="Vehicle transforming into and out of robot mode"><source src="/assets/UnityDevLog-1/WeaponsTestTransform.mp4" type="video/mp4" /></video>
 

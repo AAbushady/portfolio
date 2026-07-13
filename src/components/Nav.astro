@@ -19,12 +19,14 @@ const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[]
 	{ label: 'Huggingface', href: 'https://huggingface.co/Epiculous', icon: 'huggingface-logo' },
 ];
 
-/** Test if a link is pointing to the current page. */
-const isCurrentPage = (href: string) => {
+/** aria-current value for a nav link: 'page' for the exact page, 'true' for an ancestor section. */
+const ariaCurrent = (href: string): 'page' | 'true' | null => {
 	let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
 	if (pathname.at(0) !== '/') pathname = '/' + pathname;
 	if (pathname.at(-1) !== '/') pathname += '/';
-	return pathname === href || (href !== '/' && pathname.startsWith(href));
+	if (pathname === href) return 'page';
+	if (href !== '/' && pathname.startsWith(href)) return 'true';
+	return null;
 };
 ---
 
@@ -48,7 +50,7 @@ const isCurrentPage = (href: string) => {
 			{
 				textLinks.map(({ label, href }) => (
 					<li>
-						<a aria-current={isCurrentPage(href) ? 'page' : null} class="link" href={href}>
+						<a aria-current={ariaCurrent(href)} class="link" href={href}>
 							{label}
 						</a>
 					</li>
@@ -75,7 +77,7 @@ const isCurrentPage = (href: string) => {
 			{
 				textLinks.map(({ label, href }) => (
 					<li>
-						<a aria-current={isCurrentPage(href) ? 'page' : null} class="link" href={href}>
+						<a aria-current={ariaCurrent(href)} class="link" href={href}>
 							{label}
 						</a>
 					</li>
@@ -318,7 +320,7 @@ const isCurrentPage = (href: string) => {
 			background-color: var(--accent-subtle-overlay);
 		}
 
-		.link[aria-current='page'] {
+		.link[aria-current] {
 			color: var(--accent-text-over);
 			background-color: var(--accent-regular);
 		}
@@ -346,7 +348,7 @@ const isCurrentPage = (href: string) => {
 		}
 	}
 	@media (forced-colors: active) {
-		.link[aria-current='page'] {
+		.link[aria-current] {
 			color: SelectedItem;
 		}
 	}
