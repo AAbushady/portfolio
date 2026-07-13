@@ -29,7 +29,9 @@ import Icon from './Icon.astro';
 		width: 2rem;
 		height: 2rem;
 		font-size: 1rem;
-		color: var(--accent-overlay);
+		/* gray-300, not accent-overlay: the inactive icon sits on gray-999 and
+		   needs >= 3:1 contrast (WCAG 1.4.11). */
+		color: var(--gray-300);
 	}
 
 	.icon.light::before {
@@ -80,11 +82,26 @@ import Icon from './Icon.astro';
 				button.setAttribute('aria-pressed', String(dark));
 			};
 
-			// Toggle the theme when a user clicks the button.
-			button.addEventListener('click', () => setTheme(!this.isDark()));
+			// Toggle the theme when a user clicks the button. Only this explicit
+			// choice is persisted; storage can throw (e.g. cookies blocked), in
+			// which case the theme still applies for the current page view.
+			button.addEventListener('click', () => {
+				const dark = !this.isDark();
+				setTheme(dark);
+				try {
+					localStorage.setItem('theme', dark ? 'dark' : 'light');
+				} catch {}
+			});
 
 			// Initialize button state to reflect current theme.
 			setTheme(this.isDark());
+
+			// Keep aria-pressed in sync when the OS theme flips for visitors
+			// without a stored choice (the head script updates the class first;
+			// listeners run in registration order).
+			window
+				.matchMedia('(prefers-color-scheme: dark)')
+				.addEventListener('change', () => setTheme(this.isDark()));
 		}
 
 		isDark() {

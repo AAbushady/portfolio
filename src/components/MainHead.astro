@@ -115,21 +115,26 @@ const ogImageURL = new URL(ogImage, Astro.site);
 
 <script is:inline>
 	// This code is inline in the head to make dark mode instant & blocking.
-	const getThemePreference = () => {
-		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-			return localStorage.getItem('theme');
-		}
-		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-	};
-	const isDark = getThemePreference() === 'dark';
-	document.documentElement.classList[isDark ? 'add' : 'remove']('theme-dark');
+	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-	if (typeof localStorage !== 'undefined') {
-		// Watch the document element and persist user preference when it changes.
-		const observer = new MutationObserver(() => {
-			const isDark = document.documentElement.classList.contains('theme-dark');
-			localStorage.setItem('theme', isDark ? 'dark' : 'light');
-		});
-		observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-	}
+	// Stored theme ('dark' | 'light'), or null when unset or storage is
+	// blocked -- accessing localStorage can throw (e.g. cookies disabled).
+	const storedTheme = () => {
+		try {
+			return localStorage.getItem('theme');
+		} catch {
+			return null;
+		}
+	};
+
+	const applyTheme = (dark) => {
+		document.documentElement.classList[dark ? 'add' : 'remove']('theme-dark');
+	};
+
+	applyTheme((storedTheme() ?? (prefersDark.matches ? 'dark' : 'light')) === 'dark');
+
+	// Follow live OS theme changes for visitors who haven't picked a theme
+	// with the toggle. Only an explicit toggle click writes localStorage
+	// (see ThemeToggle.astro), so a stored value means "user chose this".
+	prefersDark.addEventListener('change', (e) => { if (!storedTheme()) applyTheme(e.matches); })
 </script>
