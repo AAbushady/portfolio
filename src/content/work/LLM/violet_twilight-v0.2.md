@@ -1,6 +1,7 @@
 ---
 title: Violet Twilight v0.2
 publishDate: 2024-09-12 00:00:00
+featured: 2
 img: ../../../assets/violet-twilight.png
 img_alt: White-haired anime girl in monk garb with staff and green scarf, violet moon backdrop
 description: |

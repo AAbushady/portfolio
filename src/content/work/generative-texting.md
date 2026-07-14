@@ -1,6 +1,7 @@
 ---
 title: Generative Texting
 publishDate: 2024-12-09 00:00:00
+featured: 3
 img: ../../assets/generative-texting.jpg
 img_alt: Cyberpunk 2077 logo with female character V against Night City's yellow-tinted backdrop
 description: |

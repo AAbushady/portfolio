@@ -9,6 +9,9 @@ export const collections = {
 			title: z.string(),
 			description: z.string(),
 			publishDate: z.coerce.date(),
+			// Optional pinned rank: 1 = top of /work/ and the homepage.
+			// Unranked entries follow, newest first.
+			featured: z.number().int().positive().optional(),
 			tags: z.array(z.string()),
 			img: image(),
 			// Required: every project image ships with alt text.
