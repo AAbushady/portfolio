@@ -116,6 +116,9 @@ const personSchema = {
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#090b11" />
+<!-- The site ships its own dark theme; without this, Dark Reader rewrites the
+     light theme at load and mangles the gradient colors. -->
+<meta name="darkreader-lock" />
 <link rel="preload" href="/fonts/public-sans-400.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="/fonts/rubik-600.woff2" as="font" type="font/woff2" crossorigin />
 
