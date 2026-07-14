@@ -2,8 +2,9 @@
 import { Image } from 'astro:assets';
 import headshot from '../assets/alex-headshot.jpg';
 import { getPublishedPosts, getSortedProjects } from '../utils/collections';
+import { yearsOfExperience } from '../utils/experience';
 
-// Layout import — provides basic page elements: <head>, <nav>, <footer> etc.
+// Layout import - provides basic page elements: <head>, <nav>, <footer> etc.
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 // Component Imports
@@ -25,6 +26,11 @@ const projects = (await getSortedProjects()).slice(0, 4);
 // Content Fetching: List three most recent blog posts
 const blogPosts = (await getPublishedPosts()).slice(0, 3);
 
+// Computed so the experience number never goes stale between deploys.
+const years = yearsOfExperience();
+
+const tagline = `The Engineer Who Delivers - ${years}+ years shipping production systems.`;
+
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
 ---
@@ -35,7 +41,7 @@ const blogPosts = (await getPublishedPosts()).slice(0, 3);
 			<header class="hero">
 				<Hero
 					title="Alex Abushady"
-					tagline="Full Stack Software Engineer in love with interactive technology."
+					tagline={tagline}
 					align="start"
 				>
 					<div class="roles">
