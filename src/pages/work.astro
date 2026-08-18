@@ -21,13 +21,14 @@ const projects = await getSortedProjects();
 				tagline="See my most recent projects below to get an idea of my past experience."
 				align="start"
 			/>
-			<Grid variant="offset">
+			<Grid>
 				{
 					projects.map((project, index) => (
 						<li>
 							<PortfolioPreview
 								project={project}
 								headingLevel="h2"
+								index={index}
 								loading={index < 6 ? 'eager' : 'lazy'}
 							/>
 						</li>

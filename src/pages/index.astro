@@ -70,11 +70,15 @@ const years = yearsOfExperience();
 					</h2>
 					<a class="view-all" href="/work/">view all -&gt;</a>
 				</div>
-				<Grid variant="offset">
+				<Grid>
 					{
 						projects.map((project, index) => (
 							<li>
-								<PortfolioPreview project={project} loading={index < 2 ? 'eager' : 'lazy'} />
+								<PortfolioPreview
+									project={project}
+									index={index}
+									loading={index < 2 ? 'eager' : 'lazy'}
+								/>
 							</li>
 						))
 					}
@@ -89,7 +93,7 @@ const years = yearsOfExperience();
 					</h2>
 					<a class="view-all" href="/blog/">view all -&gt;</a>
 				</div>
-				<Grid variant="offset">
+				<Grid>
 					{
 						blogPosts.map((post) => (
 							<li>

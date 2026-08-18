@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
+import Pill from './Pill.astro';
 
 interface Props {
 	project: CollectionEntry<'work'>;
@@ -8,15 +9,20 @@ interface Props {
 	headingLevel?: 'h2' | 'h3';
 	/** Set 'eager' for cards rendered above the fold (first grid row). */
 	loading?: 'eager' | 'lazy';
+	/** Zero-based position in the list, rendered as a [001]-style index. */
+	index?: number;
 }
 
 const { data, id } = Astro.props.project;
 const Heading = Astro.props.headingLevel ?? 'h3';
 const loading = Astro.props.loading ?? 'lazy';
+const idx =
+	Astro.props.index !== undefined
+		? `[${String(Astro.props.index + 1).padStart(3, '0')}]`
+		: undefined;
 ---
 
 <a class="card" href={`/work/${id}/`}>
-	<Heading class="title">{data.title}</Heading>
 	<Image
 		src={data.img}
 		alt={data.img_alt || `Preview of ${data.title}`}
@@ -24,71 +30,106 @@ const loading = Astro.props.loading ?? 'lazy';
 		sizes="(min-width: 50em) 45vw, 90vw"
 		loading={loading}
 	/>
+	<div class="card-body">
+		{idx && <span class="idx" aria-hidden="true">{idx}</span>}
+		<Heading class="title">{data.title}</Heading>
+		<div class="tags">
+			{data.tags.slice(0, 3).map((tag) => <Pill>{tag}</Pill>)}
+		</div>
+	</div>
 </a>
 
 <style>
 	.card {
-		display: grid;
-		grid-template: auto 1fr / auto 1fr;
-		height: 11rem;
-		background: var(--gradient-subtle);
-		border: 1px solid var(--gray-800);
-		border-radius: 0.75rem;
-		overflow: hidden;
-		box-shadow: var(--shadow-sm);
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		background: var(--surface);
+		border: 1px solid var(--hairline);
 		text-decoration: none;
-		font-family: var(--font-brand);
-		font-size: var(--text-lg);
-		font-weight: 500;
-		transition:
-			transform var(--hover-transition),
-			box-shadow var(--hover-transition);
+		transition: border-color var(--hover-transition);
 	}
 
-	.card:hover {
-		box-shadow: var(--shadow-md);
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		.card:hover {
-			transform: translateY(-4px);
-			box-shadow: var(--shadow-lg);
-		}
-
-		.card:hover img {
-			transform: scale(1.04);
-		}
-	}
-
-	.title {
-		grid-area: 1 / 1 / 2 / 2;
+	/* HUD corner brackets, invisible until hover. */
+	.card::before,
+	.card::after {
+		content: '';
+		position: absolute;
 		z-index: 1;
-		margin: 0.5rem;
-		padding: 0.5rem 1rem;
-		background: var(--gray-999);
-		color: var(--gray-200);
-		border-radius: 0.375rem;
-		/* Neutralize UA heading styles; the card sets the typography. */
-		font-size: inherit;
-		font-weight: inherit;
+		width: 0.875rem;
+		height: 0.875rem;
+		border: 0 solid transparent;
+		transition: border-color var(--hover-transition);
+	}
+
+	.card::before {
+		top: -1px;
+		left: -1px;
+		border-top-width: 2px;
+		border-left-width: 2px;
+	}
+
+	.card::after {
+		bottom: -1px;
+		right: -1px;
+		border-bottom-width: 2px;
+		border-right-width: 2px;
+	}
+
+	.card:hover,
+	.card:focus {
+		border-color: var(--hairline-strong);
+	}
+
+	.card:hover::before,
+	.card:hover::after,
+	.card:focus::before,
+	.card:focus::after {
+		border-color: var(--link-color);
 	}
 
 	img {
-		grid-area: 1 / 1 / 3 / 3;
 		width: 100%;
-		height: 100%;
+		aspect-ratio: 16 / 9.5;
+		height: auto;
 		object-fit: cover;
-		transition: transform var(--hover-transition);
+		border-bottom: 1px solid var(--hairline);
 	}
 
-	@media (min-width: 50em) {
-		.card {
-			height: 22rem;
-			border-radius: 1.5rem;
-		}
+	:global(.theme-dark) img {
+		filter: saturate(0.9);
+		transition: filter var(--hover-transition);
+	}
 
-		.title {
-			border-radius: 0.9375rem;
-		}
+	:global(.theme-dark) .card:hover img {
+		filter: saturate(1.05);
+	}
+
+	.card-body {
+		padding: 1rem 1.25rem 1.25rem;
+	}
+
+	.idx {
+		float: right;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--gray-400);
+	}
+
+	.title {
+		font-family: var(--font-mono);
+		font-weight: 400;
+		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		color: var(--gray-100);
+	}
+
+	.tags {
+		margin-top: 0.5rem;
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
 	}
 </style>
