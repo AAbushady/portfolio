@@ -27,6 +27,15 @@
 	font-display: swap;
 	src: url('/fonts/cabinet-grotesk-variable.woff2') format('woff2');
 }
+/* Latin subset from Google Fonts; license in /fonts/LICENSE-fira-code-OFL.txt */
+@font-face {
+	font-family: 'Fira Code';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/fira-code-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 /* Global variables */
 :root {
@@ -74,7 +83,7 @@
 		'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-body: 'Satoshi', var(--font-system);
 	--font-brand: 'Cabinet Grotesk', var(--font-system);
-	--font-mono: ui-monospace, 'Cascadia Code', 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace;
+	--font-mono: 'Fira Code', ui-monospace, 'Cascadia Code', 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace;
 
 	/* Transitions */
 	--theme-transition: 0.2s ease-in-out;
