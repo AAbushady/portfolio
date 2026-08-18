@@ -8,10 +8,13 @@ interface Props {
 	post: CollectionEntry<'blog'>;
 	/** Heading level for the post title, matched to the page's outline. */
 	headingLevel?: 'h2' | 'h3';
+	/** Set 'eager' for cards rendered above the fold (first grid row). */
+	loading?: 'eager' | 'lazy';
 }
 
 const { data, id } = Astro.props.post;
 const Heading = Astro.props.headingLevel ?? 'h3';
+const loading = Astro.props.loading ?? 'lazy';
 ---
 
 <article class="card">
@@ -36,6 +39,7 @@ const Heading = Astro.props.headingLevel ?? 'h3';
 			alt={data.img_alt || `Preview of ${data.title}`}
 			widths={[480, 960]}
 			sizes="(min-width: 50em) 30vw, 90vw"
+			loading={loading}
 		/>
 	)}
 </article>

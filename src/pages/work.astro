@@ -23,9 +23,13 @@ const projects = await getSortedProjects();
 			/>
 			<Grid variant="offset">
 				{
-					projects.map((project) => (
+					projects.map((project, index) => (
 						<li>
-							<PortfolioPreview project={project} headingLevel="h2" />
+							<PortfolioPreview
+								project={project}
+								headingLevel="h2"
+								loading={index < 6 ? 'eager' : 'lazy'}
+							/>
 						</li>
 					))
 				}

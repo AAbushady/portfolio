@@ -6,10 +6,13 @@ interface Props {
 	project: CollectionEntry<'work'>;
 	/** Heading level for the project title, matched to the page's outline. */
 	headingLevel?: 'h2' | 'h3';
+	/** Set 'eager' for cards rendered above the fold (first grid row). */
+	loading?: 'eager' | 'lazy';
 }
 
 const { data, id } = Astro.props.project;
 const Heading = Astro.props.headingLevel ?? 'h3';
+const loading = Astro.props.loading ?? 'lazy';
 ---
 
 <a class="card" href={`/work/${id}/`}>
@@ -19,6 +22,7 @@ const Heading = Astro.props.headingLevel ?? 'h3';
 		alt={data.img_alt || `Preview of ${data.title}`}
 		widths={[640, 1280]}
 		sizes="(min-width: 50em) 45vw, 90vw"
+		loading={loading}
 	/>
 </a>
 

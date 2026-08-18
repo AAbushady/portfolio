@@ -73,9 +73,9 @@ const tagline = `The Engineer Who Delivers - ${years}+ years shipping production
 				<div class="gallery">
 					<Grid variant="offset">
 						{
-							projects.map((project) => (
+							projects.map((project, index) => (
 								<li>
-									<PortfolioPreview project={project} />
+									<PortfolioPreview project={project} loading={index < 2 ? 'eager' : 'lazy'} />
 								</li>
 							))
 						}

@@ -9,6 +9,16 @@ import BlogPreview from '../components/BlogPreview.astro';
 import { getPublishedPosts } from '../utils/collections';
 
 const blogPosts = await getPublishedPosts();
+
+// Blog images are optional, and text-only cards are short, so the first
+// image-bearing cards can sit above the fold regardless of their list index.
+// Eager-load the first two images rather than the first two cards.
+const eagerIds = new Set(
+	blogPosts
+		.filter((post) => post.data.img)
+		.slice(0, 2)
+		.map((post) => post.id)
+);
 ---
 
 <BaseLayout
@@ -26,7 +36,11 @@ const blogPosts = await getPublishedPosts();
 				{
 					blogPosts.map((post) => (
 						<li>
-							<BlogPreview post={post} headingLevel="h2" />
+							<BlogPreview
+								post={post}
+								headingLevel="h2"
+								loading={eagerIds.has(post.id) ? 'eager' : 'lazy'}
+							/>
 						</li>
 					))
 				}
