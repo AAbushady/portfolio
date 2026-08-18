@@ -1,62 +1,80 @@
----
-import Icon from './Icon.astro';
----
-
-<section class="box skills">
-	<div class="stack gap-2 lg:gap-4">
-		<Icon icon="app-window" size="2.5rem" gradient />
-		<h2>Production Engineering</h2>
-		<p>Five products shipped end-to-end in C#/.NET, plus 800+ PRs authored, 2,400+ reviewed, and 276 production support cases resolved on live money-handling systems.</p>
+<section class="modules">
+	<div class="module">
+		<div class="module-head" aria-hidden="true"><span>mod_01.production</span><span class="st">active</span></div>
+		<div class="module-body">
+			<h3>Production Engineering</h3>
+			<p>Five products shipped end-to-end in C#/.NET, plus 800+ PRs authored, 2,400+ reviewed, and 276 production support cases resolved on live money-handling systems.</p>
+		</div>
 	</div>
-	<div class="stack gap-2 lg:gap-4">
-		<Icon icon="rocket-launch" size="2.5rem" gradient />
-		<h2>Game Development</h2>
-		<p>Prototyping game systems from driving physics to combat design, building dev tools, and shipping mods for games like Cyberpunk 2077.</p>
+	<div class="module">
+		<div class="module-head" aria-hidden="true"><span>mod_02.gamedev</span><span class="st">active</span></div>
+		<div class="module-body">
+			<h3>Game Development</h3>
+			<p>Prototyping game systems from driving physics to combat design, building dev tools, and shipping mods for games like Cyberpunk 2077.</p>
+		</div>
 	</div>
-	<div class="stack gap-2 lg:gap-4">
-		<Icon icon="terminal-window" size="2.5rem" gradient />
-		<h2>AI & LLM Engineering</h2>
-		<p>Fine-tuning and serving local LLMs, building model tooling, and bringing applied AI engineering to production systems.</p>
+	<div class="module">
+		<div class="module-head" aria-hidden="true"><span>mod_03.llm</span><span class="st">active</span></div>
+		<div class="module-body">
+			<h3>AI &amp; LLM Engineering</h3>
+			<p>Fine-tuning and serving local LLMs, building model tooling, and bringing applied AI engineering to production systems.</p>
+		</div>
 	</div>
 </section>
 
 <style>
-	.box {
-		border: 1px solid var(--gray-800);
-		border-radius: 0.75rem;
-		padding: 1.5rem;
-		background-color: var(--gray-999_40);
-		box-shadow: var(--shadow-sm);
+	.modules {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.25rem;
 	}
 
-	.skills {
+	.module {
+		border: 1px solid var(--hairline);
+		background: var(--surface);
+	}
+
+	.module-head {
 		display: flex;
-		flex-direction: column;
-		gap: 3rem;
-	}
-
-	.skills h2 {
-		font-size: var(--text-lg);
-	}
-
-	.skills p {
+		justify-content: space-between;
+		padding: 0.5rem 1rem;
+		border-bottom: 1px solid var(--hairline);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
 		color: var(--gray-400);
 	}
 
+	/* Green reads as a status light; dark theme needs the brighter shade. */
+	.module-head .st {
+		color: #157a2e;
+	}
+
+	:global(.theme-dark) .module-head .st {
+		color: #86d993;
+	}
+
+	.module-body {
+		padding: 1.25rem 1.25rem 1.5rem;
+	}
+
+	.module h3 {
+		font-family: var(--font-mono);
+		font-weight: 400;
+		font-size: 1.0625rem;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: var(--gray-100);
+		margin-bottom: 0.75rem;
+	}
+
+	.module p {
+		font-size: 0.9375rem;
+		color: var(--gray-300);
+	}
+
 	@media (min-width: 50em) {
-		.box {
-			border-radius: 1.5rem;
-			padding: 2.5rem;
-		}
-
-		.skills {
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: 5rem;
-		}
-
-		.skills h2 {
-			font-size: var(--text-2xl);
+		.modules {
+			grid-template-columns: 1fr 1fr 1fr;
 		}
 	}
 </style>
