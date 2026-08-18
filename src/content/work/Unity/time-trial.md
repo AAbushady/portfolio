@@ -4,7 +4,7 @@ publishDate: 2025-08-28 00:00:00
 img: ../../../assets/time-trial.png
 img_alt: Unity editor showing the Time-Trial prototype, a red block car with wheels facing two blue NPC cars on a green field
 description: |
-  Unity racing game prototype exploring arcade-style vehicle movement, Rigidbody-based collision handling, and high-speed gameplay mechanics. Built to learn Unity's input system and component architecture.
+  Unity racing game prototype exploring arcade-style vehicle movement and Rigidbody-based collision handling. Built to learn Unity's input system and component architecture.
 tags:
   - Unity
   - Game Dev
@@ -13,7 +13,7 @@ tags:
 
 The first phase of an ambitious combat racing project inspired by IGPX, Mario Kart, and Twisted Metal. This [time-trial](https://github.com/AAbushady/Time-Trial) prototype establishes the high-speed racing foundation before adding transformation mechanics and vehicle combat.
 
-Building toward a game where high-speed racing meets mech combat. Think Twisted Metal's vehicular mayhem combined with transformation mechanics, and mech combat of IGPX. But first, I need to nail the fundamentals.
+Building toward a game that pairs Twisted Metal's vehicular mayhem with IGPX's transforming mech combat. But first, I need to nail the fundamentals.
 
 Starting with a pure racing prototype to get the speed and movement right:
 - Arcade-style vehicle controller tuned for aggressive, momentum-based racing
@@ -25,7 +25,7 @@ Future additions will include:
 - Weapon systems and combat mechanics
   - Weapons need to work differently in car and mech mode...
   - Attacking other racers can cause debris making the track more perilous
-    - This would encourage players in the lead to engage with runner up racers allowing for more opportunities for lower positioned players to overtake.
+    - This would encourage players in the lead to engage with runner-up racers, giving lower-positioned players more chances to overtake.
 - Transformation system between vehicle and mech modes
   - Car mode is all about speed and maintaining/catching lead.
   - Mech mode is for combat and creating chaos for other racers.
@@ -33,4 +33,4 @@ Future additions will include:
   - Diverse cast of interesting characters to choose from.
   - Racers will feel unique and have interesting back-stories.
 
-Building in phases lets me validate each system before adding complexity. The racing has to feel perfect before adding a second mode and combat on top.
+Building in phases lets me validate each system before adding complexity. The racing has to feel perfect before a second mode and combat go on top.

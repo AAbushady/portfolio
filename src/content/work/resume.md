@@ -4,7 +4,7 @@ publishDate: 2020-01-13 00:00:00
 img: ../../assets/resume_screenshot.png
 img_alt: Screenshot of Alex Abushady's resume.
 description: |
-  {{yearsOfExperience}} years of full-stack development experience building enterprise insurance systems - five products shipped end-to-end - with a focus on performance optimization, system architecture, and team collaboration.
+  {{yearsOfExperience}} years of full-stack development experience building enterprise insurance systems - five products shipped end-to-end - with a focus on performance optimization and system architecture.
 tags:
   - Enterprise
   - Full-Stack
@@ -16,6 +16,6 @@ Over the past {{yearsOfExperience}} years, I've been building production systems
 
 The systems I've worked on span billing platforms, insurance workflows, and customer management tools - all requiring high availability and fault tolerance. I've found that some of the most impactful work comes from optimizing existing systems rather than building from scratch. For instance, rearchitecting legacy flows using modern patterns strips out redundant code while significantly improving development velocity.
 
-Beyond individual development, I've had the opportunity to lead technical initiatives, mentor other engineers, and establish development patterns that get adopted as team standards. I'm particularly interested in how local AI/LLM integration can enhance traditional business applications, which has led to several personal projects exploring these integrations.
+Beyond individual development, I've led technical initiatives, mentored other engineers, and established development patterns that got adopted as team standards. I'm particularly interested in how local AI/LLM integration can enhance traditional business applications, which has led to several personal projects exploring these integrations.
 
 Currently working at MSI building insurance technology platforms. The full details of my experience and technical background are available in my [resume](/assets/AlexAbushady2025ResumeNovember.pdf).

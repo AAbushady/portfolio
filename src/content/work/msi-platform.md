@@ -13,7 +13,7 @@ tags:
   - Insurance
 ---
 
-I joined MSI in January 2020 as one of its first three engineers and spent the next six years helping the platform grow into a 30+ engineer organization inside a publicly traded insurance distribution firm. Unlike the rest of this portfolio, this entry isn't a personal project: it's a record of what I built as an employee on a production insurance platform. Partner and internal details are intentionally kept generic.
+I joined MSI in January 2020 as one of its first three engineers and spent the next six years helping the platform grow into a 30+ engineer organization inside a publicly traded insurance distribution firm. Unlike the rest of this portfolio, this entry isn't a personal project but a record of what I built as an employee on a production insurance platform. Partner and internal details are intentionally kept generic.
 
 ### 2020: foundations and the money paths
 
