@@ -124,11 +124,14 @@ const {
 <style>
 	header {
 		padding-bottom: 2.5rem;
-		border-bottom: 1px solid var(--gray-800);
+		border-bottom: 1px solid var(--hairline);
 	}
 
 	.back-link {
 		align-self: flex-start;
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		text-transform: lowercase;
 	}
 
 	.details {
@@ -175,10 +178,8 @@ const {
 
 	.content :global(img),
 	.content :global(video) {
-		border-radius: 1.5rem;
-		box-shadow: var(--shadow-sm);
-		background: var(--gradient-subtle);
-		border: 1px solid var(--gray-800);
+		background: var(--surface);
+		border: 1px solid var(--hairline);
 	}
 
 	.content :global(video) {

@@ -13,3 +13,11 @@ export function formatDate(date: Date): string {
 		timeZone: 'UTC',
 	});
 }
+
+/**
+ * Format a frontmatter date as ISO "YYYY-MM-DD" for the mono metadata lines.
+ * toISOString is inherently UTC, matching how YAML parses the frontmatter.
+ */
+export function formatDateISO(date: Date): string {
+	return date.toISOString().slice(0, 10);
+}

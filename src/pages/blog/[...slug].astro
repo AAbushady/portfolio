@@ -4,7 +4,7 @@ import { type CollectionEntry, render } from 'astro:content';
 import EntryLayout from '../../layouts/EntryLayout.astro';
 import { getPublishedPosts } from '../../utils/collections';
 import { substituteYears } from '../../utils/experience';
-import { formatDate } from '../../utils/format';
+import { formatDateISO } from '../../utils/format';
 import { buildEntrySchema } from '../../utils/schema';
 
 interface Props {
@@ -58,11 +58,11 @@ const blogPostSchema = buildEntrySchema({
 >
 	<div class="post-meta" slot="meta">
 		<time class="publish-date" datetime={entry.data.publishDate.toISOString()}>
-			Published: {formatDate(entry.data.publishDate)}
+			published: {formatDateISO(entry.data.publishDate)}
 		</time>
 		{entry.data.updatedDate && (
 			<time class="updated-date" datetime={entry.data.updatedDate.toISOString()}>
-				Updated: {formatDate(entry.data.updatedDate)}
+				updated: {formatDateISO(entry.data.updatedDate)}
 			</time>
 		)}
 	</div>
@@ -74,17 +74,12 @@ const blogPostSchema = buildEntrySchema({
 		display: flex;
 		flex-direction: column;
 		gap: 0.25rem;
-		font-size: var(--text-sm);
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
 		color: var(--gray-400);
 		margin-bottom: 1rem;
 		max-width: 100%;
 		overflow-wrap: break-word;
-	}
-
-	.publish-date,
-	.updated-date {
-		font-weight: 500;
-		text-decoration: none;
 	}
 
 	@media (min-width: 50em) {

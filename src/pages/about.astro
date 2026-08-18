@@ -7,60 +7,72 @@ import Hero from '../components/Hero.astro';
 
 <BaseLayout title="About | Alex Abushady" description="About Alex Abushady's background.">
 	<div class="stack gap-20">
-		<main class="wrapper about">
-			<Hero
-				title="About"
-				tagline="Thanks for stopping by. Read below to learn more about me and my background."
-			/>
+		<main class="wrapper">
+			<div class="about stack gap-15">
+				<Hero
+					title="About"
+					tagline="Thanks for stopping by. Read below to learn more about me and my background."
+					align="start"
+				/>
 
-			<section>
-				<h2 class="section-title">Background</h2>
-				<div class="content">
-					<p>
-						As you may have gathered by now, my name is Alex Abushady; I am currently working as a Software Engineer for MSI. During my time at MSI, I've witnessed the company grow from a small team of just three developers (including myself) into a much larger organization with over 30 developers across multiple teams. As you might imagine, over that time, I've learned how to navigate both a small start-up environment and a larger, more structured environment that comes with being in a more seasoned, publicly traded company. Along the way I shipped five insurance products end-to-end and helped bring the newer engineers up as we scaled.
-					</p>
-					<br />
-					<p>
-						Recently, I've started teaching myself game development. After years of building enterprise software, I'm excited by the creative and technical challenges of making games; from getting a car to drift properly to planning out combat mechanics for my racing game concept. While I'm still early in this journey, I've already modified existing games like Cyberpunk 2077 and am actively building prototypes. My goal is to combine my enterprise engineering experience with game development to eventually build the kind of games I've always wanted to play.
-					</p>
-				</div>
-			</section>
-			<section>
-				<h2 class="section-title">Skills</h2>
-				<div class="content">
-					<ul>
-						<li>C#</li>
-						<li>Python</li>
-						<li>JavaScript</li>
-						<li>TypeScript</li>
-						<li>T-SQL</li>
-						<li>ASP.NET MVC</li>
-						<li>API Development</li>
-						<li>Web Application Development</li>
-						<li>Game Modding</li>
-						<li>Azure DevOps</li>
-						<li>Git</li>
-						<li>LLM Fine-tuning</li>
-						<li>LLM Merging</li>
-						<li>Dataset Curation</li>
-					</ul>
-				</div>
-			</section>
+				<section class="stack gap-8">
+					<h2 class="term-label">
+						<span aria-hidden="true"><span class="hash">##</span> background</span>
+						<span class="sr-only">Background</span>
+					</h2>
+					<div class="content prose">
+						<p>
+							As you may have gathered by now, my name is Alex Abushady; I am currently working as a Software Engineer for MSI. During my time at MSI, I've witnessed the company grow from a small team of just three developers (including myself) into a much larger organization with over 30 developers across multiple teams. As you might imagine, over that time, I've learned how to navigate both a small start-up environment and a larger, more structured environment that comes with being in a more seasoned, publicly traded company. Along the way I shipped five insurance products end-to-end and helped bring the newer engineers up as we scaled.
+						</p>
+						<p>
+							Recently, I've started teaching myself game development. After years of building enterprise software, I'm excited by the creative and technical challenges of making games; from getting a car to drift properly to planning out combat mechanics for my racing game concept. While I'm still early in this journey, I've already modified existing games like Cyberpunk 2077 and am actively building prototypes. My goal is to combine my enterprise engineering experience with game development to eventually build the kind of games I've always wanted to play.
+						</p>
+					</div>
+				</section>
 
-			<section>
-				<h2 class="section-title">Currently Exploring</h2>
-				<div class="content">
-				  <ul>
-					<li>Game Systems Design</li>
-					<li>Local LLMs & AI Tooling</li>
-					<li>Game Physics</li>
-					<li>Game Optimization</li>
-					<li>Procedural Generation</li>
-					<li>Multiplayer Networking</li>
-					<li>Game Modding</li>
-				  </ul>
-				</div>
-			  </section>
+				<section class="stack gap-8">
+					<h2 class="term-label">
+						<span aria-hidden="true"><span class="hash">##</span> skills</span>
+						<span class="sr-only">Skills</span>
+					</h2>
+					<div class="content">
+						<ul>
+							<li>C#</li>
+							<li>Python</li>
+							<li>JavaScript</li>
+							<li>TypeScript</li>
+							<li>T-SQL</li>
+							<li>ASP.NET MVC</li>
+							<li>API Development</li>
+							<li>Web Application Development</li>
+							<li>Game Modding</li>
+							<li>Azure DevOps</li>
+							<li>Git</li>
+							<li>LLM Fine-tuning</li>
+							<li>LLM Merging</li>
+							<li>Dataset Curation</li>
+						</ul>
+					</div>
+				</section>
+
+				<section class="stack gap-8">
+					<h2 class="term-label">
+						<span aria-hidden="true"><span class="hash">##</span> currently_exploring</span>
+						<span class="sr-only">Currently exploring</span>
+					</h2>
+					<div class="content">
+						<ul>
+							<li>Game Systems Design</li>
+							<li>Local LLMs &amp; AI Tooling</li>
+							<li>Game Physics</li>
+							<li>Game Optimization</li>
+							<li>Procedural Generation</li>
+							<li>Multiplayer Networking</li>
+							<li>Game Modding</li>
+						</ul>
+					</div>
+				</section>
+			</div>
 		</main>
 
 		<ContactCTA />
@@ -69,66 +81,38 @@ import Hero from '../components/Hero.astro';
 
 <style>
 	.about {
-		display: flex;
-		flex-direction: column;
-		gap: 3.5rem;
+		max-width: 50rem;
+		margin-inline: auto;
 	}
 
-	section {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
+	.prose {
+		font-size: var(--text-md);
+		line-height: 1.65;
 		color: var(--gray-200);
 	}
 
-	.section-title {
-		grid-column-start: 1;
-		font-size: var(--text-xl);
-		color: var(--gray-0);
-	}
-
-	.content {
-		grid-column: 2 / 4;
-	}
-
-	.content :global(a) {
-		text-decoration: 1px solid underline transparent;
-		text-underline-offset: 0.25em;
-		transition: text-decoration-color var(--theme-transition);
-	}
-
-	.content :global(a:hover),
-	.content :global(a:focus) {
-		text-decoration-color: currentColor;
+	.prose p + p {
+		margin-top: 1rem;
 	}
 
 	.content ul {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: 0.5rem;
-		list-style-type: disc;
-		padding-left: 1.2rem;
+		list-style: none;
+		padding: 0;
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
+		color: var(--gray-300);
+		text-transform: lowercase;
 	}
 
-	.content ul li {
-		break-inside: avoid;
+	.content ul li::before {
+		content: '- ';
+		color: var(--link-color);
 	}
 
 	@media (min-width: 50em) {
-		.about {
-			display: grid;
-			grid-template-columns: 1fr 60% 1fr;
-		}
-
-		.about > :global(:first-child) {
-			grid-column-start: 2;
-		}
-
-		section {
-			display: contents;
-			font-size: var(--text-lg);
-		}
-
 		.content ul {
 			grid-template-columns: 1fr 1fr;
 			column-gap: 1.5rem;
