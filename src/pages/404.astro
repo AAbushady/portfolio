@@ -1,8 +1,60 @@
 ---
-import Hero from '../components/Hero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CallToAction from '../components/CallToAction.astro';
+import Hero from '../components/Hero.astro';
+import Icon from '../components/Icon.astro';
 ---
 
-<BaseLayout title="Not Found" description="404 Error - this page was not found">
-	<Hero title="Page Not Found" tagline="Not found" />
+<BaseLayout
+	title="Page not found | Alex Abushady"
+	description="404: there's nothing at this address. Find Alex Abushady's work, blog, and contact info from the homepage."
+>
+	<div class="stack gap-20">
+		<main class="wrapper stack gap-8">
+			<Hero
+				title="Page not found"
+				tagline="There's nothing at this address. The page may have moved, or the link was mistyped."
+				align="start"
+			/>
+			<div class="actions">
+				<CallToAction href="/">
+					Back to Home
+				</CallToAction>
+				<p class="suggestions">
+					Or head to <a href="/work/">my work</a> or <a href="/blog/">the blog</a>.
+				</p>
+			</div>
+		</main>
+	</div>
 </BaseLayout>
+
+<style>
+	.actions {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.suggestions {
+		color: var(--gray-300);
+	}
+
+	.suggestions a {
+		text-decoration: 1px solid underline transparent;
+		text-underline-offset: 0.25em;
+		transition: text-decoration-color var(--theme-transition);
+	}
+
+	.suggestions a:hover,
+	.suggestions a:focus {
+		text-decoration-color: currentColor;
+	}
+
+	@media (min-width: 50em) {
+		.actions {
+			flex-direction: row;
+			gap: 2.5rem;
+		}
+	}
+</style>
