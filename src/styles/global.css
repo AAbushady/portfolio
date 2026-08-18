@@ -97,6 +97,7 @@
 
 	/* Transitions */
 	--theme-transition: 0.2s ease-in-out;
+	--hover-transition: 0.25s ease-out;
 }
 
 :root.theme-dark {
@@ -146,6 +147,12 @@ html,
 body {
 	min-height: 100%;
 	overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
 }
 
 body {

@@ -24,6 +24,23 @@ const { href } = Astro.props;
 		background: var(--gradient-accent-orange);
 		box-shadow: var(--shadow-md);
 		white-space: nowrap;
+		transition:
+			transform var(--hover-transition),
+			box-shadow var(--hover-transition);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		a:hover,
+		a:focus {
+			transform: translateY(-2px);
+			box-shadow: var(--shadow-lg);
+		}
+
+		a:active {
+			transform: translateY(1px);
+			box-shadow: var(--shadow-sm);
+			transition-duration: 0.1s;
+		}
 	}
 
 	@media (min-width: 20em) {

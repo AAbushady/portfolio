@@ -36,11 +36,24 @@ const Heading = Astro.props.headingLevel ?? 'h3';
 		font-family: var(--font-brand);
 		font-size: var(--text-lg);
 		font-weight: 500;
-		transition: box-shadow var(--theme-transition);
+		transition:
+			transform var(--hover-transition),
+			box-shadow var(--hover-transition);
 	}
 
 	.card:hover {
 		box-shadow: var(--shadow-md);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.card:hover {
+			transform: translateY(-4px);
+			box-shadow: var(--shadow-lg);
+		}
+
+		.card:hover img {
+			transform: scale(1.04);
+		}
 	}
 
 	.title {
@@ -61,6 +74,7 @@ const Heading = Astro.props.headingLevel ?? 'h3';
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		transition: transform var(--hover-transition);
 	}
 
 	@media (min-width: 50em) {
