@@ -38,6 +38,12 @@
 	--ff-font-text: 'VT323', var(--font-mono);
 }
 
+/* iOS paints overscroll and the safe areas around the notch/home indicator
+   with the root background; keep them space-dark instead of white. */
+html.ff-root {
+	background-color: #070518;
+}
+
 body.ff {
 	font-family: var(--ff-font-text);
 	font-size: 20px;
@@ -477,12 +483,18 @@ body.ff h3 {
 	color: var(--ff-dim);
 }
 
+/* Menu before content on phones, so navigation isn't buried under the list. */
+.ff-list-side {
+	order: -1;
+}
+
 @media (min-width: 760px) {
 	.ff-list-row {
 		grid-template-columns: 5fr 2fr;
 	}
 
 	.ff-list-side {
+		order: 0;
 		position: sticky;
 		top: 1.5rem;
 	}
@@ -841,6 +853,22 @@ html.js .ff-title.gone {
 @keyframes ff-flash {
 	0% { opacity: 0.85; }
 	100% { opacity: 0; }
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 479px) {
+	.ff-screen {
+		padding-inline: 0.75rem;
+	}
+
+	.ff-win {
+		padding: 1.1rem 1rem 1rem;
+	}
+
+	/* Thumb-beside-text leaves too little width for pixel-font titles. */
+	.ff-quest-row {
+		flex-direction: column;
+	}
 }
 
 /* ---------- layout rows ---------- */

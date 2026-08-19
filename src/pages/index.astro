@@ -30,12 +30,24 @@ const years = yearsOfExperience();
 			<header class="hero">
 				<div>
 					<div class="prompt-block">
-						<p class="prompt" aria-hidden="true">
+						<p class="prompt prompt-tap" aria-hidden="true">
 							<span class="path">~/portfolio</span> $ ./introduce --verbose
 						</p>
-						<p class="prompt" aria-hidden="true">
+						<p class="prompt prompt-tap" aria-hidden="true">
 							<span class="path">~/portfolio</span> $ <span id="cmd-typed"></span><span class="caret"></span>
 						</p>
+						<input
+							id="cmd-input"
+							class="cmd-input"
+							type="text"
+							aria-label="Terminal command input. Try: theme ff"
+							autocapitalize="none"
+							autocomplete="off"
+							autocorrect="off"
+							spellcheck="false"
+							enterkeyhint="go"
+							maxlength="40"
+						/>
 						<p class="prompt out" id="cmd-out" aria-hidden="true" hidden></p>
 						<p class="prompt-hint">hint: try <a href="/ff/">theme ff</a></p>
 					</div>
@@ -136,10 +148,10 @@ const years = yearsOfExperience();
 
 	const typed = document.getElementById('cmd-typed');
 	const out = document.getElementById('cmd-out');
-	let buffer = '';
+	const cmdInput = document.getElementById('cmd-input') as HTMLInputElement | null;
 
 	const render = () => {
-		if (typed) typed.textContent = buffer;
+		if (typed && cmdInput) typed.textContent = cmdInput.value;
 	};
 
 	const print = (text: string) => {
@@ -149,8 +161,9 @@ const years = yearsOfExperience();
 	};
 
 	const submit = () => {
-		const input = buffer.trim();
-		buffer = '';
+		if (!cmdInput) return;
+		const input = cmdInput.value.trim();
+		cmdInput.value = '';
 		render();
 		if (!input) return;
 		const result = runCommand(input);
@@ -161,6 +174,25 @@ const years = yearsOfExperience();
 		print(result.output);
 	};
 
+	const clear = () => {
+		if (!cmdInput) return;
+		cmdInput.value = '';
+		render();
+		print('');
+	};
+
+	// Touch path: tapping the prompt focuses the hidden input, which summons
+	// the phone keyboard; its events feed the same echo/submit pipeline.
+	document.querySelectorAll('.prompt-tap').forEach((el) => {
+		el.addEventListener('click', () => cmdInput?.focus());
+	});
+
+	cmdInput?.addEventListener('input', render);
+	cmdInput?.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') submit();
+		else if (e.key === 'Escape') clear();
+	});
+
 	const isTypingTarget = (el: EventTarget | null) =>
 		el instanceof HTMLElement &&
 		(el.tagName === 'INPUT' ||
@@ -168,24 +200,25 @@ const years = yearsOfExperience();
 			el.tagName === 'SELECT' ||
 			el.isContentEditable);
 
+	// Desktop path: keystrokes anywhere on the page reach the prompt without
+	// needing focus. isTypingTarget also excludes cmd-input itself, so keys
+	// never double-register while it's focused.
 	document.addEventListener('keydown', (e) => {
-		if (!typed || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+		if (!cmdInput || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
 		if (isTypingTarget(e.target)) return;
 		// Leave focused links/buttons alone so keyboard activation still works.
 		if (e.target instanceof HTMLAnchorElement || e.target instanceof HTMLButtonElement) return;
 		if (e.key === 'Enter') {
 			submit();
 		} else if (e.key === 'Escape') {
-			buffer = '';
-			render();
-			print('');
+			clear();
 		} else if (e.key === 'Backspace') {
-			buffer = buffer.slice(0, -1);
+			cmdInput.value = cmdInput.value.slice(0, -1);
 			render();
-		} else if (e.key.length === 1 && buffer.length < 40) {
+		} else if (e.key.length === 1 && cmdInput.value.length < 40) {
 			// Mid-command spaces must not scroll the page.
-			if (e.key === ' ' && buffer.length > 0) e.preventDefault();
-			buffer += e.key;
+			if (e.key === ' ' && cmdInput.value.length > 0) e.preventDefault();
+			cmdInput.value += e.key;
 			render();
 		}
 	});
@@ -200,7 +233,24 @@ const years = yearsOfExperience();
 	}
 
 	.prompt-block {
+		position: relative;
 		margin-bottom: 1.5rem;
+	}
+
+	.prompt-tap {
+		cursor: text;
+	}
+
+	/* Real input behind the fake prompt: focusable (tap or Tab) but invisible;
+	   16px font keeps iOS from zoom-jumping on focus. */
+	.cmd-input {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		opacity: 0;
+		border: 0;
+		padding: 0;
+		font-size: 16px;
 	}
 
 	.prompt {
