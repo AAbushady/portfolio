@@ -18,4 +18,4 @@ The systems I've worked on span billing platforms, insurance workflows, and cust
 
 Beyond individual development, I've led technical initiatives, mentored other engineers, and established development patterns that got adopted as team standards. I'm particularly interested in how local AI/LLM integration can enhance traditional business applications, which has led to several personal projects exploring these integrations.
 
-Currently working at MSI building insurance technology platforms. The full details of my experience and technical background are available in my [resume](/assets/AlexAbushady2025ResumeNovember.pdf).
+Currently working at MSI building insurance technology platforms. The full details of my experience and technical background are available in my [resume](/assets/AlexAbushadyResume.pdf).
