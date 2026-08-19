@@ -1,0 +1,29 @@
+---
+// Contact CTA as an RPG dialogue box. The full line is server-rendered so the
+// window reads fine without JS; ff-ui.ts replays it as a typewriter.
+interface Props {
+	line?: string | undefined;
+	declined?: string | undefined;
+}
+
+const {
+	line = 'Init collaboration? The party has an open slot for an engineer who delivers. Send a message?',
+	declined = '...Understood. The save crystal will be here when you are ready. Send a message?',
+} = Astro.props;
+---
+
+<section
+	class="ff-win ff-section ff-dialog"
+	id="dialog"
+	aria-label="Contact"
+	data-ff-dialog
+	data-line={line}
+	data-declined={declined}
+>
+	<h2 class="ff-plate">Dialog</h2>
+	<p><span class="speaker">ALEX:</span> <span class="ff-dialog-text">{line}</span><span class="ff-adv" hidden>&#9660;</span></p>
+	<div class="ff-choice">
+		<a href="mailto:aabushady214@gmail.com" data-ff-yes>YES</a>
+		<a href="#dialog" data-ff-no>NO</a>
+	</div>
+</section>

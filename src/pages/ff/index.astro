@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FFLayout from '../../layouts/FFLayout.astro';
+import DialogWindow from '../../components/ff/DialogWindow.astro';
+import HelpBar from '../../components/ff/HelpBar.astro';
+import MenuWindow, { type FFMenuItem } from '../../components/ff/MenuWindow.astro';
+import StatusWindow from '../../components/ff/StatusWindow.astro';
+import TitleScreen from '../../components/ff/TitleScreen.astro';
+import Window from '../../components/ff/Window.astro';
+import { getPublishedPosts, getSortedProjects } from '../../utils/collections';
+import { substituteYears, yearsOfExperience } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const projects = (await getSortedProjects()).slice(0, 4);
+const blogPosts = (await getPublishedPosts()).slice(0, 3);
+const years = yearsOfExperience();
+
+// Work/blog links point at the terminal pages until the /ff/ listing and
+// detail routes exist (batches 2 and 3).
+const menuItems: FFMenuItem[] = [
+	{ label: 'WORK', href: '/work/', help: 'Completed quests: shipped products, prototypes, and mods.' },
+	{ label: 'BLOG', href: '/blog/', help: 'The journal. Dev logs from the current playthrough.' },
+	{ label: 'RESUME', href: '/work/resume/', help: 'Character sheet. Printable, ATS-friendly.' },
+	{ label: 'CONTACT', href: '#dialog', help: 'Speak with Alex. Opens the dialog window below.', action: 'scroll' },
+	{ label: 'SOUND: OFF', href: '#', help: 'Toggle menu blips.', action: 'sound' },
+	{ label: 'EXIT', href: '/', help: 'Return to the terminal.' },
+];
+
+const questHelp = (project: CollectionEntry<'work'>): string =>
+	`${project.data.featured ? '★ Featured quest' : 'Active quest'} · completed ${formatDateISO(project.data.publishDate)}`;
+---
+
+<FFLayout
+	title="Alex Abushady: A Portfolio Fantasy"
+	description="Alex Abushady's portfolio rendered as a 16-bit RPG menu: quests (projects), abilities (skills), and dev-log journal entries."
+>
+	<TitleScreen />
+	<h1 class="sr-only">Alex Abushady: A Portfolio Fantasy</h1>
+	<div class="ff-screen">
+		<HelpBar>
+			The engineer who delivers. <span class="years-exp">{years}+</span>&nbsp;years shipping
+			production systems. Now building games and AI tooling on the same foundation.
+		</HelpBar>
+
+		<div class="ff-top-row">
+			<StatusWindow />
+			<MenuWindow items={menuItems} primary />
+		</div>
+
+		<Window plate="Abilities" label="Capabilities">
+			<div class="ff-abilities">
+				<div class="ff-ability" data-help="Five products shipped end-to-end in C#/.NET on live money-handling systems.">
+					<h3>Production Engineering</h3>
+					<p class="cost">passive &middot; MP 0</p>
+					<p>
+						Five products shipped end-to-end in C#/.NET, plus 800+ PRs authored, 2,400+
+						reviewed, and 276 production support cases resolved on live money-handling systems.
+					</p>
+				</div>
+				<div class="ff-ability" data-help="Game systems, dev tools, and shipped mods. Learned at the save point.">
+					<h3>Game Development</h3>
+					<p class="cost">active &middot; MP 12</p>
+					<p>
+						Prototyping game systems from driving physics to combat design, building dev
+						tools, and shipping mods for games like Cyberpunk 2077.
+					</p>
+				</div>
+				<div class="ff-ability" data-help="Summons a local LLM. No cloud crystals required.">
+					<h3>AI &amp; LLM Engineering</h3>
+					<p class="cost">summon &middot; MP 56</p>
+					<p>
+						Fine-tuning and serving local LLMs, building model tooling, and bringing
+						applied AI engineering to production systems.
+					</p>
+				</div>
+			</div>
+		</Window>
+
+		<Window plate="Quests" label="Selected work">
+			{projects.map((project) => (
+				<article class="ff-quest" data-help={questHelp(project)}>
+					<h3>
+						{project.data.featured && <span class="star" aria-hidden="true">&#9733; </span>}
+						<a href={`/work/${project.id}/`}>{project.data.title}</a>
+					</h3>
+					<p>{substituteYears(project.data.description)}</p>
+					<p class="ff-tags">
+						{project.data.tags.map((tag) => <span>[{tag}]</span>)}
+					</p>
+				</article>
+			))}
+			<a class="ff-view-all" href="/work/">&#9654; VIEW ALL QUESTS</a>
+		</Window>
+
+		<Window plate="Journal" label="Recent blog posts">
+			<ul class="ff-journal">
+				{blogPosts.map((post) => (
+					<li>
+						<a
+							href={`/blog/${post.id}/`}
+							data-help={`Journal entry · ${formatDateISO(post.data.publishDate)}`}
+						>
+							<span class="t">{post.data.title}</span>
+							<span class="d">{formatDateISO(post.data.publishDate)}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+			<a class="ff-view-all" href="/blog/">&#9654; VIEW ALL ENTRIES</a>
+		</Window>
+
+		<DialogWindow />
+	</div>
+</FFLayout>

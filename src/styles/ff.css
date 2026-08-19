@@ -1,0 +1,629 @@
+/* FF theme ("A Portfolio Fantasy"): menu-screen design system for /ff/ routes.
+   Loaded only by FFLayout; the terminal theme never sees these styles. */
+
+/* Latin subsets from Google Fonts; licenses in /fonts/LICENSE-press-start-2p-OFL.txt
+   and /fonts/LICENSE-vt323-OFL.txt */
+@font-face {
+	font-family: 'Press Start 2P';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/press-start-2p-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: 'VT323';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/vt323-400.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+	--ff-white: #f2f2f6;
+	--ff-gold: #f8d878;
+	--ff-ink: #05051e;
+	--ff-text: #dfe3ff;
+	--ff-dim: #aab0e8;
+	--ff-bevel: #8d86ec;
+	--ff-hp: #58d854;
+	--ff-mp: #7aa2ff;
+	--ff-win-top: #3d2fa6;
+	--ff-win-mid: #241a7a;
+	--ff-win-bot: #150e4e;
+	--ff-hairline: rgba(141, 134, 236, 0.25);
+
+	--ff-font-pixel: 'Press Start 2P', var(--font-mono);
+	--ff-font-text: 'VT323', var(--font-mono);
+}
+
+body.ff {
+	font-family: var(--ff-font-text);
+	font-size: 20px;
+	color: var(--ff-text);
+	background: radial-gradient(120% 90% at 50% -10%, #2a1a5e 0%, #150d3d 45%, #070518 100%) fixed;
+}
+
+body.ff a {
+	color: inherit;
+}
+
+body.ff :focus-visible {
+	outline-color: var(--ff-gold);
+}
+
+body.ff h1,
+body.ff h2,
+body.ff h3 {
+	font-family: var(--ff-font-pixel);
+	font-weight: 400;
+	letter-spacing: normal;
+	color: var(--ff-white);
+}
+
+/* ---------- starfield ---------- */
+.ff-stars,
+.ff-stars2 {
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.ff-stars::before,
+.ff-stars2::before {
+	content: '';
+	position: absolute;
+	width: 2px;
+	height: 2px;
+	background: transparent;
+	border-radius: 50%;
+}
+
+.ff-stars::before {
+	box-shadow:
+		60px 90px #fff, 180px 40px #cfd3ff, 320px 150px #fff, 470px 70px #9aa0ff,
+		610px 190px #fff, 760px 55px #cfd3ff, 900px 130px #fff, 1030px 30px #fff,
+		1180px 170px #9aa0ff, 1320px 90px #fff, 1460px 200px #cfd3ff, 1560px 60px #fff,
+		120px 320px #cfd3ff, 400px 380px #fff, 700px 340px #9aa0ff, 980px 390px #fff,
+		1250px 330px #cfd3ff, 1500px 400px #fff, 240px 520px #fff, 560px 560px #cfd3ff,
+		860px 540px #fff, 1130px 580px #9aa0ff, 1420px 530px #fff, 90px 700px #cfd3ff,
+		380px 760px #fff, 690px 720px #9aa0ff, 1010px 780px #fff, 1350px 740px #cfd3ff;
+}
+
+.ff-stars2::before {
+	width: 3px;
+	height: 3px;
+	box-shadow:
+		140px 130px #fff, 520px 210px #f8d878, 830px 90px #fff, 1210px 240px #fff,
+		1490px 140px #f8d878, 300px 450px #fff, 780px 470px #fff, 1290px 460px #f8d878,
+		200px 640px #fff, 640px 660px #fff, 1090px 680px #fff, 1470px 640px #fff;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.ff-stars::before {
+		animation: ff-twinkle 3.4s ease-in-out infinite alternate;
+	}
+	.ff-stars2::before {
+		animation: ff-twinkle 2.6s ease-in-out 0.8s infinite alternate;
+	}
+}
+
+@keyframes ff-twinkle {
+	from { opacity: 0.35; }
+	to { opacity: 1; }
+}
+
+/* ---------- window chrome ---------- */
+.ff-win {
+	position: relative;
+	background: linear-gradient(178deg, var(--ff-win-top) 0%, var(--ff-win-mid) 55%, var(--ff-win-bot) 100%);
+	border: 3px solid var(--ff-white);
+	border-radius: 9px;
+	box-shadow:
+		0 0 0 2px var(--ff-ink),
+		inset 0 0 0 2px var(--ff-ink),
+		inset 0 0 0 4px var(--ff-bevel);
+	padding: 1.4rem 1.5rem 1.3rem;
+}
+
+.ff-plate {
+	position: absolute;
+	top: -1rem;
+	left: 1rem;
+	font-family: var(--ff-font-pixel);
+	font-size: 0.6rem;
+	letter-spacing: 0.08em;
+	color: var(--ff-gold);
+	background: var(--ff-ink);
+	border: 2px solid var(--ff-white);
+	border-radius: 6px;
+	padding: 0.35rem 0.6rem 0.3rem;
+	text-transform: uppercase;
+	box-shadow: 0 0 0 2px var(--ff-ink);
+	z-index: 2;
+}
+
+.ff-section {
+	padding-top: 1.8rem;
+}
+
+.ff-screen {
+	position: relative;
+	z-index: 1;
+	max-width: 1080px;
+	margin: 0 auto;
+	padding: 1.5rem 1rem 3rem;
+	display: grid;
+	gap: 2rem;
+}
+
+/* ---------- help bar ---------- */
+.ff-help {
+	padding: 0.9rem 1.2rem;
+}
+
+.ff-help p {
+	font-size: 1.25rem;
+	line-height: 1.25;
+	min-height: 2.5em;
+	display: flex;
+	align-items: center;
+}
+
+.ff-help .years-exp {
+	color: var(--ff-gold);
+}
+
+/* ---------- main menu ---------- */
+.ff-menu {
+	padding-top: 1.7rem;
+}
+
+.ff-menu ul {
+	list-style: none;
+	position: relative;
+	padding: 0;
+}
+
+.ff-menu li + li {
+	margin-top: 0.35rem;
+}
+
+.ff-menu a {
+	display: block;
+	font-family: var(--ff-font-pixel);
+	font-size: 0.85rem;
+	color: var(--ff-white);
+	text-decoration: none;
+	padding: 0.55rem 0.4rem 0.5rem 2.1rem;
+	text-shadow: 2px 2px 0 var(--ff-ink);
+}
+
+.ff-menu li.selected a {
+	color: var(--ff-gold);
+}
+
+.ff-hand {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 22px;
+	height: 22px;
+	pointer-events: none;
+	filter: drop-shadow(2px 2px 0 var(--ff-ink));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.ff-hand .bob {
+		animation: ff-bob 0.55s steps(2) infinite;
+	}
+
+	@keyframes ff-bob {
+		50% { transform: translateX(-4px); }
+	}
+}
+
+/* ---------- status window ---------- */
+.ff-status {
+	display: flex;
+	gap: 1.4rem;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+.ff-portrait {
+	width: 128px;
+	height: 160px;
+	object-fit: cover;
+	object-position: top;
+	image-rendering: pixelated;
+	border: 3px solid var(--ff-white);
+	border-radius: 4px;
+	box-shadow: 0 0 0 2px var(--ff-ink);
+	background: var(--ff-win-mid);
+	flex-shrink: 0;
+}
+
+.ff-stat-block {
+	flex: 1;
+	min-width: 230px;
+}
+
+.ff-char-name {
+	font-family: var(--ff-font-pixel);
+	color: var(--ff-white);
+	font-size: clamp(1rem, 3.2vw, 1.5rem);
+	text-shadow: 3px 3px 0 var(--ff-ink);
+	line-height: 1.35;
+	margin-bottom: 0.35rem;
+}
+
+.ff-char-job {
+	font-size: 1.3rem;
+	color: var(--ff-gold);
+	margin-bottom: 0.8rem;
+}
+
+.ff-char-job .lv {
+	color: var(--ff-white);
+}
+
+.ff-bar-row {
+	display: grid;
+	grid-template-columns: 2.4rem 1fr 6.4rem;
+	align-items: center;
+	gap: 0.6rem;
+	margin-bottom: 0.45rem;
+	font-size: 1.15rem;
+}
+
+.ff-bar-row .lbl {
+	color: var(--ff-gold);
+	font-family: var(--ff-font-pixel);
+	font-size: 0.65rem;
+}
+
+.ff-bar-row .num {
+	text-align: right;
+	color: var(--ff-white);
+}
+
+.ff-bar {
+	height: 12px;
+	border: 2px solid var(--ff-ink);
+	border-radius: 3px;
+	background: #0c0a30;
+	overflow: hidden;
+}
+
+.ff-bar i {
+	display: block;
+	height: 100%;
+	background: linear-gradient(180deg, #d8ffd0 0%, var(--ff-hp) 40%, #1f8c2c 100%);
+}
+
+.ff-bar.mp i {
+	background: linear-gradient(180deg, #dce8ff 0%, var(--ff-mp) 40%, #2b4fc0 100%);
+}
+
+.ff-status-foot {
+	margin-top: 0.7rem;
+	font-size: 1.1rem;
+	color: var(--ff-dim);
+}
+
+.ff-status-foot b {
+	color: var(--ff-gold);
+	font-weight: 400;
+}
+
+/* ---------- quests ---------- */
+.ff-quest {
+	padding: 0.85rem 0.5rem 0.9rem;
+	border-bottom: 2px solid var(--ff-hairline);
+}
+
+.ff-quest:last-of-type {
+	border-bottom: 0;
+}
+
+.ff-quest h3 {
+	font-size: 0.8rem;
+	text-shadow: 2px 2px 0 var(--ff-ink);
+	margin-bottom: 0.5rem;
+	line-height: 1.5;
+}
+
+.ff-quest h3 a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.ff-quest h3 .star {
+	color: var(--ff-gold);
+}
+
+.ff-quest:hover h3,
+.ff-quest:focus-within h3 {
+	color: var(--ff-gold);
+}
+
+.ff-quest p {
+	font-size: 1.2rem;
+	line-height: 1.25;
+	color: var(--ff-text);
+	max-width: 62ch;
+}
+
+.ff-tags {
+	margin-top: 0.4rem;
+	font-size: 1.05rem;
+	color: var(--ff-gold);
+}
+
+.ff-tags span {
+	margin-right: 0.7rem;
+}
+
+.ff-view-all {
+	display: block;
+	text-align: right;
+	margin-top: 0.6rem;
+	font-size: 1.15rem;
+	color: var(--ff-gold);
+	text-decoration: none;
+}
+
+.ff-view-all:hover,
+.ff-view-all:focus {
+	color: var(--ff-white);
+}
+
+/* ---------- abilities ---------- */
+.ff-abilities {
+	display: grid;
+	gap: 1.2rem;
+	grid-template-columns: 1fr;
+}
+
+.ff-ability h3 {
+	font-size: 0.72rem;
+	color: var(--ff-gold);
+	line-height: 1.5;
+	margin-bottom: 0.45rem;
+	text-shadow: 2px 2px 0 var(--ff-ink);
+}
+
+.ff-ability .cost {
+	font-size: 1rem;
+	color: var(--ff-dim);
+	margin-bottom: 0.35rem;
+}
+
+.ff-ability p {
+	font-size: 1.15rem;
+	line-height: 1.25;
+}
+
+/* ---------- journal ---------- */
+.ff-journal {
+	list-style: none;
+	padding: 0;
+}
+
+.ff-journal li {
+	border-bottom: 2px solid var(--ff-hairline);
+	font-size: 1.25rem;
+}
+
+.ff-journal li:last-child {
+	border-bottom: 0;
+}
+
+.ff-journal a {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.55rem 0.5rem;
+	text-decoration: none;
+}
+
+.ff-journal .t {
+	color: var(--ff-white);
+}
+
+.ff-journal a:hover .t,
+.ff-journal a:focus .t {
+	color: var(--ff-gold);
+}
+
+.ff-journal .d {
+	color: var(--ff-dim);
+	white-space: nowrap;
+}
+
+/* ---------- dialog ---------- */
+.ff-dialog {
+	min-height: 9.5rem;
+}
+
+.ff-dialog .speaker {
+	color: var(--ff-gold);
+}
+
+.ff-dialog p {
+	font-size: 1.35rem;
+	line-height: 1.35;
+	max-width: 60ch;
+}
+
+.ff-adv {
+	color: var(--ff-white);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.ff-adv {
+		animation: ff-blink 0.9s steps(1) infinite;
+	}
+}
+
+@keyframes ff-blink {
+	50% { opacity: 0; }
+}
+
+.ff-choice {
+	display: flex;
+	gap: 2.5rem;
+	margin-top: 1rem;
+}
+
+.ff-choice a {
+	font-family: var(--ff-font-pixel);
+	font-size: 0.8rem;
+	color: var(--ff-white);
+	text-decoration: none;
+	padding-left: 1.6rem;
+	position: relative;
+	text-shadow: 2px 2px 0 var(--ff-ink);
+}
+
+.ff-choice a:hover,
+.ff-choice a:focus {
+	color: var(--ff-gold);
+}
+
+.ff-choice a:hover::before,
+.ff-choice a:focus::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0.05rem;
+	width: 16px;
+	height: 16px;
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><polygon points="1,0.5 9,5 1,9.5" fill="%23f2f2f6" stroke="%2305051e" stroke-width="1"/><polygon points="2.5,2.6 7,5 2.5,7.4" fill="%23f8d878"/></svg>') no-repeat;
+}
+
+/* ---------- footer ---------- */
+.ff-footer {
+	text-align: center;
+	font-size: 1.15rem;
+	color: var(--ff-dim);
+	padding-bottom: 1rem;
+}
+
+.ff-footer .save {
+	color: var(--ff-gold);
+	letter-spacing: 0.2em;
+}
+
+.ff-footer p + p {
+	margin-top: 0.3rem;
+}
+
+/* ---------- title screen ---------- */
+/* JS-gated: without scripts the overlay never renders, so content stays reachable. */
+.ff-title {
+	display: none;
+}
+
+html.js .ff-title {
+	position: fixed;
+	inset: 0;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2.2rem;
+	background: radial-gradient(120% 90% at 50% -10%, #2a1a5e 0%, #150d3d 45%, #070518 100%);
+	cursor: pointer;
+	transition: opacity 0.6s ease;
+	text-align: center;
+	padding: 1rem;
+}
+
+html.js .ff-title.gone {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.ff-logo-sub {
+	font-family: var(--ff-font-pixel);
+	font-size: clamp(0.55rem, 1.8vw, 0.8rem);
+	letter-spacing: 0.5em;
+	color: var(--ff-dim);
+}
+
+.ff-logo {
+	font-family: var(--ff-font-pixel);
+	font-size: clamp(1.4rem, 5.5vw, 3rem);
+	line-height: 1.45;
+	background: linear-gradient(180deg, #fff8e0 0%, var(--ff-gold) 48%, #a87828 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	filter: drop-shadow(4px 4px 0 var(--ff-ink));
+}
+
+.ff-press {
+	font-family: var(--ff-font-pixel);
+	font-size: clamp(0.7rem, 2vw, 0.95rem);
+	color: var(--ff-white);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.ff-press {
+		animation: ff-blink 1.1s steps(1) infinite;
+	}
+}
+
+.ff-title-hint {
+	font-size: 1.1rem;
+	color: var(--ff-dim);
+}
+
+.ff-title-copy {
+	position: absolute;
+	bottom: 1.4rem;
+	width: 100%;
+	font-size: 1.05rem;
+	color: var(--ff-dim);
+}
+
+/* ---------- confirm flash ---------- */
+.ff-flash {
+	position: fixed;
+	inset: 0;
+	background: #fff;
+	opacity: 0;
+	pointer-events: none;
+	z-index: 20;
+}
+
+.ff-flash.go {
+	animation: ff-flash 0.35s ease-out;
+}
+
+@keyframes ff-flash {
+	0% { opacity: 0.85; }
+	100% { opacity: 0; }
+}
+
+/* ---------- layout rows ---------- */
+.ff-top-row {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2rem;
+}
+
+@media (min-width: 760px) {
+	.ff-top-row {
+		grid-template-columns: 3fr 2fr;
+	}
+
+	.ff-abilities {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}

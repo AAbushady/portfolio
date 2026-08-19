@@ -10,6 +10,10 @@ interface Props {
 	ogImageAlt?: string | undefined;
 	ogType?: string | undefined;
 	publishDate?: Date | undefined;
+	/** Skip the terminal-theme font preloads (FF pages ship their own fonts). */
+	preloadFonts?: boolean | undefined;
+	/** Emit a robots noindex; used by the FF theme so only terminal pages rank. */
+	noIndex?: boolean | undefined;
 }
 
 const {
@@ -20,6 +24,8 @@ const {
 	ogImageAlt = 'Alex Abushady - The Engineer Who Delivers - alexabushady.com',
 	ogType = 'website',
 	publishDate,
+	preloadFonts = true,
+	noIndex = false,
 } = Astro.props;
 
 // The default OG image is generated at exactly 1200x630; per-page images vary,
@@ -108,6 +114,7 @@ const personSchema = {
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL.href} />
+{noIndex && <meta name="robots" content="noindex" />}
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <!-- PNG fallbacks: Safari does not render SVG favicons. -->
@@ -119,9 +126,13 @@ const personSchema = {
 <!-- The site ships its own dark theme; without this, Dark Reader rewrites the
      light theme at load and mangles the gradient colors. -->
 <meta name="darkreader-lock" />
-<link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/fonts/cabinet-grotesk-variable.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/fonts/fira-code-400.woff2" as="font" type="font/woff2" crossorigin />
+{preloadFonts && (
+	<>
+		<link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/cabinet-grotesk-variable.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/fira-code-400.woff2" as="font" type="font/woff2" crossorigin />
+	</>
+)}
 
 <!-- JSON-LD structured data for Person schema -->
 <script is:inline type="application/ld+json" set:html={jsonLdSerialize(personSchema)}></script>

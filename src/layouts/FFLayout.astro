@@ -1,0 +1,72 @@
+---
+// Shell for the FF theme (/ff/ routes): starfield, sound chip, confirm flash,
+// SAVE COMPLETE footer, and the ff-ui interaction layer. FF pages are noindex
+// and excluded from the sitemap (see astro.config.mjs); the terminal pages
+// stay the canonical site.
+import type { ComponentProps } from 'astro/types';
+import MainHead from '../components/MainHead.astro';
+import '../styles/ff.css';
+
+type Props = ComponentProps<typeof MainHead>;
+
+const currentYear = new Date().getFullYear();
+---
+
+<html lang="en-US">
+	<head>
+		<MainHead {...Astro.props} noIndex preloadFonts={false} />
+		<link rel="preload" href="/fonts/press-start-2p-400.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/vt323-400.woff2" as="font" type="font/woff2" crossorigin />
+	</head>
+	<body class="ff">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<div class="ff-stars" aria-hidden="true"></div>
+		<div class="ff-stars2" aria-hidden="true"></div>
+		<div class="ff-flash" aria-hidden="true"></div>
+		<div id="main-content" tabindex="-1">
+			<slot />
+		</div>
+		<footer class="ff-footer">
+			<p class="save">&mdash; SAVE COMPLETE &mdash;</p>
+			<p>&copy; {currentYear} Alex Abushady &middot; exit 0</p>
+		</footer>
+
+		<script>
+			import { initFF } from '../scripts/ff-ui';
+			import { yearsOfExperience } from '../utils/experience';
+
+			initFF();
+
+			// Same stale-deploy refresh BaseLayout does for the terminal pages.
+			document.querySelectorAll('.years-exp').forEach((el) => {
+				el.textContent = yearsOfExperience() + '+';
+			});
+		</script>
+
+		<style>
+			.skip-link {
+				position: absolute;
+				z-index: 10000;
+				top: 0.5rem;
+				left: 0.5rem;
+				padding: 0.5rem 1rem;
+				border-radius: 4px;
+				background-color: var(--ff-ink);
+				color: var(--ff-gold);
+				border: 2px solid var(--ff-bevel);
+				font-family: var(--ff-font-text);
+				font-size: 1rem;
+				text-decoration: none;
+				transform: translateY(-200%);
+			}
+
+			.skip-link:focus {
+				transform: none;
+			}
+
+			#main-content {
+				outline: none;
+			}
+		</style>
+	</body>
+</html>

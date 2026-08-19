@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import headshot from '../../assets/alex-headshot.jpg';
+import { yearsOfExperience } from '../../utils/experience';
+import Window from './Window.astro';
+
+// Party-member framing of the hero: LV tracks years of experience, HP is code
+// reviews, MP is PRs authored (same verified numbers the terminal skills use).
+const years = yearsOfExperience();
+---
+
+<Window plate="Status" label="Status">
+	<div class="ff-status">
+		<Image
+			class="ff-portrait"
+			src={headshot}
+			width={80}
+			alt="Pixelated portrait of Alex Abushady"
+			loading="eager"
+		/>
+		<div class="ff-stat-block">
+			<p class="ff-char-name">ALEX</p>
+			<p class="ff-char-job"><span class="lv">LV {years}</span> &middot; Software Engineer</p>
+			<div class="ff-bar-row">
+				<span class="lbl">HP</span>
+				<span class="ff-bar"><i style="width: 100%"></i></span>
+				<span class="num">2400/2400</span>
+			</div>
+			<div class="ff-bar-row">
+				<span class="lbl">MP</span>
+				<span class="ff-bar mp"><i style="width: 100%"></i></span>
+				<span class="num">800/800</span>
+			</div>
+			<p class="ff-status-foot">5 products shipped &middot; <b>0 game overs</b></p>
+		</div>
+	</div>
+</Window>

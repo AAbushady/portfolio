@@ -1,0 +1,18 @@
+---
+// The basic FF menu window: beveled border, gradient fill, optional name plate.
+interface Props {
+	/** Plate text rendered on the top border (e.g. "Quests"). */
+	plate?: string | undefined;
+	/** Accessible name; falls back to the plate text. */
+	label?: string | undefined;
+	id?: string | undefined;
+	class?: string | undefined;
+}
+
+const { plate, label, id, class: className } = Astro.props;
+---
+
+<section class:list={['ff-win', plate && 'ff-section', className]} id={id} aria-label={label ?? plate}>
+	{plate && <h2 class="ff-plate">{plate}</h2>}
+	<slot />
+</section>

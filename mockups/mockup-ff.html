@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ALEX ABUSHADY — Portfolio Fantasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+<style>
+	:root {
+		--white: #f2f2f6;
+		--gold: #f8d878;
+		--gold-deep: #c99e3c;
+		--ink: #05051e;
+		--body-text: #dfe3ff;
+		--body-dim: #aab0e8;
+		--bevel: #8d86ec;
+		--hp: #58d854;
+		--mp: #7aa2ff;
+		--win-top: #3d2fa6;
+		--win-mid: #241a7a;
+		--win-bot: #150e4e;
+	}
+
+	* { margin: 0; padding: 0; box-sizing: border-box; }
+
+	html { scroll-behavior: smooth; }
+
+	body {
+		font-family: 'VT323', monospace;
+		font-size: 20px;
+		color: var(--body-text);
+		background: radial-gradient(120% 90% at 50% -10%, #2a1a5e 0%, #150d3d 45%, #070518 100%) fixed;
+		min-height: 100vh;
+		overflow-x: hidden;
+	}
+
+	/* ---------- starfield ---------- */
+	.stars, .stars2 {
+		position: fixed;
+		inset: 0;
+		pointer-events: none;
+		z-index: 0;
+	}
+	.stars::before, .stars2::before {
+		content: '';
+		position: absolute;
+		width: 2px; height: 2px;
+		background: transparent;
+		border-radius: 50%;
+	}
+	.stars::before {
+		box-shadow:
+			60px 90px #fff, 180px 40px #cfd3ff, 320px 150px #fff, 470px 70px #9aa0ff,
+			610px 190px #fff, 760px 55px #cfd3ff, 900px 130px #fff, 1030px 30px #fff,
+			1180px 170px #9aa0ff, 1320px 90px #fff, 1460px 200px #cfd3ff, 1560px 60px #fff,
+			120px 320px #cfd3ff, 400px 380px #fff, 700px 340px #9aa0ff, 980px 390px #fff,
+			1250px 330px #cfd3ff, 1500px 400px #fff, 240px 520px #fff, 560px 560px #cfd3ff,
+			860px 540px #fff, 1130px 580px #9aa0ff, 1420px 530px #fff, 90px 700px #cfd3ff,
+			380px 760px #fff, 690px 720px #9aa0ff, 1010px 780px #fff, 1350px 740px #cfd3ff;
+		animation: twinkle 3.4s ease-in-out infinite alternate;
+	}
+	.stars2::before {
+		width: 3px; height: 3px;
+		box-shadow:
+			140px 130px #fff, 520px 210px #f8d878, 830px 90px #fff, 1210px 240px #fff,
+			1490px 140px #f8d878, 300px 450px #fff, 780px 470px #fff, 1290px 460px #f8d878,
+			200px 640px #fff, 640px 660px #fff, 1090px 680px #fff, 1470px 640px #fff;
+		animation: twinkle 2.6s ease-in-out .8s infinite alternate;
+	}
+	@keyframes twinkle { from { opacity: .35; } to { opacity: 1; } }
+
+	/* ---------- FF window ---------- */
+	.win {
+		position: relative;
+		background: linear-gradient(178deg, var(--win-top) 0%, var(--win-mid) 55%, var(--win-bot) 100%);
+		border: 3px solid var(--white);
+		border-radius: 9px;
+		box-shadow:
+			0 0 0 2px var(--ink),
+			inset 0 0 0 2px var(--ink),
+			inset 0 0 0 4px var(--bevel);
+		padding: 1.4rem 1.5rem 1.3rem;
+	}
+
+	.plate {
+		position: absolute;
+		top: -1rem;
+		left: 1rem;
+		font-family: 'Press Start 2P', monospace;
+		font-size: 0.6rem;
+		letter-spacing: 0.08em;
+		color: var(--gold);
+		background: var(--ink);
+		border: 2px solid var(--white);
+		border-radius: 6px;
+		padding: 0.35rem 0.6rem 0.3rem;
+		text-transform: uppercase;
+		box-shadow: 0 0 0 2px var(--ink);
+		z-index: 2;
+	}
+
+	.screen {
+		position: relative;
+		z-index: 1;
+		max-width: 1080px;
+		margin: 0 auto;
+		padding: 1.5rem 1rem 3rem;
+		display: grid;
+		gap: 2rem;
+	}
+
+	/* ---------- help bar ---------- */
+	.help { padding: 0.9rem 1.2rem; }
+	.help p {
+		font-size: 1.25rem;
+		line-height: 1.25;
+		min-height: 2.5em;
+		display: flex;
+		align-items: center;
+	}
+	.help .years { color: var(--gold); }
+
+	/* ---------- status + menu row ---------- */
+	.top-row {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+	@media (min-width: 760px) {
+		.top-row { grid-template-columns: 3fr 2fr; }
+	}
+
+	.status { display: flex; gap: 1.4rem; align-items: flex-start; flex-wrap: wrap; }
+
+	.portrait {
+		width: 128px;
+		height: 160px;
+		object-fit: cover;
+		image-rendering: pixelated;
+		border: 3px solid var(--white);
+		border-radius: 4px;
+		box-shadow: 0 0 0 2px var(--ink);
+		background: #241a7a;
+		flex-shrink: 0;
+	}
+
+	.stat-block { flex: 1; min-width: 230px; }
+
+	.char-name {
+		font-family: 'Press Start 2P', monospace;
+		font-size: clamp(1rem, 3.2vw, 1.5rem);
+		color: var(--white);
+		text-shadow: 3px 3px 0 var(--ink);
+		line-height: 1.35;
+		margin-bottom: 0.35rem;
+	}
+
+	.char-job {
+		font-size: 1.3rem;
+		color: var(--gold);
+		margin-bottom: 0.8rem;
+	}
+	.char-job .lv { color: var(--white); }
+
+	.bar-row {
+		display: grid;
+		grid-template-columns: 2.4rem 1fr 6.4rem;
+		align-items: center;
+		gap: 0.6rem;
+		margin-bottom: 0.45rem;
+		font-size: 1.15rem;
+	}
+	.bar-row .lbl { color: var(--gold); font-family: 'Press Start 2P', monospace; font-size: 0.65rem; }
+	.bar-row .num { text-align: right; color: var(--white); }
+
+	.bar {
+		height: 12px;
+		border: 2px solid var(--ink);
+		border-radius: 3px;
+		background: #0c0a30;
+		overflow: hidden;
+	}
+	.bar i {
+		display: block;
+		height: 100%;
+		background: linear-gradient(180deg, #d8ffd0 0%, var(--hp) 40%, #1f8c2c 100%);
+	}
+	.bar.mp i { background: linear-gradient(180deg, #dce8ff 0%, var(--mp) 40%, #2b4fc0 100%); }
+
+	.status-foot {
+		margin-top: 0.7rem;
+		font-size: 1.1rem;
+		color: var(--body-dim);
+	}
+	.status-foot b { color: var(--gold); font-weight: 400; }
+
+	/* ---------- main menu ---------- */
+	.menu { padding-top: 1.7rem; }
+	.menu ul { list-style: none; position: relative; }
+	.menu li + li { margin-top: 0.35rem; }
+	.menu a {
+		display: block;
+		font-family: 'Press Start 2P', monospace;
+		font-size: 0.85rem;
+		color: var(--white);
+		text-decoration: none;
+		padding: 0.55rem 0.4rem 0.5rem 2.1rem;
+		text-shadow: 2px 2px 0 var(--ink);
+	}
+	.menu li.selected a { color: var(--gold); }
+	.menu li.dim a { color: #7d80b8; }
+
+	#hand {
+		position: absolute;
+		left: 0;
+		width: 22px;
+		height: 22px;
+		transition: none;
+		pointer-events: none;
+		filter: drop-shadow(2px 2px 0 var(--ink));
+	}
+	#hand .bob { display: block; }
+	@media (prefers-reduced-motion: no-preference) {
+		#hand .bob { animation: bob 0.55s steps(2) infinite; }
+		@keyframes bob { 50% { transform: translateX(-4px); } }
+	}
+
+	/* ---------- section windows ---------- */
+	.section { padding-top: 1.8rem; }
+
+	.quest { padding: 0.85rem 0.5rem 0.9rem; border-bottom: 2px solid rgba(141, 134, 236, 0.25); }
+	.quest:last-of-type { border-bottom: 0; }
+	.quest h3 {
+		font-family: 'Press Start 2P', monospace;
+		font-size: 0.8rem;
+		font-weight: 400;
+		color: var(--white);
+		text-shadow: 2px 2px 0 var(--ink);
+		margin-bottom: 0.5rem;
+	}
+	.quest h3 .star { color: var(--gold); }
+	.quest:hover h3, .quest.hot h3 { color: var(--gold); }
+	.quest p { font-size: 1.2rem; line-height: 1.25; color: var(--body-text); max-width: 62ch; }
+	.tags { margin-top: 0.4rem; font-size: 1.05rem; color: var(--gold); }
+	.tags span { margin-right: 0.7rem; }
+
+	.view-all {
+		display: block;
+		text-align: right;
+		margin-top: 0.6rem;
+		font-size: 1.15rem;
+		color: var(--gold);
+		text-decoration: none;
+	}
+	.view-all:hover { color: var(--white); }
+
+	/* abilities */
+	.abilities { display: grid; gap: 1.2rem; grid-template-columns: 1fr; }
+	@media (min-width: 760px) { .abilities { grid-template-columns: 1fr 1fr 1fr; } }
+	.ability h3 {
+		font-family: 'Press Start 2P', monospace;
+		font-size: 0.72rem;
+		font-weight: 400;
+		color: var(--gold);
+		line-height: 1.5;
+		margin-bottom: 0.45rem;
+		text-shadow: 2px 2px 0 var(--ink);
+	}
+	.ability .cost { font-size: 1rem; color: var(--body-dim); margin-bottom: 0.35rem; }
+	.ability p { font-size: 1.15rem; line-height: 1.25; }
+
+	/* journal */
+	.journal { list-style: none; }
+	.journal li {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.55rem 0.5rem;
+		border-bottom: 2px solid rgba(141, 134, 236, 0.25);
+		font-size: 1.25rem;
+	}
+	.journal li:last-child { border-bottom: 0; }
+	.journal .t { color: var(--white); }
+	.journal li:hover .t { color: var(--gold); }
+	.journal .d { color: var(--body-dim); white-space: nowrap; }
+
+	/* ---------- dialog ---------- */
+	.dialog { min-height: 9.5rem; }
+	.dialog .speaker { color: var(--gold); }
+	.dialog p {
+		font-size: 1.35rem;
+		line-height: 1.35;
+		max-width: 60ch;
+	}
+	.adv { color: var(--white); }
+	@media (prefers-reduced-motion: no-preference) {
+		.adv { animation: blink 0.9s steps(1) infinite; }
+		@keyframes blink { 50% { opacity: 0; } }
+	}
+
+	.choice {
+		display: flex;
+		gap: 2.5rem;
+		margin-top: 1rem;
+		visibility: hidden;
+	}
+	.choice.show { visibility: visible; }
+	.choice a {
+		font-family: 'Press Start 2P', monospace;
+		font-size: 0.8rem;
+		color: var(--white);
+		text-decoration: none;
+		padding-left: 1.6rem;
+		position: relative;
+		text-shadow: 2px 2px 0 var(--ink);
+	}
+	.choice a:hover, .choice a:focus { color: var(--gold); }
+	.choice a:hover::before, .choice a:focus::before {
+		content: '';
+		position: absolute;
+		left: 0; top: 0.05rem;
+		width: 16px; height: 16px;
+		background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><polygon points="1,0.5 9,5 1,9.5" fill="%23f2f2f6" stroke="%2305051e" stroke-width="1"/><polygon points="2.5,2.6 7,5 2.5,7.4" fill="%23f8d878"/></svg>') no-repeat;
+	}
+
+	/* footer */
+	footer {
+		text-align: center;
+		font-size: 1.15rem;
+		color: var(--body-dim);
+		padding-bottom: 1rem;
+	}
+	footer .save { color: var(--gold); letter-spacing: 0.2em; }
+	footer p + p { margin-top: 0.3rem; }
+
+	/* ---------- title screen ---------- */
+	#title {
+		position: fixed;
+		inset: 0;
+		z-index: 10;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2.2rem;
+		background: radial-gradient(120% 90% at 50% -10%, #2a1a5e 0%, #150d3d 45%, #070518 100%);
+		cursor: pointer;
+		transition: opacity 0.6s ease;
+		text-align: center;
+		padding: 1rem;
+	}
+	#title.gone { opacity: 0; pointer-events: none; }
+
+	.logo-sub {
+		font-family: 'Press Start 2P', monospace;
+		font-size: clamp(0.55rem, 1.8vw, 0.8rem);
+		letter-spacing: 0.5em;
+		color: var(--body-dim);
+	}
+	.logo {
+		font-family: 'Press Start 2P', monospace;
+		font-size: clamp(1.4rem, 5.5vw, 3rem);
+		line-height: 1.45;
+		background: linear-gradient(180deg, #fff8e0 0%, var(--gold) 48%, #a87828 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		filter: drop-shadow(4px 4px 0 var(--ink));
+	}
+	.press {
+		font-family: 'Press Start 2P', monospace;
+		font-size: clamp(0.7rem, 2vw, 0.95rem);
+		color: var(--white);
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.press { animation: blink 1.1s steps(1) infinite; }
+	}
+	.title-hint { font-size: 1.1rem; color: var(--body-dim); }
+	.title-copy {
+		position: absolute;
+		bottom: 1.4rem;
+		width: 100%;
+		font-size: 1.05rem;
+		color: var(--body-dim);
+	}
+
+	/* confirm flash */
+	#flash {
+		position: fixed;
+		inset: 0;
+		background: #fff;
+		opacity: 0;
+		pointer-events: none;
+		z-index: 20;
+	}
+	#flash.go { animation: flash 0.35s ease-out; }
+	@keyframes flash { 0% { opacity: 0.85; } 100% { opacity: 0; } }
+
+	/* sound chip */
+	#sound {
+		position: fixed;
+		right: 0.9rem;
+		bottom: 0.9rem;
+		z-index: 15;
+		font-family: 'VT323', monospace;
+		font-size: 1.05rem;
+		color: var(--body-dim);
+		background: var(--ink);
+		border: 2px solid var(--bevel);
+		border-radius: 6px;
+		padding: 0.25rem 0.6rem;
+		cursor: pointer;
+	}
+	#sound:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="stars" aria-hidden="true"></div>
+<div class="stars2" aria-hidden="true"></div>
+
+<!-- ============ TITLE SCREEN ============ -->
+<div id="title" role="button" tabindex="0" aria-label="Press start to enter">
+	<div>
+		<p class="logo-sub">A&nbsp;PORTFOLIO&nbsp;FANTASY</p>
+		<h1 class="logo">ALEX<br />ABUSHADY</h1>
+	</div>
+	<p class="press">- PRESS START -</p>
+	<p class="title-hint">(click anywhere or press any key)</p>
+	<p class="title-copy">&copy; 2020&ndash;2026 ABUSHADYSOFT &middot; ~/portfolio</p>
+</div>
+
+<div id="flash" aria-hidden="true"></div>
+
+<button id="sound" type="button">&#9834; SOUND: ON</button>
+
+<!-- ============ MENU SCREEN ============ -->
+<div class="screen">
+
+	<!-- help bar -->
+	<section class="win help" aria-label="Help">
+		<p id="helpText">The engineer who delivers. <span class="years">6+</span>&nbsp;years shipping production systems. Now building games and AI tooling on the same foundation.</p>
+	</section>
+
+	<div class="top-row">
+		<!-- status -->
+		<section class="win section" aria-label="Status">
+			<h2 class="plate">Status</h2>
+			<div class="status">
+				<img class="portrait" src="data:image/jpeg;base64,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" alt="Pixelated portrait of Alex Abushady" />
+				<div class="stat-block">
+					<p class="char-name">ALEX</p>
+					<p class="char-job"><span class="lv">LV 6</span> &middot; Software Engineer</p>
+					<div class="bar-row">
+						<span class="lbl">HP</span>
+						<span class="bar"><i style="width: 100%"></i></span>
+						<span class="num">2400/2400</span>
+					</div>
+					<div class="bar-row">
+						<span class="lbl">MP</span>
+						<span class="bar mp"><i style="width: 100%"></i></span>
+						<span class="num">800/800</span>
+					</div>
+					<p class="status-foot">5 products shipped &middot; <b>0 game overs</b></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- main menu -->
+		<nav class="win menu" aria-label="Main menu">
+			<h2 class="plate">Menu</h2>
+			<ul id="menuList">
+				<svg id="hand" viewBox="0 0 10 10" aria-hidden="true"><g class="bob"><polygon points="1,0.5 9,5 1,9.5" fill="#f2f2f6" stroke="#05051e" stroke-width="1"/><polygon points="2.5,2.6 7,5 2.5,7.4" fill="#f8d878"/></g></svg>
+				<li><a href="/work/" data-help="Completed quests: shipped products, prototypes, and mods.">WORK</a></li>
+				<li><a href="/blog/" data-help="The journal. Dev logs from the current playthrough.">BLOG</a></li>
+				<li><a href="/work/resume/" data-help="Character sheet. Printable, ATS-friendly.">RESUME</a></li>
+				<li><a href="#dialog" data-help="Speak with Alex. Opens the dialog window below." data-scroll>CONTACT</a></li>
+				<li class="dim"><a href="#" data-help="Sound: ON. Press to toggle menu blips." data-config>CONFIG</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<!-- abilities -->
+	<section class="win section" aria-label="Abilities">
+		<h2 class="plate">Abilities</h2>
+		<div class="abilities">
+			<div class="ability" data-help="Five products shipped end-to-end in C#/.NET on live money-handling systems.">
+				<h3>Production Engineering</h3>
+				<p class="cost">passive &middot; MP 0</p>
+				<p>Five products shipped end-to-end in C#/.NET, plus 800+ PRs authored, 2,400+ reviewed, and 276 production support cases resolved on live money-handling systems.</p>
+			</div>
+			<div class="ability" data-help="Game systems, dev tools, and shipped mods. Learned at the save point.">
+				<h3>Game Development</h3>
+				<p class="cost">active &middot; MP 12</p>
+				<p>Prototyping game systems from driving physics to combat design, building dev tools, and shipping mods for games like Cyberpunk 2077.</p>
+			</div>
+			<div class="ability" data-help="Summons a local LLM. No cloud crystals required.">
+				<h3>AI &amp; LLM Engineering</h3>
+				<p class="cost">summon &middot; MP 56</p>
+				<p>Fine-tuning and serving local LLMs, building model tooling, and bringing applied AI engineering to production systems.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- quests -->
+	<section class="win section" aria-label="Selected work">
+		<h2 class="plate">Quests</h2>
+		<article class="quest" data-help="Main quest, complete. Six years, five launches, zero data loss.">
+			<h3><span class="star">&#9733;</span> Platform Engineering at MSI (2020&ndash;2026)</h3>
+			<p>Six years on a production insurance platform: five products launched end to end, a $95M migration with zero data loss, and 800+ PRs shipped as engineer, lead, and manager.</p>
+			<p class="tags"><span>[Enterprise]</span><span>[Full-Stack]</span><span>[.NET]</span><span>[Insurance]</span></p>
+		</article>
+		<article class="quest" data-help="Crafted item. A fine-tune merge that runs on consumer hardware.">
+			<h3><span class="star">&#9733;</span> Violet Twilight v0.2</h3>
+			<p>A Mistral Nemo fine-tune merge built for roleplay and assistant use, made to run locally on consumer hardware instead of cloud infrastructure.</p>
+			<p class="tags"><span>[LLM]</span></p>
+		</article>
+		<article class="quest" data-help="Side quest in Night City. Text NPCs with a local model.">
+			<h3><span class="star">&#9733;</span> Generative Texting</h3>
+			<p>A Cyberpunk 2077 mod fork that connects locally hosted LLMs to the game, letting you text in-game characters with no cloud provider required.</p>
+			<p class="tags"><span>[Fork]</span><span>[Gaming]</span><span>[LLM]</span></p>
+		</article>
+		<article class="quest" data-help="Active quest. Cars that turn into mechs.">
+			<h3>WeaponsTest Prototype</h3>
+			<p>Unity firing range prototype exploring vehicle transformation, weapons handling, and combat mechanics.</p>
+			<p class="tags"><span>[Unity]</span><span>[Game Dev]</span><span>[C#]</span></p>
+		</article>
+		<a class="view-all" href="/work/">&#9654; VIEW ALL QUESTS</a>
+	</section>
+
+	<!-- journal -->
+	<section class="win section" aria-label="Recent posts">
+		<h2 class="plate">Journal</h2>
+		<ul class="journal">
+			<li data-help="Journal entry three of the Unity playthrough."><span class="t">Unity Dev Log #3</span><span class="d">2025-10-18</span></li>
+			<li data-help="Journal entry two of the Unity playthrough."><span class="t">Unity Dev Log #2</span><span class="d">2025-10-11</span></li>
+			<li data-help="Where the Unity playthrough began."><span class="t">Unity Dev Log #1</span><span class="d">2025-09-27</span></li>
+		</ul>
+		<a class="view-all" href="/blog/">&#9654; VIEW ALL ENTRIES</a>
+	</section>
+
+	<!-- dialog / contact -->
+	<section class="win section dialog" id="dialog" aria-label="Contact">
+		<h2 class="plate">Dialog</h2>
+		<p><span class="speaker">ALEX:</span> <span id="dialogText"></span><span class="adv" id="adv" hidden>&#9660;</span></p>
+		<div class="choice" id="choice">
+			<a href="mailto:aabushady214@gmail.com" id="yes">YES</a>
+			<a href="#" id="no">NO</a>
+		</div>
+	</section>
+
+	<footer>
+		<p class="save">&mdash; SAVE COMPLETE &mdash;</p>
+		<p>&copy; 2026 Alex Abushady &middot; exit 0</p>
+	</footer>
+
+</div>
+
+<script>
+	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	/* ---------- sound (WebAudio square-wave blips) ---------- */
+	let soundOn = true, ctx = null;
+	function blip(freq, dur, delay) {
+		if (!soundOn) return;
+		try {
+			ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+			if (ctx.state === 'suspended') ctx.resume();
+			const o = ctx.createOscillator(), g = ctx.createGain();
+			const t = ctx.currentTime + (delay || 0);
+			o.type = 'square';
+			o.frequency.value = freq;
+			g.gain.setValueAtTime(0.045, t);
+			g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+			o.connect(g).connect(ctx.destination);
+			o.start(t); o.stop(t + dur);
+		} catch (e) { /* audio unavailable; stay silent */ }
+	}
+	const moveBlip = () => blip(1080, 0.055);
+	const confirmBlip = () => { blip(1320, 0.07); blip(1760, 0.1, 0.07); };
+
+	const soundBtn = document.getElementById('sound');
+	function toggleSound() {
+		soundOn = !soundOn;
+		soundBtn.innerHTML = '&#9834; SOUND: ' + (soundOn ? 'ON' : 'OFF');
+		const cfg = document.querySelector('[data-config]');
+		cfg.dataset.help = 'Sound: ' + (soundOn ? 'ON' : 'OFF') + '. Press to toggle menu blips.';
+		if (soundOn) confirmBlip();
+	}
+	soundBtn.addEventListener('click', toggleSound);
+
+	/* ---------- title screen ---------- */
+	const title = document.getElementById('title');
+	function dismissTitle() {
+		if (title.classList.contains('gone')) return;
+		confirmBlip();
+		title.classList.add('gone');
+	}
+	title.addEventListener('click', dismissTitle);
+	addEventListener('keydown', function onFirstKey(e) {
+		if (!title.classList.contains('gone')) { e.preventDefault(); dismissTitle(); }
+	}, { once: false });
+
+	/* ---------- help bar ---------- */
+	const helpText = document.getElementById('helpText');
+	document.querySelectorAll('[data-help]').forEach(el => {
+		el.addEventListener('mouseenter', () => { helpText.textContent = el.dataset.help; });
+		el.addEventListener('focusin', () => { helpText.textContent = el.dataset.help; });
+	});
+
+	/* ---------- main menu cursor ---------- */
+	const list = document.getElementById('menuList');
+	const items = [...list.querySelectorAll('li')];
+	const hand = document.getElementById('hand');
+	let sel = 0;
+
+	function placeHand() {
+		const li = items[sel];
+		const a = li.querySelector('a');
+		items.forEach(i => i.classList.remove('selected'));
+		li.classList.add('selected');
+		hand.style.top = (a.offsetTop + a.offsetHeight / 2 - 11) + 'px';
+		helpText.textContent = a.dataset.help;
+	}
+
+	function move(dir) {
+		sel = (sel + dir + items.length) % items.length;
+		moveBlip();
+		placeHand();
+	}
+
+	function activate() {
+		const a = items[sel].querySelector('a');
+		confirmBlip();
+		if (a.dataset.config !== undefined) { toggleSound(); helpText.textContent = a.dataset.help; return; }
+		const flash = document.getElementById('flash');
+		flash.classList.remove('go');
+		void flash.offsetWidth;
+		if (!reduced) flash.classList.add('go');
+		if (a.dataset.scroll !== undefined) { document.getElementById('dialog').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }); return; }
+		/* mockup: real theme would navigate to a.href here */
+	}
+
+	items.forEach((li, i) => {
+		li.addEventListener('mouseenter', () => { if (sel !== i) { sel = i; moveBlip(); placeHand(); } });
+		li.querySelector('a').addEventListener('click', e => { e.preventDefault(); sel = i; placeHand(); activate(); });
+	});
+
+	addEventListener('keydown', e => {
+		if (!title.classList.contains('gone')) return;
+		if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+		else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+		else if (e.key === 'Enter') { e.preventDefault(); activate(); }
+	});
+
+	addEventListener('resize', placeHand);
+	placeHand();
+
+	/* ---------- dialog typewriter ---------- */
+	const line = "Init collaboration? The party has an open slot for an engineer who delivers. Send a message?";
+	const declined = "...Understood. The save crystal will be here when you are ready. Send a message?";
+	const dialogText = document.getElementById('dialogText');
+	const adv = document.getElementById('adv');
+	const choice = document.getElementById('choice');
+	let typed = false;
+
+	function typeLine(text, done) {
+		adv.hidden = true;
+		choice.classList.remove('show');
+		if (reduced) { dialogText.textContent = text; adv.hidden = false; choice.classList.add('show'); if (done) done(); return; }
+		dialogText.textContent = '';
+		let i = 0;
+		(function tick() {
+			dialogText.textContent = text.slice(0, ++i);
+			if (i % 3 === 0) blip(220 + (i % 5) * 30, 0.02);
+			if (i < text.length) setTimeout(tick, 24);
+			else { adv.hidden = false; choice.classList.add('show'); if (done) done(); }
+		})();
+	}
+
+	new IntersectionObserver((entries, obs) => {
+		if (entries[0].isIntersecting && !typed) {
+			typed = true;
+			typeLine(line);
+			obs.disconnect();
+		}
+	}, { threshold: 0.5 }).observe(document.getElementById('dialog'));
+
+	document.getElementById('yes').addEventListener('click', () => confirmBlip());
+	document.getElementById('no').addEventListener('click', e => {
+		e.preventDefault();
+		moveBlip();
+		typeLine(declined);
+	});
+</script>
+</body>
+</html>

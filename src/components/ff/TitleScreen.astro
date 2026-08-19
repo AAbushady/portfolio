@@ -1,0 +1,18 @@
+---
+import { CAREER_START_YEAR } from '../../utils/experience';
+
+// Full-screen PRESS START gate. CSS keeps it display:none unless html.js is
+// set, so script-less visitors land straight on the menu. ff-ui.ts skips it
+// after the first dismissal in a tab session.
+const currentYear = new Date().getFullYear();
+---
+
+<div class="ff-title" role="button" tabindex="0" aria-label="Press start to enter">
+	<div>
+		<p class="ff-logo-sub">A&nbsp;PORTFOLIO&nbsp;FANTASY</p>
+		<p class="ff-logo">ALEX<br />ABUSHADY</p>
+	</div>
+	<p class="ff-press">- PRESS START -</p>
+	<p class="ff-title-hint">(click anywhere or press any key)</p>
+	<p class="ff-title-copy">&copy; {CAREER_START_YEAR}&ndash;{currentYear} ABUSHADYSOFT &middot; ~/portfolio</p>
+</div>

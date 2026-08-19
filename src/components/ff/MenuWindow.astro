@@ -1,0 +1,37 @@
+---
+export interface FFMenuItem {
+	label: string;
+	href: string;
+	/** Shown in the help bar while this item is selected. */
+	help: string;
+	/** 'scroll' smooth-scrolls to href's fragment; 'sound' toggles menu blips. */
+	action?: 'scroll' | 'sound' | undefined;
+}
+
+interface Props {
+	items: FFMenuItem[];
+	plate?: string | undefined;
+	/** The primary menu also responds to arrow keys and Enter page-wide. */
+	primary?: boolean | undefined;
+	label?: string | undefined;
+}
+
+const { items, plate = 'Menu', primary = false, label = 'Main menu' } = Astro.props;
+---
+
+<nav class="ff-win ff-menu ff-section" aria-label={label}>
+	<h2 class="ff-plate">{plate}</h2>
+	<ul data-ff-menu={primary ? 'primary' : 'secondary'}>
+		<svg class="ff-hand" viewBox="0 0 10 10" aria-hidden="true">
+			<g class="bob">
+				<polygon points="1,0.5 9,5 1,9.5" fill="#f2f2f6" stroke="#05051e" stroke-width="1"></polygon>
+				<polygon points="2.5,2.6 7,5 2.5,7.4" fill="#f8d878"></polygon>
+			</g>
+		</svg>
+		{items.map((item) => (
+			<li>
+				<a href={item.href} data-help={item.help} data-action={item.action}>{item.label}</a>
+			</li>
+		))}
+	</ul>
+</nav>
