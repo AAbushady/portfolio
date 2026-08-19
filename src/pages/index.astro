@@ -29,9 +29,16 @@ const years = yearsOfExperience();
 		<div class="wrapper stack gap-15">
 			<header class="hero">
 				<div>
-					<p class="prompt" aria-hidden="true">
-						<span class="path">~/portfolio</span> $ ./introduce --verbose<span class="caret"></span>
-					</p>
+					<div class="prompt-block">
+						<p class="prompt" aria-hidden="true">
+							<span class="path">~/portfolio</span> $ ./introduce --verbose
+						</p>
+						<p class="prompt" aria-hidden="true">
+							<span class="path">~/portfolio</span> $ <span id="cmd-typed"></span><span class="caret"></span>
+						</p>
+						<p class="prompt out" id="cmd-out" aria-hidden="true" hidden></p>
+						<p class="prompt-hint">hint: try <a href="/ff/">theme ff</a></p>
+					</div>
 					<h1>Alex<br />Abushady<span class="cursor" aria-hidden="true">_</span></h1>
 					<p class="tagline">
 						The engineer who delivers. <span class="years-exp">{years}+</span> years shipping
@@ -109,6 +116,81 @@ const years = yearsOfExperience();
 	</div>
 </BaseLayout>
 
+<script>
+	// Hero prompt toy: keystrokes anywhere on the page (outside form fields)
+	// echo into the live prompt line; Enter runs the command. Purely additive:
+	// the visible hint link reaches /ff/ without JS or a keyboard.
+	type CommandResult = { output: string } | { href: string };
+
+	function runCommand(input: string): CommandResult {
+		const cmd = input.toLowerCase().replace(/\s+/g, ' ');
+		if (cmd === 'theme ff') return { href: '/ff/' };
+		if (cmd === 'theme dark' || cmd === 'theme light')
+			return { output: "light/dark lives in the nav toggle. try: theme ff" };
+		if (cmd === 'theme' || cmd === 'theme --list') return { output: 'available themes: ff' };
+		if (cmd === 'help') return { output: "commands: theme ff, help, clear" };
+		if (cmd === 'clear') return { output: '' };
+		if (cmd.startsWith('sudo')) return { output: 'nice try.' };
+		return { output: `${cmd.split(' ')[0]}: command not found (try 'help')` };
+	}
+
+	const typed = document.getElementById('cmd-typed');
+	const out = document.getElementById('cmd-out');
+	let buffer = '';
+
+	const render = () => {
+		if (typed) typed.textContent = buffer;
+	};
+
+	const print = (text: string) => {
+		if (!out) return;
+		out.textContent = text;
+		out.hidden = text === '';
+	};
+
+	const submit = () => {
+		const input = buffer.trim();
+		buffer = '';
+		render();
+		if (!input) return;
+		const result = runCommand(input);
+		if ('href' in result) {
+			window.location.href = result.href;
+			return;
+		}
+		print(result.output);
+	};
+
+	const isTypingTarget = (el: EventTarget | null) =>
+		el instanceof HTMLElement &&
+		(el.tagName === 'INPUT' ||
+			el.tagName === 'TEXTAREA' ||
+			el.tagName === 'SELECT' ||
+			el.isContentEditable);
+
+	document.addEventListener('keydown', (e) => {
+		if (!typed || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+		if (isTypingTarget(e.target)) return;
+		// Leave focused links/buttons alone so keyboard activation still works.
+		if (e.target instanceof HTMLAnchorElement || e.target instanceof HTMLButtonElement) return;
+		if (e.key === 'Enter') {
+			submit();
+		} else if (e.key === 'Escape') {
+			buffer = '';
+			render();
+			print('');
+		} else if (e.key === 'Backspace') {
+			buffer = buffer.slice(0, -1);
+			render();
+		} else if (e.key.length === 1 && buffer.length < 40) {
+			// Mid-command spaces must not scroll the page.
+			if (e.key === ' ' && buffer.length > 0) e.preventDefault();
+			buffer += e.key;
+			render();
+		}
+	});
+</script>
+
 <style>
 	.hero {
 		display: flex;
@@ -117,11 +199,30 @@ const years = yearsOfExperience();
 		padding-top: 1.5rem;
 	}
 
+	.prompt-block {
+		margin-bottom: 1.5rem;
+	}
+
 	.prompt {
 		font-family: var(--font-mono);
 		font-size: 0.875rem;
 		color: var(--gray-400);
-		margin-bottom: 1.5rem;
+	}
+
+	.prompt + .prompt,
+	.prompt.out {
+		margin-top: 0.35rem;
+	}
+
+	.prompt.out {
+		color: var(--gray-300);
+	}
+
+	.prompt-hint {
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		color: var(--gray-400);
+		margin-top: 0.5rem;
 	}
 
 	.prompt .path {
