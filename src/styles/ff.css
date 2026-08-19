@@ -444,6 +444,238 @@ body.ff h3 {
 	white-space: nowrap;
 }
 
+/* ---------- listing pages (quest log / journal) ---------- */
+.ff-list-row {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 2rem;
+	align-items: start;
+}
+
+.ff-quest-row {
+	display: flex;
+	gap: 1.1rem;
+	align-items: flex-start;
+}
+
+.ff-thumb {
+	width: 112px;
+	height: 84px;
+	object-fit: cover;
+	image-rendering: pixelated;
+	border: 3px solid var(--ff-white);
+	border-radius: 4px;
+	box-shadow: 0 0 0 2px var(--ff-ink);
+	background: var(--ff-win-mid);
+	flex-shrink: 0;
+	margin-top: 0.2rem;
+}
+
+.ff-quest .date {
+	margin-top: 0.4rem;
+	font-size: 1.05rem;
+	color: var(--ff-dim);
+}
+
+@media (min-width: 760px) {
+	.ff-list-row {
+		grid-template-columns: 5fr 2fr;
+	}
+
+	.ff-list-side {
+		position: sticky;
+		top: 1.5rem;
+	}
+}
+
+/* ---------- detail pages (quest / journal entry) ---------- */
+.ff-crumbs {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+	padding: 0.7rem 1.2rem;
+	font-size: 1.15rem;
+}
+
+.ff-crumbs a {
+	color: var(--ff-gold);
+	text-decoration: none;
+}
+
+.ff-crumbs a:hover,
+.ff-crumbs a:focus {
+	color: var(--ff-white);
+}
+
+.ff-entry-title {
+	font-family: var(--ff-font-pixel);
+	font-size: clamp(0.95rem, 2.6vw, 1.35rem);
+	line-height: 1.6;
+	color: var(--ff-white);
+	text-shadow: 3px 3px 0 var(--ff-ink);
+	margin-bottom: 0.7rem;
+}
+
+.ff-entry-meta {
+	display: flex;
+	gap: 1.2rem;
+	flex-wrap: wrap;
+	font-size: 1.1rem;
+	color: var(--ff-dim);
+	margin-bottom: 0.5rem;
+}
+
+.ff-entry-desc {
+	font-size: 1.3rem;
+	line-height: 1.3;
+	max-width: 62ch;
+	margin-top: 0.6rem;
+}
+
+.ff-entry-desc .years-exp,
+.ff-content .years-exp {
+	color: var(--ff-gold);
+}
+
+.ff-entry-hero {
+	width: 100%;
+	height: auto;
+	margin-top: 1.4rem;
+	border: 3px solid var(--ff-white);
+	border-radius: 4px;
+	box-shadow: 0 0 0 2px var(--ff-ink);
+	background: var(--ff-win-mid);
+}
+
+.ff-content {
+	max-width: 65ch;
+	margin-inline: auto;
+	margin-top: 1.4rem;
+	font-size: 1.3rem;
+	line-height: 1.45;
+}
+
+.ff-content > * + * {
+	margin-top: 1rem;
+}
+
+.ff-content h1,
+.ff-content h2,
+.ff-content h3,
+.ff-content h4,
+.ff-content h5 {
+	font-family: var(--ff-font-pixel);
+	font-size: 0.8rem;
+	line-height: 1.6;
+	color: var(--ff-gold);
+	text-shadow: 2px 2px 0 var(--ff-ink);
+	margin: 1.6rem 0 0.8rem;
+	overflow-wrap: break-word;
+}
+
+.ff-content h3,
+.ff-content h4,
+.ff-content h5 {
+	font-size: 0.72rem;
+}
+
+.ff-content a {
+	color: var(--ff-gold);
+	text-decoration: underline;
+	text-underline-offset: 0.2em;
+}
+
+.ff-content a:hover,
+.ff-content a:focus {
+	color: var(--ff-white);
+}
+
+.ff-content img,
+.ff-content video {
+	width: 100%;
+	height: auto;
+	border: 3px solid var(--ff-white);
+	border-radius: 4px;
+	box-shadow: 0 0 0 2px var(--ff-ink);
+	background: var(--ff-win-mid);
+}
+
+.ff-content blockquote {
+	border-inline-start: 4px solid var(--ff-gold);
+	padding-inline-start: 1.2rem;
+	color: var(--ff-white);
+}
+
+.ff-content code {
+	font-family: var(--font-mono);
+	font-size: 0.8em;
+	color: var(--ff-gold);
+}
+
+.ff-content pre {
+	background: var(--ff-ink);
+	border: 2px solid var(--ff-bevel);
+	border-radius: 6px;
+	padding: 1rem;
+	overflow-x: auto;
+}
+
+.ff-content pre code {
+	color: inherit;
+}
+
+.ff-content ul,
+.ff-content ol {
+	padding-inline-start: 1.4rem;
+}
+
+.ff-content li + li {
+	margin-top: 0.3rem;
+}
+
+.ff-content ::marker {
+	color: var(--ff-gold);
+}
+
+/* ---------- about page ---------- */
+.ff-stack {
+	display: grid;
+	gap: 2rem;
+	align-content: start;
+}
+
+.ff-prose {
+	font-size: 1.25rem;
+	line-height: 1.45;
+	max-width: 65ch;
+}
+
+.ff-prose p + p {
+	margin-top: 1rem;
+}
+
+.ff-inv {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.45rem;
+	list-style: none;
+	padding: 0;
+	font-size: 1.2rem;
+}
+
+.ff-inv li::before {
+	content: '- ';
+	color: var(--ff-gold);
+}
+
+@media (min-width: 640px) {
+	.ff-inv {
+		grid-template-columns: 1fr 1fr;
+		column-gap: 1.5rem;
+	}
+}
+
 /* ---------- dialog ---------- */
 .ff-dialog {
 	min-height: 9.5rem;

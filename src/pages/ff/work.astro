@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import FFLayout from '../../layouts/FFLayout.astro';
+import DialogWindow from '../../components/ff/DialogWindow.astro';
+import HelpBar from '../../components/ff/HelpBar.astro';
+import MenuWindow from '../../components/ff/MenuWindow.astro';
+import Window from '../../components/ff/Window.astro';
+import { buildFFMenu } from '../../components/ff/menu';
+import { getSortedProjects } from '../../utils/collections';
+import { substituteYears } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const projects = await getSortedProjects();
+const menuItems = buildFFMenu('work', '/work/');
+
+const questHelp = (project: CollectionEntry<'work'>): string =>
+	`${project.data.featured ? '★ Featured quest' : 'Active quest'} · completed ${formatDateISO(project.data.publishDate)}`;
+---
+
+<FFLayout
+	title="Quest Log | Alex Abushady"
+	description="Alex Abushady's projects as a quest log: production platform work, game prototypes, and LLM tooling."
+>
+	<h1 class="sr-only">Quest Log</h1>
+	<div class="ff-screen">
+		<HelpBar>Production platform work, game prototypes, and LLM tooling.</HelpBar>
+
+		<div class="ff-list-row">
+			<Window plate="Quest Log" label="All work projects">
+				{projects.map((project, index) => (
+					<article class="ff-quest ff-quest-row" data-help={questHelp(project)}>
+						<Image
+							class="ff-thumb"
+							src={project.data.img}
+							width={112}
+							alt=""
+							loading={index < 3 ? 'eager' : 'lazy'}
+						/>
+						<div>
+							<h3>
+								{project.data.featured && <span class="star" aria-hidden="true">&#9733; </span>}
+								<a href={`/ff/work/${project.id}/`}>{project.data.title}</a>
+							</h3>
+							<p>{substituteYears(project.data.description)}</p>
+							<p class="ff-tags">
+								{project.data.tags.map((tag) => <span>[{tag}]</span>)}
+							</p>
+						</div>
+					</article>
+				))}
+			</Window>
+
+			<div class="ff-list-side">
+				<MenuWindow items={menuItems} primary />
+			</div>
+		</div>
+
+		<DialogWindow />
+	</div>
+</FFLayout>

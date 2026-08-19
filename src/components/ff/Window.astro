@@ -3,16 +3,21 @@
 interface Props {
 	/** Plate text rendered on the top border (e.g. "Quests"). */
 	plate?: string | undefined;
+	/** Render the plate as a decorative span; for windows whose real heading
+	 *  (e.g. a detail page's h1) lives in the slot. */
+	platePlain?: boolean | undefined;
 	/** Accessible name; falls back to the plate text. */
 	label?: string | undefined;
 	id?: string | undefined;
 	class?: string | undefined;
 }
 
-const { plate, label, id, class: className } = Astro.props;
+const { plate, platePlain = false, label, id, class: className } = Astro.props;
 ---
 
 <section class:list={['ff-win', plate && 'ff-section', className]} id={id} aria-label={label ?? plate}>
-	{plate && <h2 class="ff-plate">{plate}</h2>}
+	{plate && (platePlain
+		? <span class="ff-plate" aria-hidden="true">{plate}</span>
+		: <h2 class="ff-plate">{plate}</h2>)}
 	<slot />
 </section>

@@ -1,12 +1,5 @@
 ---
-export interface FFMenuItem {
-	label: string;
-	href: string;
-	/** Shown in the help bar while this item is selected. */
-	help: string;
-	/** 'scroll' smooth-scrolls to href's fragment; 'sound' toggles menu blips. */
-	action?: 'scroll' | 'sound' | undefined;
-}
+import type { FFMenuItem } from './menu';
 
 interface Props {
 	items: FFMenuItem[];

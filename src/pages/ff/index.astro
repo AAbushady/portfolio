@@ -3,7 +3,8 @@ import type { CollectionEntry } from 'astro:content';
 import FFLayout from '../../layouts/FFLayout.astro';
 import DialogWindow from '../../components/ff/DialogWindow.astro';
 import HelpBar from '../../components/ff/HelpBar.astro';
-import MenuWindow, { type FFMenuItem } from '../../components/ff/MenuWindow.astro';
+import MenuWindow from '../../components/ff/MenuWindow.astro';
+import { buildFFMenu } from '../../components/ff/menu';
 import StatusWindow from '../../components/ff/StatusWindow.astro';
 import TitleScreen from '../../components/ff/TitleScreen.astro';
 import Window from '../../components/ff/Window.astro';
@@ -15,16 +16,7 @@ const projects = (await getSortedProjects()).slice(0, 4);
 const blogPosts = (await getPublishedPosts()).slice(0, 3);
 const years = yearsOfExperience();
 
-// Work/blog links point at the terminal pages until the /ff/ listing and
-// detail routes exist (batches 2 and 3).
-const menuItems: FFMenuItem[] = [
-	{ label: 'WORK', href: '/work/', help: 'Completed quests: shipped products, prototypes, and mods.' },
-	{ label: 'BLOG', href: '/blog/', help: 'The journal. Dev logs from the current playthrough.' },
-	{ label: 'RESUME', href: '/work/resume/', help: 'Character sheet. Printable, ATS-friendly.' },
-	{ label: 'CONTACT', href: '#dialog', help: 'Speak with Alex. Opens the dialog window below.', action: 'scroll' },
-	{ label: 'SOUND: OFF', href: '#', help: 'Toggle menu blips.', action: 'sound' },
-	{ label: 'EXIT', href: '/', help: 'Return to the terminal.' },
-];
+const menuItems = buildFFMenu('home', '/');
 
 const questHelp = (project: CollectionEntry<'work'>): string =>
 	`${project.data.featured ? '★ Featured quest' : 'Active quest'} · completed ${formatDateISO(project.data.publishDate)}`;
@@ -81,7 +73,7 @@ const questHelp = (project: CollectionEntry<'work'>): string =>
 				<article class="ff-quest" data-help={questHelp(project)}>
 					<h3>
 						{project.data.featured && <span class="star" aria-hidden="true">&#9733; </span>}
-						<a href={`/work/${project.id}/`}>{project.data.title}</a>
+						<a href={`/ff/work/${project.id}/`}>{project.data.title}</a>
 					</h3>
 					<p>{substituteYears(project.data.description)}</p>
 					<p class="ff-tags">
@@ -89,7 +81,7 @@ const questHelp = (project: CollectionEntry<'work'>): string =>
 					</p>
 				</article>
 			))}
-			<a class="ff-view-all" href="/work/">&#9654; VIEW ALL QUESTS</a>
+			<a class="ff-view-all" href="/ff/work/">&#9654; VIEW ALL QUESTS</a>
 		</Window>
 
 		<Window plate="Journal" label="Recent blog posts">
@@ -97,7 +89,7 @@ const questHelp = (project: CollectionEntry<'work'>): string =>
 				{blogPosts.map((post) => (
 					<li>
 						<a
-							href={`/blog/${post.id}/`}
+							href={`/ff/blog/${post.id}/`}
 							data-help={`Journal entry · ${formatDateISO(post.data.publishDate)}`}
 						>
 							<span class="t">{post.data.title}</span>
@@ -106,7 +98,7 @@ const questHelp = (project: CollectionEntry<'work'>): string =>
 					</li>
 				))}
 			</ul>
-			<a class="ff-view-all" href="/blog/">&#9654; VIEW ALL ENTRIES</a>
+			<a class="ff-view-all" href="/ff/blog/">&#9654; VIEW ALL ENTRIES</a>
 		</Window>
 
 		<DialogWindow />

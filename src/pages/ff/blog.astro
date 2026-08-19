@@ -1,0 +1,45 @@
+---
+import FFLayout from '../../layouts/FFLayout.astro';
+import DialogWindow from '../../components/ff/DialogWindow.astro';
+import HelpBar from '../../components/ff/HelpBar.astro';
+import MenuWindow from '../../components/ff/MenuWindow.astro';
+import Window from '../../components/ff/Window.astro';
+import { buildFFMenu } from '../../components/ff/menu';
+import { getPublishedPosts } from '../../utils/collections';
+import { substituteYears } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const blogPosts = await getPublishedPosts();
+const menuItems = buildFFMenu('blog', '/blog/');
+---
+
+<FFLayout
+	title="Journal | Alex Abushady"
+	description="Alex Abushady's development blog as a journal: dev logs and project updates from the current playthrough."
+>
+	<h1 class="sr-only">Journal</h1>
+	<div class="ff-screen">
+		<HelpBar>Follow my development journey and project updates.</HelpBar>
+
+		<div class="ff-list-row">
+			<Window plate="Journal" label="All blog posts">
+				{blogPosts.map((post) => (
+					<article
+						class="ff-quest"
+						data-help={`Journal entry · ${formatDateISO(post.data.publishDate)}`}
+					>
+						<h3><a href={`/ff/blog/${post.id}/`}>{post.data.title}</a></h3>
+						<p>{substituteYears(post.data.description)}</p>
+						<p class="date">{formatDateISO(post.data.publishDate)}</p>
+					</article>
+				))}
+			</Window>
+
+			<div class="ff-list-side">
+				<MenuWindow items={menuItems} primary />
+			</div>
+		</div>
+
+		<DialogWindow />
+	</div>
+</FFLayout>

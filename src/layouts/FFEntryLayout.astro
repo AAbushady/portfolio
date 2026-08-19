@@ -1,0 +1,125 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+import FFLayout from './FFLayout.astro';
+
+import DialogWindow from '../components/ff/DialogWindow.astro';
+import HelpBar from '../components/ff/HelpBar.astro';
+import Window from '../components/ff/Window.astro';
+
+/**
+ * FF twin of EntryLayout: one big window holding the whole entry.
+ * Default slot: the rendered markdown `<Content />`.
+ * Named slot `meta`: optional block above the tags (e.g. journal dates).
+ * No structured data on purpose; FF pages are noindex and the terminal twin
+ * carries the schema.
+ */
+interface Props {
+	title: string;
+	/** Plain-text description for meta tags and the help bar. */
+	description: string;
+	/** Optional HTML variant carrying the .years-exp refresh span. */
+	descriptionHtml?: string | undefined;
+	/** Window plate, e.g. "Quest" or "Journal Entry". */
+	plate: string;
+	tags: string[];
+	img?: ImageMetadata | undefined;
+	imgAlt?: string | undefined;
+	backHref: string;
+	/** Menu-style label for the back link, e.g. "QUEST LOG". */
+	backLabel: string;
+	/** The entry's terminal twin, where EXIT leads. */
+	exitHref: string;
+	ogImage?: string | undefined;
+	ogImageAlt?: string | undefined;
+	publishDate: Date;
+}
+
+const {
+	title,
+	description,
+	descriptionHtml,
+	plate,
+	tags,
+	img,
+	imgAlt,
+	backHref,
+	backLabel,
+	exitHref,
+	ogImage,
+	ogImageAlt,
+	publishDate,
+} = Astro.props;
+---
+
+<FFLayout
+	title={title}
+	description={description}
+	ogImage={ogImage}
+	ogImageAlt={ogImageAlt}
+	ogType="article"
+	publishDate={publishDate}
+>
+	<div class="ff-screen">
+		<HelpBar>
+			{descriptionHtml ? <Fragment set:html={descriptionHtml} /> : description}
+		</HelpBar>
+
+		<nav class="ff-win ff-crumbs" aria-label="Breadcrumb">
+			<a href={backHref} data-help={`Back to the ${backLabel.toLowerCase()}.`}>&#9664; {backLabel}</a>
+			<a href={exitHref} data-help="Return to the terminal.">EXIT &#9654;</a>
+		</nav>
+
+		<Window plate={plate} platePlain label={plate}>
+			<header>
+				<h1 class="ff-entry-title">{title}</h1>
+				<slot name="meta" />
+				<p class="ff-tags">
+					{tags.map((tag) => <span>[{tag}]</span>)}
+				</p>
+				{descriptionHtml ? (
+					<p class="ff-entry-desc" set:html={descriptionHtml} />
+				) : (
+					<p class="ff-entry-desc">{description}</p>
+				)}
+			</header>
+			{img && (
+				<Image
+					class="ff-entry-hero"
+					src={img}
+					alt={imgAlt ?? `${title} preview`}
+					widths={[720, 1440]}
+					sizes="(min-width: 50em) 65ch, 100vw"
+					loading="eager"
+					fetchpriority="high"
+				/>
+			)}
+			<div class="ff-content">
+				<slot />
+			</div>
+		</Window>
+
+		<DialogWindow />
+	</div>
+
+	<script>
+		// Same reduced-motion video handling as the terminal EntryLayout: stop
+		// autoplaying demo videos and surface native controls instead.
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+		const stopAutoplay = () => {
+			if (!reducedMotion.matches) return;
+			for (const video of document.querySelectorAll('video')) {
+				if (video.autoplay || !video.paused) {
+					video.removeAttribute('autoplay');
+					video.pause();
+					video.controls = true;
+				}
+			}
+		};
+
+		stopAutoplay();
+		reducedMotion.addEventListener('change', stopAutoplay);
+	</script>
+</FFLayout>

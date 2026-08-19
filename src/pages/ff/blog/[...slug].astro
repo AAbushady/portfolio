@@ -1,0 +1,55 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+
+import FFEntryLayout from '../../../layouts/FFEntryLayout.astro';
+import { getPublishedPosts } from '../../../utils/collections';
+import { substituteYears } from '../../../utils/experience';
+import { formatDateISO } from '../../../utils/format';
+
+interface Props {
+	entry: CollectionEntry<'blog'>;
+}
+
+export async function getStaticPaths() {
+	const blog = await getPublishedPosts();
+	return blog.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const description = substituteYears(entry.data.description);
+const descriptionHtml = substituteYears(entry.data.description, { html: true });
+const imgAlt = entry.data.img_alt || `${entry.data.title} blog preview`;
+---
+
+<FFEntryLayout
+	title={entry.data.title}
+	description={description}
+	descriptionHtml={descriptionHtml}
+	plate="Journal Entry"
+	tags={entry.data.tags}
+	img={entry.data.img}
+	imgAlt={entry.data.img ? imgAlt : undefined}
+	backHref="/ff/blog/"
+	backLabel="JOURNAL"
+	exitHref={`/blog/${entry.id}/`}
+	ogImage={entry.data.img?.src}
+	ogImageAlt={entry.data.img ? imgAlt : undefined}
+	publishDate={entry.data.publishDate}
+>
+	<p class="ff-entry-meta" slot="meta">
+		<time datetime={entry.data.publishDate.toISOString()}>
+			published: {formatDateISO(entry.data.publishDate)}
+		</time>
+		{entry.data.updatedDate && (
+			<time datetime={entry.data.updatedDate.toISOString()}>
+				updated: {formatDateISO(entry.data.updatedDate)}
+			</time>
+		)}
+	</p>
+	<Content />
+</FFEntryLayout>

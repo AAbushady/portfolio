@@ -1,0 +1,44 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+
+import FFEntryLayout from '../../../layouts/FFEntryLayout.astro';
+import { getSortedProjects } from '../../../utils/collections';
+import { substituteYears } from '../../../utils/experience';
+
+interface Props {
+	entry: CollectionEntry<'work'>;
+}
+
+export async function getStaticPaths() {
+	const work = await getSortedProjects();
+	return work.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const description = substituteYears(entry.data.description);
+const descriptionHtml = substituteYears(entry.data.description, { html: true });
+const imgAlt = entry.data.img_alt || `${entry.data.title} project preview`;
+---
+
+<FFEntryLayout
+	title={entry.data.title}
+	description={description}
+	descriptionHtml={descriptionHtml}
+	plate="Quest"
+	tags={entry.data.tags}
+	img={entry.data.img}
+	imgAlt={imgAlt}
+	backHref="/ff/work/"
+	backLabel="QUEST LOG"
+	exitHref={`/work/${entry.id}/`}
+	ogImage={entry.data.img.src}
+	ogImageAlt={imgAlt}
+	publishDate={entry.data.publishDate}
+>
+	<Content />
+</FFEntryLayout>
