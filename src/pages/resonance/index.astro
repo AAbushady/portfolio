@@ -1,0 +1,112 @@
+---
+import ResonanceLayout from '../../layouts/ResonanceLayout.astro';
+import SpellCore from '../../components/resonance/SpellCore.astro';
+import ZoneHead from '../../components/resonance/ZoneHead.astro';
+import { getPublishedPosts, getSortedProjects } from '../../utils/collections';
+import { substituteYears, yearsOfExperience } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const projects = (await getSortedProjects()).slice(0, 4);
+const blogPosts = (await getPublishedPosts()).slice(0, 3);
+const years = yearsOfExperience();
+
+// Work/blog entry links point at the terminal detail pages until the
+// /resonance/ subroutes exist (batch 2).
+const workYear = (date: Date): string => formatDateISO(date).slice(0, 4);
+---
+
+<ResonanceLayout
+	title="Alex Abushady: Resonance"
+	description="Alex Abushady's portfolio rendered as a science-and-sorcery interface. Six years of shipped production systems, game prototypes, and local LLM work."
+>
+	<!-- ============ HERO ============ -->
+	<header class="rs-hero">
+		<SpellCore />
+		<p class="rs-telemetry" aria-hidden="true">CORE <b>100%</b> &#9672; WARDS <b>HOLDING</b> &#9672; SYSTEMS <b>ONLINE</b></p>
+		<p class="rs-whisper">you are expected</p>
+		<h1>Alex Abushady</h1>
+		<p class="rs-credo">
+			<b>The engineer who delivers.</b>
+			<span class="years-exp">{years}+</span> years shipping production systems. Now building
+			games and AI tooling on the same foundation.
+		</p>
+		<span class="rs-descend" aria-hidden="true">Descend</span>
+	</header>
+
+	<!-- ============ RECORD ============ -->
+	<section class="rs-zone rs-reveal" aria-label="The record">
+		<ZoneHead index="01" title="The Record" note="MEASURED, NOT CLAIMED · SOURCE: COMMIT HISTORY" />
+		<div class="rs-tiles">
+			<div class="rs-glass rs-tile"><span class="idx">R.01</span><p class="n">800+</p><p class="of">Pull requests<br />authored</p></div>
+			<div class="rs-glass rs-tile"><span class="idx">R.02</span><p class="n">2,400+</p><p class="of">Pull requests<br />reviewed</p></div>
+			<div class="rs-glass rs-tile"><span class="idx">R.03</span><p class="n">276</p><p class="of">Production crises<br />resolved</p></div>
+			<div class="rs-glass rs-tile"><span class="idx">R.04</span><p class="n">5</p><p class="of">Products shipped<br />end to end</p></div>
+		</div>
+		<p class="rs-record-foot">SIX YEARS · LIVE MONEY-HANDLING SYSTEMS · ZERO EXCUSES</p>
+		<p class="rs-record-hum">they hum, if you listen.</p>
+	</section>
+
+	<!-- ============ CAPABILITIES ============ -->
+	<section class="rs-zone rs-reveal" aria-label="Capabilities">
+		<ZoneHead index="02" title="Capabilities" note="CLASS: SCIENCE / THE OTHER THING" />
+		<div class="rs-caps">
+			<div class="rs-glass rs-cap">
+				<p class="rs-mod">MOD-01 · PRIMARY <b>BOUND</b></p>
+				<h3>Production Engineering</h3>
+				<p>Five products shipped end-to-end in C#/.NET, plus 800+ PRs authored, 2,400+ reviewed, and 276 production support cases resolved on live money-handling systems.</p>
+				<p class="rs-pips" aria-hidden="true">&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;</p>
+			</div>
+			<div class="rs-glass rs-cap">
+				<p class="rs-mod">MOD-02 · WORLDCRAFT <b>BOUND</b></p>
+				<h3>Game Development</h3>
+				<p>Prototyping game systems from driving physics to combat design, building dev tools, and shipping mods for games like Cyberpunk 2077.</p>
+				<p class="rs-pips" aria-hidden="true">&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;</p>
+			</div>
+			<div class="rs-glass rs-cap">
+				<p class="rs-mod">MOD-03 · THE OTHER THING <b>UNBOUND</b></p>
+				<h3>AI &amp; LLM Engineering</h3>
+				<p>Fine-tuning and serving local LLMs, building model tooling, and bringing applied AI engineering to production systems.</p>
+				<p class="rs-pips rs-pips-arc" aria-hidden="true">&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;&nbsp;&#9672;</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ WORKS ============ -->
+	<section class="rs-zone rs-reveal" id="works" aria-label="Selected work">
+		<ZoneHead index="03" title="Works" note="EXAMINE THEM" />
+		{projects.map((project) => (
+			<article class="rs-glass rs-work">
+				<div class="top">
+					<h3><a href={`/work/${project.id}/`}>{project.data.title}</a></h3>
+					<span class="yr">{workYear(project.data.publishDate)}</span>
+				</div>
+				<p>{substituteYears(project.data.description)}</p>
+				<p class="tags">{project.data.tags.join(' · ')}</p>
+			</article>
+		))}
+		<a class="rs-more" href="/work/">All works</a>
+	</section>
+
+	<!-- ============ LOG ============ -->
+	<section class="rs-zone rs-reveal" id="log" aria-label="Development log">
+		<ZoneHead index="04" title="Log" note="THE WORK CONTINUES · LATEST FIRST" />
+		<ul class="rs-log-list">
+			{blogPosts.map((post) => (
+				<li>
+					<a href={`/blog/${post.id}/`}>
+						<span class="t">{post.data.title}</span>
+						<span class="d">{formatDateISO(post.data.publishDate)}</span>
+					</a>
+				</li>
+			))}
+		</ul>
+		<a class="rs-more" href="/blog/">Full log</a>
+	</section>
+
+	<!-- ============ AUDIENCE ============ -->
+	<section class="rs-zone rs-reveal rs-audience" id="audience" aria-label="Contact">
+		<ZoneHead index="05" title="State Your Purpose" note="CHANNEL OPEN · MONITORED" />
+		<p class="line">You seek an engineer who delivers. Your judgment is sound.</p>
+		<a class="rs-summon" href="mailto:aabushady214@gmail.com">Request Audience</a>
+	</section>
+</ResonanceLayout>

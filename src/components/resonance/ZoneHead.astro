@@ -1,0 +1,16 @@
+---
+// Section header row: numbered serif title on the left, uppercase annotation
+// on the right, over a green hairline.
+interface Props {
+	index: string;
+	title: string;
+	note?: string | undefined;
+}
+
+const { index, title, note } = Astro.props;
+---
+
+<div class="rs-zone-head">
+	<h2><span class="rs-zid" aria-hidden="true">{index}</span>{title}</h2>
+	{note && <p class="rs-znote">{note}</p>}
+</div>

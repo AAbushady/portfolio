@@ -1,0 +1,631 @@
+/* Resonance theme ("science & sorcery"): conjured spell circle over a machined
+   core, chamfered glass plating, void black + one green. Loaded only by
+   ResonanceLayout; the terminal and FF themes never see these styles.
+   Canonical design reference: mockups/mockup-resonance.html */
+
+/* Latin subsets from Google Fonts; licenses in
+   /fonts/LICENSE-cormorant-garamond-OFL.txt and /fonts/LICENSE-space-grotesk-OFL.txt */
+@font-face {
+	font-family: 'Cormorant Garamond';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/cormorant-garamond-500.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: 'Cormorant Garamond';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('/fonts/cormorant-garamond-600.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: 'Cormorant Garamond';
+	font-style: italic;
+	font-weight: 500;
+	font-display: swap;
+	src: url('/fonts/cormorant-garamond-500-italic.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+	font-family: 'Space Grotesk';
+	font-style: normal;
+	font-weight: 300 700;
+	font-display: swap;
+	src: url('/fonts/space-grotesk-variable.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+	--rs-void: #050807;
+	--rs-steel: #d3dad6;
+	--rs-mist: #93a09a;
+	--rs-faint: #5a6660;
+	--rs-green: #35e57c;
+	--rs-green-soft: rgba(53, 229, 124, 0.16);
+	--rs-green-line: rgba(53, 229, 124, 0.28);
+	--rs-glass-hi: rgba(255, 255, 255, 0.055);
+
+	--rs-serif: 'Cormorant Garamond', Georgia, serif;
+	--rs-sans: 'Space Grotesk', var(--font-system);
+}
+
+/* iOS paints overscroll and safe areas with the root background. */
+html.rs-root {
+	background-color: var(--rs-void);
+}
+
+body.rs {
+	font-family: var(--rs-sans);
+	font-weight: 300;
+	font-size: 15.5px;
+	line-height: 1.65;
+	color: var(--rs-mist);
+	background: var(--rs-void);
+}
+
+body.rs ::selection { background: var(--rs-green); color: #03130a; }
+body.rs a { color: inherit; text-decoration: none; }
+body.rs :focus-visible { outline-color: var(--rs-green); }
+
+.rs-skip-link {
+	position: absolute;
+	z-index: 60;
+	top: 0.6rem;
+	left: 0.6rem;
+	padding: 0.55rem 1rem;
+	background: var(--rs-void);
+	border: 1px solid var(--rs-green);
+	color: var(--rs-green);
+	font-size: 0.7rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	transform: translateY(-300%);
+}
+.rs-skip-link:focus { transform: none; }
+
+/* ---------- the deep field ---------- */
+.rs-field {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	background:
+		radial-gradient(52% 38% at 50% 18%, rgba(53, 229, 124, 0.07) 0%, transparent 70%),
+		radial-gradient(65% 45% at 82% 78%, rgba(28, 120, 70, 0.075) 0%, transparent 70%),
+		radial-gradient(50% 40% at 12% 62%, rgba(53, 229, 124, 0.05) 0%, transparent 70%);
+}
+
+/* film grain */
+.rs-grain {
+	position: fixed;
+	inset: 0;
+	z-index: 40;
+	pointer-events: none;
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="170" height="170"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2"/><feColorMatrix type="saturate" values="0"/></filter><rect width="170" height="170" filter="url(%23n)" opacity="0.035"/></svg>');
+}
+
+.rs-page { position: relative; z-index: 1; }
+
+/* ---------- nav ---------- */
+.rs-nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+	gap: clamp(1.1rem, 3.5vw, 2.8rem);
+	padding: 1.15rem 1rem 1.05rem;
+	background: linear-gradient(180deg, rgba(5, 8, 7, 0.85), rgba(5, 8, 7, 0.35) 75%, transparent);
+	backdrop-filter: blur(8px);
+}
+.rs-nav a {
+	display: inline-block;
+	font-size: 0.68rem;
+	font-weight: 400;
+	letter-spacing: 0.32em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+	transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.15s ease;
+}
+.rs-nav a:active { transform: translateY(1px); }
+.rs-nav a:hover, .rs-nav a:focus {
+	color: var(--rs-green);
+	text-shadow: 0 0 14px var(--rs-green-line);
+}
+
+/* ---------- hero ---------- */
+.rs-hero {
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2.6rem;
+	text-align: center;
+	padding: 5rem 1.2rem 4rem;
+	position: relative;
+}
+
+/* boot sequence */
+.rs-hero > * {
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.rs-hero.lit > * { opacity: 1; transform: none; }
+.rs-hero.lit .rs-anomaly { transition-delay: 0.1s; }
+.rs-hero.lit .rs-telemetry { transition-delay: 0.9s; }
+.rs-hero.lit .rs-whisper { transition-delay: 1.3s; }
+.rs-hero.lit h1 { transition-delay: 1.5s; }
+.rs-hero.lit .rs-credo { transition-delay: 1.9s; }
+.rs-hero.lit .rs-descend { transition-delay: 2.4s; }
+@media (prefers-reduced-motion: reduce) {
+	.rs-hero > * { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- the spell core ---------- */
+.rs-anomaly {
+	position: relative;
+	width: min(240px, 52vw);
+	aspect-ratio: 1;
+	display: grid;
+	place-items: center;
+}
+.rs-anomaly svg { width: 100%; overflow: visible; }
+
+.rs-halo {
+	position: absolute;
+	inset: -34%;
+	background: radial-gradient(50% 50% at 50% 50%, var(--rs-green-soft) 0%, transparent 68%);
+}
+
+/* projected ward: the containment field around the core */
+.rs-ward {
+	position: absolute;
+	inset: -46%;
+	border: 1px solid rgba(53, 229, 124, 0.18);
+	border-radius: 50%;
+	box-shadow: 0 0 30px rgba(53, 229, 124, 0.07), inset 0 0 30px rgba(53, 229, 124, 0.05);
+}
+.rs-ward::before {
+	content: '';
+	position: absolute;
+	inset: 7%;
+	border: 1px dashed rgba(53, 229, 124, 0.28);
+	border-radius: 50%;
+}
+
+/* a stray mote circling the ward */
+.rs-mote {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 5px;
+	height: 5px;
+	margin: -2.5px 0 0 -2.5px;
+	border-radius: 50%;
+	background: var(--rs-green);
+	box-shadow: 0 0 8px var(--rs-green), 0 0 18px rgba(53, 229, 124, 0.6);
+}
+
+/* observation brackets: the instruments watching it */
+.rs-bracket {
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	border: 1px solid rgba(53, 229, 124, 0.45);
+}
+.rs-bracket.b-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.rs-bracket.b-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.rs-bracket.b-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.rs-bracket.b-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+	.rs-halo { animation: rs-breathe 6s ease-in-out infinite; }
+	.rs-anomaly .spin { transform-origin: 100px 100px; animation: rs-slowspin 40s linear infinite; }
+	.rs-anomaly .spin2 { transform-origin: 100px 100px; animation: rs-slowspin 70s linear infinite reverse; }
+	.rs-ward::before { animation: rs-slowspin 130s linear infinite; }
+	.rs-mote { animation: rs-orbit 16s linear infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.rs-mote { transform: translateX(112px); }
+}
+@keyframes rs-breathe { 50% { opacity: 0.5; transform: scale(0.95); } }
+@keyframes rs-slowspin { to { transform: rotate(360deg); } }
+@keyframes rs-orbit {
+	from { transform: rotate(0deg) translateX(112px); }
+	to { transform: rotate(360deg) translateX(112px); }
+}
+
+.rs-telemetry {
+	font-size: 0.62rem;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+}
+.rs-telemetry b { color: var(--rs-green); font-weight: 400; }
+
+.rs-whisper {
+	font-family: var(--rs-serif);
+	font-style: italic;
+	font-size: 1.05rem;
+	letter-spacing: 0.34em;
+	text-transform: lowercase;
+	color: var(--rs-green);
+	text-shadow: 0 0 18px var(--rs-green-line);
+}
+
+body.rs h1 {
+	font-family: var(--rs-serif);
+	font-weight: 600;
+	font-size: clamp(3rem, 10.5vw, 6.8rem);
+	line-height: 1;
+	letter-spacing: 0.05em;
+	color: var(--rs-steel);
+	text-shadow: 0 0 46px rgba(53, 229, 124, 0.16);
+	text-wrap: balance;
+}
+
+.rs-credo {
+	max-width: 44ch;
+	font-size: 1.02rem;
+	color: var(--rs-mist);
+}
+.rs-credo b { color: var(--rs-steel); font-weight: 400; }
+.rs-credo .years-exp { color: var(--rs-green); }
+
+.rs-descend {
+	position: absolute;
+	bottom: 1.8rem;
+	font-size: 0.62rem;
+	letter-spacing: 0.5em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+}
+
+/* ---------- section shell ---------- */
+.rs-zone {
+	max-width: 920px;
+	margin: 0 auto;
+	/* bottom runs slightly heavier than top, which reads as even */
+	padding: clamp(4rem, 9vh, 6.5rem) 1.2rem clamp(4.6rem, 10.5vh, 7.5rem);
+}
+
+.rs-zone-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 0.6rem 1.4rem;
+	flex-wrap: wrap;
+	border-bottom: 1px solid rgba(53, 229, 124, 0.14);
+	padding-bottom: 0.9rem;
+	margin-bottom: 2.2rem;
+}
+.rs-zone-head h2 {
+	font-family: var(--rs-serif);
+	font-weight: 600;
+	font-size: clamp(1.6rem, 3.6vw, 2.1rem);
+	letter-spacing: 0.03em;
+	color: var(--rs-steel);
+	text-shadow: 0 0 30px rgba(53, 229, 124, 0.14);
+}
+.rs-zone-head .rs-zid {
+	font-family: var(--rs-sans);
+	font-weight: 400;
+	font-size: 0.62rem;
+	letter-spacing: 0.3em;
+	color: var(--rs-green);
+	margin-right: 1rem;
+	vertical-align: 0.4em;
+}
+.rs-znote {
+	font-size: 0.64rem;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+}
+
+/* ---------- armor plate: chamfered corners, luminous seam edges ---------- */
+.rs-glass {
+	position: relative;
+	background: linear-gradient(165deg, rgba(22, 30, 26, 0.55), rgba(9, 13, 11, 0.7));
+	backdrop-filter: blur(12px);
+	clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+	box-shadow:
+		inset 0 0 0 1px rgba(53, 229, 124, 0.22),
+		inset 0 1px 0 var(--rs-glass-hi),
+		inset 0 -18px 34px rgba(3, 10, 6, 0.35);
+}
+
+/* seam lights up under the cursor (see resonance-ui.ts) */
+.rs-glass::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	padding: 1px;
+	background: radial-gradient(190px circle at var(--mx, 50%) var(--my, 50%), rgba(53, 229, 124, 0.6), transparent 70%);
+	-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+	-webkit-mask-composite: xor;
+	mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+	mask-composite: exclude;
+	opacity: 0;
+	transition: opacity 0.35s ease;
+}
+.rs-glass:hover::after { opacity: 1; }
+
+/* scroll reveal + staggered arrival within each section */
+.rs-reveal { opacity: 0; transform: translateY(26px); transition: opacity 1s ease, transform 1s ease; }
+.rs-reveal.on { opacity: 1; transform: none; }
+.rs-reveal .rs-glass {
+	opacity: 0;
+	transform: translateY(18px);
+	transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.rs-reveal.on .rs-glass { opacity: 1; transform: none; }
+.rs-reveal.on .rs-glass:nth-child(2) { transition-delay: 0.1s; }
+.rs-reveal.on .rs-glass:nth-child(3) { transition-delay: 0.2s; }
+.rs-reveal.on .rs-glass:nth-child(4) { transition-delay: 0.3s; }
+.rs-reveal.on .rs-glass:nth-child(5) { transition-delay: 0.4s; }
+@media (prefers-reduced-motion: reduce) {
+	.rs-reveal, .rs-reveal .rs-glass { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- record ---------- */
+.rs-tiles {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1.1rem;
+}
+@media (min-width: 720px) { .rs-tiles { grid-template-columns: repeat(4, 1fr); } }
+.rs-tile { padding: 1.6rem 1.2rem 1.4rem; text-align: center; }
+.rs-tile .idx {
+	position: absolute;
+	top: 0.6rem;
+	right: 0.8rem;
+	font-size: 0.56rem;
+	letter-spacing: 0.2em;
+	color: var(--rs-faint);
+}
+.rs-tile .n {
+	font-family: var(--rs-sans);
+	font-weight: 300;
+	font-variant-numeric: tabular-nums;
+	font-size: clamp(2.1rem, 5vw, 3rem);
+	line-height: 1;
+	color: var(--rs-steel);
+	text-shadow: 0 0 26px var(--rs-green-line);
+}
+.rs-tile .of {
+	margin-top: 0.7rem;
+	font-size: 0.66rem;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+	line-height: 1.8;
+}
+.rs-record-foot {
+	margin-top: 1.6rem;
+	font-size: 0.66rem;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+	text-align: center;
+}
+.rs-record-hum {
+	margin-top: 0.5rem;
+	font-family: var(--rs-serif);
+	font-style: italic;
+	font-size: 1.02rem;
+	color: var(--rs-faint);
+	text-align: center;
+}
+
+/* ---------- capabilities: bento, primary module tall ---------- */
+.rs-caps { display: grid; gap: 1.1rem; grid-template-columns: 1fr; }
+@media (min-width: 760px) {
+	.rs-caps { grid-template-columns: 3fr 2fr; }
+	.rs-cap:first-child { grid-row: 1 / 3; }
+}
+.rs-cap {
+	display: flex;
+	flex-direction: column;
+	padding: 1.7rem 1.5rem 1.8rem;
+}
+.rs-mod {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	margin-bottom: 0.95rem;
+	font-size: 0.6rem;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+}
+.rs-mod b { color: var(--rs-green); font-weight: 400; }
+.rs-cap h3 {
+	font-family: var(--rs-sans);
+	font-weight: 500;
+	font-size: 0.98rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--rs-steel);
+	margin-bottom: 0.65rem;
+}
+.rs-cap p { font-size: 0.92rem; }
+.rs-pips {
+	margin-top: auto;
+	padding-top: 1.05rem;
+	font-size: 0.72rem;
+	letter-spacing: 0.5em;
+	color: var(--rs-green);
+	text-shadow: 0 0 10px rgba(53, 229, 124, 0.55);
+	opacity: 0.85;
+}
+/* MOD-03 runs hotter than its spec says it should */
+@media (prefers-reduced-motion: no-preference) {
+	.rs-pips-arc { animation: rs-arcpulse 3.2s ease-in-out infinite; }
+	@keyframes rs-arcpulse {
+		0%, 100% { opacity: 0.85; }
+		50% { opacity: 1; filter: brightness(1.5); }
+	}
+}
+
+/* ---------- works ---------- */
+.rs-work {
+	display: block;
+	overflow: hidden;
+	padding: 1.8rem 1.6rem;
+	margin-bottom: 1.1rem;
+	transition: box-shadow 0.4s ease;
+}
+.rs-work:hover, .rs-work:focus-within {
+	box-shadow:
+		inset 0 0 0 1px rgba(53, 229, 124, 0.55),
+		inset 0 0 30px rgba(53, 229, 124, 0.07),
+		inset 0 1px 0 var(--rs-glass-hi),
+		inset 0 -18px 34px rgba(3, 10, 6, 0.35);
+}
+/* scan pass on hover */
+.rs-work::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1px;
+	width: 100%;
+	background: linear-gradient(90deg, var(--rs-green), transparent 75%);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.55s ease;
+}
+.rs-work:hover::before, .rs-work:focus-within::before { transform: scaleX(1); }
+.rs-work .top {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1.2rem;
+	flex-wrap: wrap;
+	margin-bottom: 0.5rem;
+}
+.rs-work h3 {
+	font-family: var(--rs-sans);
+	font-weight: 500;
+	font-size: clamp(1rem, 2.4vw, 1.25rem);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--rs-steel);
+}
+.rs-work h3 a { color: inherit; }
+.rs-work:hover h3 { text-shadow: 0 0 22px var(--rs-green-line); }
+.rs-work .yr {
+	font-size: 0.68rem;
+	letter-spacing: 0.26em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+	white-space: nowrap;
+}
+.rs-work p { max-width: 65ch; font-size: 0.95rem; }
+.rs-work .tags {
+	margin-top: 0.8rem;
+	font-size: 0.66rem;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--rs-green);
+	opacity: 0.75;
+}
+
+.rs-more {
+	display: inline-block;
+	margin-top: 0.6rem;
+	font-size: 0.68rem;
+	letter-spacing: 0.32em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+	border-bottom: 1px solid transparent;
+	padding-bottom: 3px;
+	transition: color 0.3s ease, border-color 0.3s ease, transform 0.15s ease;
+}
+.rs-more:hover, .rs-more:focus { color: var(--rs-green); border-bottom-color: var(--rs-green-line); }
+.rs-more:active { transform: translateY(1px); }
+
+/* ---------- log ---------- */
+.rs-log-list { list-style: none; padding: 0; }
+.rs-log-list li {
+	border-bottom: 1px solid rgba(53, 229, 124, 0.12);
+}
+.rs-log-list a {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1.5rem;
+	padding: 1.05rem 0.5rem;
+}
+.rs-log-list .t {
+	font-family: var(--rs-sans);
+	font-weight: 400;
+	font-size: 0.92rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--rs-steel);
+}
+.rs-log-list a:hover .t, .rs-log-list a:focus .t { color: var(--rs-green); }
+.rs-log-list .d {
+	font-size: 0.68rem;
+	letter-spacing: 0.22em;
+	color: var(--rs-faint);
+	white-space: nowrap;
+}
+
+/* ---------- audience ---------- */
+.rs-audience { text-align: center; padding-bottom: 6rem; }
+.rs-audience .line {
+	max-width: 46ch;
+	margin: 0 auto 2.6rem;
+	font-size: 1rem;
+}
+.rs-summon {
+	display: inline-block;
+	font-family: var(--rs-sans);
+	font-weight: 500;
+	font-size: 0.78rem;
+	letter-spacing: 0.34em;
+	text-transform: uppercase;
+	color: var(--rs-steel);
+	clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+	box-shadow: inset 0 0 0 1px var(--rs-green-line);
+	padding: 1.05rem 2.6rem 0.95rem;
+	background: linear-gradient(165deg, rgba(53, 229, 124, 0.08), rgba(53, 229, 124, 0.02));
+	transition: box-shadow 0.4s ease, color 0.4s ease, transform 0.15s ease;
+}
+.rs-summon:hover, .rs-summon:focus {
+	color: #eafff2;
+	box-shadow: inset 0 0 0 1px var(--rs-green), inset 0 0 26px rgba(53, 229, 124, 0.22);
+}
+.rs-summon:active { transform: translateY(1px) scale(0.99); }
+
+/* ---------- footer ---------- */
+.rs-footer {
+	text-align: center;
+	padding: 3rem 1rem 3.4rem;
+	border-top: 1px solid rgba(53, 229, 124, 0.1);
+}
+.rs-footer .sig {
+	font-size: 0.66rem;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+	color: var(--rs-faint);
+}
+.rs-footer .last {
+	margin-top: 0.9rem;
+	font-family: var(--rs-serif);
+	font-style: italic;
+	font-size: 1.02rem;
+	color: var(--rs-faint);
+}
