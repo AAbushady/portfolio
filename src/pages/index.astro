@@ -49,7 +49,7 @@ const years = yearsOfExperience();
 							maxlength="40"
 						/>
 						<p class="prompt out" id="cmd-out" aria-hidden="true" hidden></p>
-						<p class="prompt-hint">hint: try <a href="/ff/">theme ff</a></p>
+						<p class="prompt-hint">hint: try <a href="/ff/">theme ff</a> or <a href="/resonance/">theme resonance</a></p>
 					</div>
 					<h1>Alex<br />Abushady<span class="cursor" aria-hidden="true">_</span></h1>
 					<p class="tagline">
@@ -137,10 +137,11 @@ const years = yearsOfExperience();
 	function runCommand(input: string): CommandResult {
 		const cmd = input.toLowerCase().replace(/\s+/g, ' ');
 		if (cmd === 'theme ff') return { href: '/ff/' };
+		if (cmd === 'theme resonance') return { href: '/resonance/' };
 		if (cmd === 'theme dark' || cmd === 'theme light')
-			return { output: "light/dark lives in the nav toggle. try: theme ff" };
-		if (cmd === 'theme' || cmd === 'theme --list') return { output: 'available themes: ff' };
-		if (cmd === 'help') return { output: "commands: theme ff, help, clear" };
+			return { output: "light/dark lives in the nav toggle. try: theme ff or theme resonance" };
+		if (cmd === 'theme' || cmd === 'theme --list') return { output: 'available themes: ff, resonance' };
+		if (cmd === 'help') return { output: "commands: theme <name>, help, clear" };
 		if (cmd === 'clear') return { output: '' };
 		if (cmd.startsWith('sudo')) return { output: 'nice try.' };
 		return { output: `${cmd.split(' ')[0]}: command not found (try 'help')` };
