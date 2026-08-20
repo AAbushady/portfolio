@@ -1,0 +1,27 @@
+---
+// Contact chapter; every scratch page closes with one. Labeled RETURN because
+// that's how the story ends: he gets out. The doorway carries the one warm
+// light in the theme.
+import ChapterHead from './ChapterHead.astro';
+
+interface Props {
+	no?: string | undefined;
+	note?: string | undefined;
+	line?: string | undefined;
+}
+
+const {
+	no = 'Return',
+	note = 'every draft needs a reader.',
+	line = 'Stories from the dark place all end the same way: somebody has to ship. He ships.',
+} = Astro.props;
+---
+
+<section class="sc-chapter sc-reveal sc-wayout" id="wayout" aria-label="Contact">
+	<ChapterHead no={no} title="The Way Out" note={note} />
+	<p class="line">{line}</p>
+	<span class="sc-lamp">
+		<a class="sc-doorway" href="mailto:aabushady214@gmail.com">Step Into the Light</a>
+	</span>
+	<p class="fine">the lamp stays lit. he answers.</p>
+</section>

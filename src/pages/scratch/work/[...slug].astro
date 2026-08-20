@@ -1,0 +1,46 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+
+import ScratchEntryLayout from '../../../layouts/ScratchEntryLayout.astro';
+import { getSortedProjects } from '../../../utils/collections';
+import { substituteYears } from '../../../utils/experience';
+import { formatDateISO } from '../../../utils/format';
+
+interface Props {
+	entry: CollectionEntry<'work'>;
+}
+
+export async function getStaticPaths() {
+	const work = await getSortedProjects();
+	return work.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const description = substituteYears(entry.data.description);
+const descriptionHtml = substituteYears(entry.data.description, { html: true });
+const imgAlt = entry.data.img_alt || `${entry.data.title} project preview`;
+---
+
+<ScratchEntryLayout
+	title={entry.data.title}
+	description={description}
+	descriptionHtml={descriptionHtml}
+	tags={entry.data.tags}
+	img={entry.data.img}
+	imgAlt={imgAlt}
+	backHref="/scratch/work/"
+	backLabel="The case board"
+	exitHref={`/work/${entry.id}/`}
+	navCurrent="work"
+	ogImage={entry.data.img.src}
+	ogImageAlt={imgAlt}
+	publishDate={entry.data.publishDate}
+>
+	<span slot="meta">{formatDateISO(entry.data.publishDate)}</span>
+	<Content />
+</ScratchEntryLayout>

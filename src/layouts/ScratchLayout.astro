@@ -1,0 +1,82 @@
+---
+// Shell for the Scratch theme (/scratch/ routes): the dark, the lamplight,
+// grain, the fixed top line, the visitor overlay, footer, and the scratch-ui
+// interaction layer. Scratch pages are noindex and excluded from the sitemap
+// (see astro.config.mjs); the terminal pages stay the canonical site.
+import type { ComponentProps } from 'astro/types';
+import MainHead from '../components/MainHead.astro';
+import Visitor from '../components/scratch/Visitor.astro';
+import { buildSCNav, type SCNavItem } from '../components/scratch/nav';
+import { yearsOfExperience } from '../utils/experience';
+import '../styles/scratch.css';
+
+type Props = ComponentProps<typeof MainHead> & {
+	/** Override the nav (pages pass buildSCNav with their section + exit twin). */
+	navItems?: SCNavItem[] | undefined;
+};
+
+const { navItems = buildSCNav(), ...headProps } = Astro.props;
+
+// The draft number is the years: six years down there, six drafts.
+const draftNo = yearsOfExperience();
+---
+
+<html lang="en-US" class="sc-root">
+	<head>
+		<MainHead {...headProps} noIndex preloadFonts={false} themeColor="#050404" />
+		<link rel="preload" href="/fonts/bodoni-moda-variable.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/courier-prime-400.woff2" as="font" type="font/woff2" crossorigin />
+		<link rel="preload" href="/fonts/courier-prime-700.woff2" as="font" type="font/woff2" crossorigin />
+	</head>
+	<body class="sc">
+		<a class="sc-skip-link" href="#main-content">Skip to content</a>
+		<div class="sc-lamps" aria-hidden="true"></div>
+		<div class="sc-dark" aria-hidden="true"></div>
+		<div class="sc-grain" aria-hidden="true"></div>
+
+		<div class="sc-topline">
+			<span aria-hidden="true">THE DARK PLACE &middot; DRAFT {draftNo}</span>
+			<nav aria-label="Site">
+				{navItems.map((item) => (
+					<a
+						href={item.href}
+						class={item.exit ? 'sc-exit' : undefined}
+						aria-current={item.current ? 'page' : undefined}
+					>{item.label}</a>
+				))}
+			</nav>
+		</div>
+
+		<p class="sc-dont" aria-hidden="true"><kbd>S</kbd> do not press</p>
+
+		<div class="sc-page">
+			<div id="main-content" tabindex="-1">
+				<slot />
+			</div>
+			<footer class="sc-footer">
+				<p class="sig">ABUSHADY &middot; DRAFT {draftNo} &middot; WRITTEN IN THE DARK</p>
+				<p class="last">It's not a loop. It's a spiral.</p>
+			</footer>
+		</div>
+
+		<Visitor />
+
+		<script>
+			import { initScratch } from '../scripts/scratch-ui';
+			import { yearsOfExperience } from '../utils/experience';
+
+			initScratch();
+
+			// Same stale-deploy refresh the other layouts do.
+			document.querySelectorAll('.years-exp').forEach((el) => {
+				el.textContent = yearsOfExperience() + '+';
+			});
+		</script>
+
+		<style>
+			#main-content {
+				outline: none;
+			}
+		</style>
+	</body>
+</html>

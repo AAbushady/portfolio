@@ -1,0 +1,42 @@
+---
+import ScratchLayout from '../../layouts/ScratchLayout.astro';
+import ChapterHead from '../../components/scratch/ChapterHead.astro';
+import WayOut from '../../components/scratch/WayOut.astro';
+import { buildSCNav } from '../../components/scratch/nav';
+import { getSortedProjects } from '../../utils/collections';
+import { substituteYears } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const projects = await getSortedProjects();
+const workYear = (date: Date): string => formatDateISO(date).slice(0, 4);
+const evidenceNo = (i: number): string => `EVIDENCE Nº ${String(i + 1).padStart(2, '0')}`;
+
+// The homepage board's red string is hand-placed for its four cards; the full
+// board has an unknown count, so it hangs pinned cards without string.
+const tilts = ['-1.1deg', '0.9deg', '-0.7deg', '1.2deg'];
+---
+
+<ScratchLayout
+	title="Work | Alex Abushady"
+	description="Alex Abushady's projects: production platform work, game prototypes, and LLM tooling."
+	navItems={buildSCNav({ current: 'work', exitHref: '/work/' })}
+>
+	<section class="sc-chapter sc-reveal sc-first" aria-label="All work projects">
+		<ChapterHead no="The Case Board" title="Every Case" note={`all ${projects.length} of them, pinned.`} />
+		<div class="sc-board">
+			{projects.map((project, i) => (
+				<article class="sc-pagecard" style={`--tilt:${tilts[i % tilts.length]}`}>
+					<div class="sc-pghead">
+						<span class="no">{evidenceNo(i)}</span>
+						<span>{workYear(project.data.publishDate)}</span>
+					</div>
+					<h3><a href={`/scratch/work/${project.id}/`}>{project.data.title}</a></h3>
+					<p>{substituteYears(project.data.description)}</p>
+					<p class="sc-marginalia">{project.data.tags.join(' · ')}</p>
+				</article>
+			))}
+		</div>
+	</section>
+
+	<WayOut />
+</ScratchLayout>

@@ -1,0 +1,130 @@
+---
+import ScratchLayout from '../../layouts/ScratchLayout.astro';
+import ChapterHead from '../../components/scratch/ChapterHead.astro';
+import WayOut from '../../components/scratch/WayOut.astro';
+import { getPublishedPosts, getSortedProjects } from '../../utils/collections';
+import { substituteYears, yearsOfExperience } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const projects = (await getSortedProjects()).slice(0, 4);
+const blogPosts = (await getPublishedPosts()).slice(0, 3);
+const years = yearsOfExperience();
+
+const workYear = (date: Date): string => formatDateISO(date).slice(0, 4);
+const evidenceNo = (i: number): string => `EVIDENCE Nº ${String(i + 1).padStart(2, '0')}`;
+
+// Pinned-up cards sit slightly crooked; the string coordinates below assume
+// the four-card desktop board (the string layer hides under 900px anyway).
+const tilts = ['-1.1deg', '0.9deg', '-0.7deg', '1.2deg'];
+---
+
+<ScratchLayout
+	title="Alex Abushady: Scratch"
+	description="Alex Abushady's portfolio, written from the dark place. Six years of shipped production systems, game prototypes, and local LLM work. The draft holds."
+>
+	<!-- ============ HERO: THE TITLE CARD ============ -->
+	<header class="sc-hero">
+		<div class="sc-echoes" aria-hidden="true">
+			<span style="--x:6%; --y:18%; --d:0s">Ship</span>
+			<span style="--x:80%; --y:14%; --d:3.5s">Return</span>
+			<span style="--x:9%; --y:66%; --d:7s">Merge</span>
+			<span style="--x:84%; --y:60%; --d:10.5s">Build</span>
+			<span style="--x:66%; --y:85%; --d:13s">Debug</span>
+			<span class="stray" style="--x:20%; --y:87%; --d:5s">Spiral</span>
+		</div>
+		<p class="sc-eyebrow">SCRATCH &middot; WRITTEN FROM THE DARK PLACE</p>
+		<div class="sc-titlecard">
+			<div class="sc-spiral" aria-hidden="true">
+				<svg viewBox="0 0 400 400" fill="none" stroke="#ee1b2e" stroke-width="1.1">
+					<path d="M190 200 a10 10 0 1 1 20 0 a20 20 0 1 1 -40 0 a30 30 0 1 1 60 0 a40 40 0 1 1 -80 0 a50 50 0 1 1 100 0 a60 60 0 1 1 -120 0 a70 70 0 1 1 140 0 a80 80 0 1 1 -160 0 a90 90 0 1 1 180 0" />
+				</svg>
+			</div>
+			<span class="sc-h1ghost" aria-hidden="true">Alex Abushady</span>
+			<h1 data-text="Alex Abushady">Alex Abushady</h1>
+		</div>
+		<p class="sc-typedline"><span id="sc-typed" data-line="It was dark down there. He kept shipping anyway."></span></p>
+		<p class="sc-credo">
+			<b>The engineer who delivers.</b>
+			<span class="years-exp">{years}+</span> years shipping production systems. Now building
+			games and AI tooling, and writing his way out.
+		</p>
+		<span class="sc-descend" aria-hidden="true">&#9660; the story continues</span>
+	</header>
+
+	<!-- ============ INITIATION 1: THE RECORD ============ -->
+	<section class="sc-chapter sc-reveal" aria-label="The record">
+		<ChapterHead no="Initiation 1" title="The Record" note="as written. as shipped." />
+		<div class="sc-scraps">
+			<div class="sc-scrap"><span class="pg">p. 12</span><p class="n">800+</p><p class="of">Pull requests<br />authored</p></div>
+			<div class="sc-scrap"><span class="pg">p. 13</span><p class="n">2,400+</p><p class="of">Pull requests<br />reviewed</p></div>
+			<div class="sc-scrap"><span class="pg">p. 14</span><p class="n">276</p><p class="of">Production crises<br />resolved</p></div>
+			<div class="sc-scrap"><span class="pg">p. 15</span><p class="n">5</p><p class="of">Products shipped<br />end to end</p></div>
+		</div>
+		<p class="sc-chap-foot">SIX YEARS &middot; LIVE MONEY-HANDLING SYSTEMS &middot; THE DRAFT HOLDS</p>
+		<p class="sc-chap-hum">the numbers were true before he wrote them down.</p>
+	</section>
+
+	<!-- ============ INITIATION 2: WHAT HE CAN DO ============ -->
+	<section class="sc-chapter sc-reveal" aria-label="Capabilities">
+		<ChapterHead no="Initiation 2" title="What He Can Do" note="three words keep surfacing." />
+		<div class="sc-words">
+			<div class="sc-word-cap">
+				<p class="w">Production</p>
+				<p>Five products shipped end-to-end in C#/.NET. 800+ PRs authored, 2,400+ reviewed, and 276 production support cases resolved on live money-handling systems.</p>
+			</div>
+			<div class="sc-word-cap">
+				<p class="w">Worlds</p>
+				<p>Game systems prototyped from driving physics to combat design. Dev tools built. Mods shipped for games like Cyberpunk 2077.</p>
+			</div>
+			<div class="sc-word-cap">
+				<p class="w unstable">The Other Thing</p>
+				<p>Local LLMs fine-tuned and served on his own hardware. Model tooling. Applied AI engineering brought into production systems.</p>
+				<p class="note">this word keeps rewriting itself.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ INITIATION 3: THE CASE BOARD ============ -->
+	<section class="sc-chapter sc-reveal" id="work" aria-label="Selected work">
+		<ChapterHead no="Initiation 3" title="The Case Board" note="follow the string." />
+		<div class="sc-board">
+			<svg class="sc-string" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+				<path d="M26,4 Q 50,14 76,3" />
+				<path d="M76,3 Q 52,30 26,55" />
+				<path d="M26,55 Q 50,68 76,54" />
+				<path d="M26,4 Q 12,32 26,55" />
+			</svg>
+			{projects.map((project, i) => (
+				<article class="sc-pagecard" style={`--tilt:${tilts[i % tilts.length]}`}>
+					<div class="sc-pghead">
+						<span class="no">{evidenceNo(i)}</span>
+						<span>{workYear(project.data.publishDate)}</span>
+					</div>
+					<h3><a href={`/scratch/work/${project.id}/`}>{project.data.title}</a></h3>
+					<p>{substituteYears(project.data.description)}</p>
+					<p class="sc-marginalia">{project.data.tags.join(' · ')}</p>
+				</article>
+			))}
+		</div>
+		<a class="sc-more" href="/scratch/work/">The full board</a>
+	</section>
+
+	<!-- ============ INITIATION 4: LOOSE PAGES ============ -->
+	<section class="sc-chapter sc-reveal" id="log" aria-label="Development log">
+		<ChapterHead no="Initiation 4" title="Loose Pages" note="the dev log, where he left it." />
+		<ul class="sc-log-list">
+			{blogPosts.map((post) => (
+				<li>
+					<a href={`/scratch/blog/${post.id}/`}>
+						<span class="t">{post.data.title}</span>
+						<span class="d">found {formatDateISO(post.data.publishDate)}</span>
+					</a>
+				</li>
+			))}
+		</ul>
+		<a class="sc-more" href="/scratch/blog/">Full log</a>
+	</section>
+
+	<!-- ============ RETURN: THE WAY OUT ============ -->
+	<WayOut />
+</ScratchLayout>

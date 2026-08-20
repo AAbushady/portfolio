@@ -1,0 +1,36 @@
+---
+import ScratchLayout from '../../layouts/ScratchLayout.astro';
+import ChapterHead from '../../components/scratch/ChapterHead.astro';
+import WayOut from '../../components/scratch/WayOut.astro';
+import { buildSCNav } from '../../components/scratch/nav';
+import { getPublishedPosts } from '../../utils/collections';
+import { substituteYears } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const blogPosts = await getPublishedPosts();
+const pageNo = (i: number): string => `LOOSE PAGE Nº ${String(i + 1).padStart(2, '0')}`;
+const tilts = ['-0.6deg', '0.5deg', '-0.4deg'];
+---
+
+<ScratchLayout
+	title="Log | Alex Abushady"
+	description="Alex Abushady's development log: dev logs and project updates."
+	navItems={buildSCNav({ current: 'log', exitHref: '/blog/' })}
+>
+	<section class="sc-chapter sc-reveal sc-first" aria-label="All blog posts">
+		<ChapterHead no="Loose Pages" title="The Dev Log" note="found where he left them." />
+		{blogPosts.map((post, i) => (
+			<article class="sc-pagecard sc-loose" style={`--tilt:${tilts[i % tilts.length]}`}>
+				<div class="sc-pghead">
+					<span class="no">{pageNo(i)}</span>
+					<span>found {formatDateISO(post.data.publishDate)}</span>
+				</div>
+				<h3><a href={`/scratch/blog/${post.id}/`}>{post.data.title}</a></h3>
+				<p>{substituteYears(post.data.description)}</p>
+				<p class="sc-marginalia">{post.data.tags.join(' · ')}</p>
+			</article>
+		))}
+	</section>
+
+	<WayOut />
+</ScratchLayout>

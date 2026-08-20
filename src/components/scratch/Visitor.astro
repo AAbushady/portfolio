@@ -1,0 +1,33 @@
+---
+// The visitor: a full-screen jump-cut of static, tracking tears, and a
+// smeared face. Fired by scratch-ui.ts (paced by nextVisitDelay, or summoned
+// with the S key). The face is original SVG art pushed through a displacement
+// filter so it reads as "something in the static", and each firing is a
+// single ~300ms flash so it stays clear of photosensitivity thresholds.
+---
+
+<div class="sc-visit" id="sc-visit" aria-hidden="true">
+	<div class="vnoise"></div>
+	<div class="tear tear-a"></div>
+	<div class="tear tear-b"></div>
+	<svg class="face" viewBox="0 0 400 480">
+		<defs>
+			<filter id="sc-smear" x="-20%" y="-20%" width="140%" height="140%">
+				<feTurbulence type="fractalNoise" baseFrequency="0.002 0.12" numOctaves="1" seed="7" result="n" />
+				<feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G" />
+			</filter>
+			<g id="sc-visage" fill="none" stroke-linecap="round">
+				<path d="M200 40 C 120 44, 84 120, 88 220 C 91 320, 130 430, 200 436 C 270 430, 310 316, 312 216 C 314 118, 282 44, 200 40 Z" stroke-width="5" />
+				<ellipse cx="148" cy="200" rx="26" ry="34" fill="#000" stroke-width="4" />
+				<ellipse cx="252" cy="192" rx="24" ry="38" fill="#000" stroke-width="4" />
+				<path d="M120 158 l52 -12 M230 144 l52 14" stroke-width="4" />
+				<path d="M118 300 C 160 356, 240 356, 286 292" stroke-width="6" />
+				<path d="M118 300 C 164 336, 238 338, 286 292" stroke-width="3" opacity="0.7" />
+				<path d="M140 318 l0 16 M164 332 l0 18 M190 340 l0 20 M216 340 l0 20 M242 332 l0 18 M266 316 l0 14" stroke-width="3" />
+			</g>
+		</defs>
+		<use href="#sc-visage" stroke="#ee1b2e" opacity="0.5" transform="translate(-10 2)" filter="url(#sc-smear)" />
+		<use href="#sc-visage" stroke="#8e0f1c" opacity="0.45" transform="translate(9 -2)" filter="url(#sc-smear)" />
+		<use href="#sc-visage" stroke="#e9e4da" filter="url(#sc-smear)" />
+	</svg>
+</div>

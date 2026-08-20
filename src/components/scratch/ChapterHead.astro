@@ -1,0 +1,19 @@
+---
+// Chapter header row: red chapter label over a ghost-echo Didone title on the
+// left, an italic manuscript margin note on the right, over a hairline.
+interface Props {
+	no: string;
+	title: string;
+	note?: string | undefined;
+}
+
+const { no, title, note } = Astro.props;
+---
+
+<div class="sc-chap-head">
+	<div>
+		<span class="sc-chap-no">{no}</span>
+		<h2 data-echo={title}>{title}</h2>
+	</div>
+	{note && <p class="sc-margin-note">{note}</p>}
+</div>
