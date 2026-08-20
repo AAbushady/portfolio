@@ -5,30 +5,15 @@
 // stay the canonical site.
 import type { ComponentProps } from 'astro/types';
 import MainHead from '../components/MainHead.astro';
+import { buildRSNav, type RSNavItem } from '../components/resonance/nav';
 import '../styles/resonance.css';
 
-export interface RSNavItem {
-	label: string;
-	href: string;
-}
-
 type Props = ComponentProps<typeof MainHead> & {
-	/** Override the nav; the default suits the homepage (section anchors). */
+	/** Override the nav (pages pass buildRSNav with their section + exit twin). */
 	navItems?: RSNavItem[] | undefined;
 };
 
-// Work/Log link to homepage sections until the /resonance/ subroutes exist
-// (batch 2); About/Resume/Exit lead to the terminal pages.
-const defaultNav: RSNavItem[] = [
-	{ label: 'Work', href: '#works' },
-	{ label: 'Log', href: '#log' },
-	{ label: 'About', href: '/about/' },
-	{ label: 'Resume', href: '/work/resume/' },
-	{ label: 'Audience', href: '#audience' },
-	{ label: 'Exit', href: '/' },
-];
-
-const { navItems = defaultNav, ...headProps } = Astro.props;
+const { navItems = buildRSNav(), ...headProps } = Astro.props;
 ---
 
 <html lang="en-US" class="rs-root">
@@ -44,7 +29,9 @@ const { navItems = defaultNav, ...headProps } = Astro.props;
 		<div class="rs-grain" aria-hidden="true"></div>
 
 		<nav class="rs-nav" aria-label="Site">
-			{navItems.map((item) => <a href={item.href}>{item.label}</a>)}
+			{navItems.map((item) => (
+				<a href={item.href} aria-current={item.current ? 'page' : undefined}>{item.label}</a>
+			))}
 		</nav>
 
 		<div class="rs-page">

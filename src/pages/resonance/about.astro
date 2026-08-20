@@ -1,0 +1,67 @@
+---
+import ResonanceLayout from '../../layouts/ResonanceLayout.astro';
+import Audience from '../../components/resonance/Audience.astro';
+import ZoneHead from '../../components/resonance/ZoneHead.astro';
+import { buildRSNav } from '../../components/resonance/nav';
+
+const skills = [
+	'C#',
+	'Python',
+	'JavaScript',
+	'TypeScript',
+	'T-SQL',
+	'ASP.NET MVC',
+	'API Development',
+	'Web Application Development',
+	'Game Modding',
+	'Azure DevOps',
+	'Git',
+	'LLM Fine-tuning',
+	'LLM Merging',
+	'Dataset Curation',
+];
+
+const exploring = [
+	'Game Systems Design',
+	'Local LLMs & AI Tooling',
+	'Game Physics',
+	'Game Optimization',
+	'Procedural Generation',
+	'Multiplayer Networking',
+	'Game Modding',
+];
+---
+
+<ResonanceLayout
+	title="About | Alex Abushady"
+	description="About Alex Abushady's background."
+	navItems={buildRSNav({ current: 'about', exitHref: '/about/' })}
+>
+	<section class="rs-zone rs-reveal rs-first" aria-label="Background">
+		<ZoneHead index="01" title="About" note="THE STORY SO FAR" />
+		<div class="rs-prose">
+			<p>
+				As you may have gathered by now, my name is Alex Abushady, and I currently work as a Senior Software Engineer at MSI. During my time at MSI, I've witnessed the company grow from a small team of just three developers (including myself) into a much larger organization with over 30 developers across multiple teams. Over that time, I've learned to navigate both a small start-up environment and the larger, more structured one that comes with a seasoned, publicly traded company. Along the way I shipped five insurance products end-to-end and helped bring the newer engineers up as we scaled.
+			</p>
+			<p>
+				Recently, I've started teaching myself game development. After years of building enterprise software, I'm excited by the creative and technical challenges of making games, from getting a car to drift properly to planning out combat mechanics for my racing game concept. While I'm still early in this journey, I've already modified existing games like Cyberpunk 2077 and am actively building prototypes. My goal is to combine my enterprise engineering experience with game development to eventually build the kind of games I've always wanted to play.
+			</p>
+		</div>
+	</section>
+
+	<section class="rs-zone rs-reveal" aria-label="Skills">
+		<ZoneHead index="02" title="Skills" note="CARRIED INSTRUMENTS" />
+		<ul class="rs-list">
+			{skills.map((skill) => <li>{skill}</li>)}
+		</ul>
+	</section>
+
+	<section class="rs-zone rs-reveal" aria-label="Currently exploring">
+		<ZoneHead index="03" title="Currently Exploring" note="OPEN EXPERIMENTS" />
+		<ul class="rs-list">
+			{exploring.map((topic) => <li>{topic}</li>)}
+		</ul>
+	</section>
+
+	<Audience index="04" />
+</ResonanceLayout>

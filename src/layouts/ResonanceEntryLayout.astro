@@ -1,0 +1,112 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+import ResonanceLayout from './ResonanceLayout.astro';
+
+import Audience from '../components/resonance/Audience.astro';
+import { buildRSNav } from '../components/resonance/nav';
+
+/**
+ * Resonance twin of EntryLayout. Default slot: the rendered markdown
+ * `<Content />`. Named slot `meta`: extra items for the meta row (e.g. log
+ * dates). No structured data on purpose; resonance pages are noindex and the
+ * terminal twin carries the schema.
+ */
+interface Props {
+	title: string;
+	/** Plain-text description for meta tags. */
+	description: string;
+	/** Optional HTML variant carrying the .years-exp refresh span. */
+	descriptionHtml?: string | undefined;
+	tags: string[];
+	img?: ImageMetadata | undefined;
+	imgAlt?: string | undefined;
+	backHref: string;
+	backLabel: string;
+	/** The entry's terminal twin, where the nav's EXIT leads. */
+	exitHref: string;
+	/** Which nav section lights up. */
+	navCurrent: 'work' | 'log';
+	ogImage?: string | undefined;
+	ogImageAlt?: string | undefined;
+	publishDate: Date;
+}
+
+const {
+	title,
+	description,
+	descriptionHtml,
+	tags,
+	img,
+	imgAlt,
+	backHref,
+	backLabel,
+	exitHref,
+	navCurrent,
+	ogImage,
+	ogImageAlt,
+	publishDate,
+} = Astro.props;
+---
+
+<ResonanceLayout
+	title={title}
+	description={description}
+	navItems={buildRSNav({ current: navCurrent, exitHref })}
+	ogImage={ogImage}
+	ogImageAlt={ogImageAlt}
+	ogType="article"
+	publishDate={publishDate}
+>
+	<article class="rs-zone rs-reveal rs-entry rs-first">
+		<p class="rs-crumb"><a href={backHref}>&#9664; {backLabel}</a></p>
+		<h1>{title}</h1>
+		<div class="rs-entry-meta">
+			<slot name="meta" />
+			<span class="tags">{tags.join(' · ')}</span>
+		</div>
+		{descriptionHtml ? (
+			<p class="rs-entry-desc" set:html={descriptionHtml} />
+		) : (
+			<p class="rs-entry-desc">{description}</p>
+		)}
+		{img && (
+			<figure class="rs-figure">
+				<Image
+					src={img}
+					alt={imgAlt ?? `${title} preview`}
+					widths={[720, 1440]}
+					sizes="(min-width: 50em) 65ch, 100vw"
+					loading="eager"
+					fetchpriority="high"
+				/>
+			</figure>
+		)}
+		<div class="rs-content">
+			<slot />
+		</div>
+	</article>
+
+	<Audience index="02" />
+
+	<script>
+		// Same reduced-motion video handling as the other entry layouts: stop
+		// autoplaying demo videos and surface native controls instead.
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+		const stopAutoplay = () => {
+			if (!reducedMotion.matches) return;
+			for (const video of document.querySelectorAll('video')) {
+				if (video.autoplay || !video.paused) {
+					video.removeAttribute('autoplay');
+					video.pause();
+					video.controls = true;
+				}
+			}
+		};
+
+		stopAutoplay();
+		reducedMotion.addEventListener('change', stopAutoplay);
+	</script>
+</ResonanceLayout>

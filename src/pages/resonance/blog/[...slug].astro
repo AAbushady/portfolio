@@ -1,0 +1,49 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+
+import ResonanceEntryLayout from '../../../layouts/ResonanceEntryLayout.astro';
+import { getPublishedPosts } from '../../../utils/collections';
+import { substituteYears } from '../../../utils/experience';
+import { formatDateISO } from '../../../utils/format';
+
+interface Props {
+	entry: CollectionEntry<'blog'>;
+}
+
+export async function getStaticPaths() {
+	const blog = await getPublishedPosts();
+	return blog.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const description = substituteYears(entry.data.description);
+const descriptionHtml = substituteYears(entry.data.description, { html: true });
+const imgAlt = entry.data.img_alt || `${entry.data.title} blog preview`;
+---
+
+<ResonanceEntryLayout
+	title={entry.data.title}
+	description={description}
+	descriptionHtml={descriptionHtml}
+	tags={entry.data.tags}
+	img={entry.data.img}
+	imgAlt={entry.data.img ? imgAlt : undefined}
+	backHref="/resonance/blog/"
+	backLabel="Full log"
+	exitHref={`/blog/${entry.id}/`}
+	navCurrent="log"
+	ogImage={entry.data.img?.src}
+	ogImageAlt={entry.data.img ? imgAlt : undefined}
+	publishDate={entry.data.publishDate}
+>
+	<span slot="meta">published: {formatDateISO(entry.data.publishDate)}</span>
+	{entry.data.updatedDate && (
+		<span slot="meta">updated: {formatDateISO(entry.data.updatedDate)}</span>
+	)}
+	<Content />
+</ResonanceEntryLayout>

@@ -1,0 +1,23 @@
+---
+// Contact zone; every resonance page closes with one, and the nav's
+// "Audience" item anchors to it.
+import ZoneHead from './ZoneHead.astro';
+
+interface Props {
+	index?: string | undefined;
+	note?: string | undefined;
+	line?: string | undefined;
+}
+
+const {
+	index = '05',
+	note = 'CHANNEL OPEN · MONITORED',
+	line = 'You seek an engineer who delivers. Your judgment is sound.',
+} = Astro.props;
+---
+
+<section class="rs-zone rs-reveal rs-audience" id="audience" aria-label="Contact">
+	<ZoneHead index={index} title="State Your Purpose" note={note} />
+	<p class="line">{line}</p>
+	<a class="rs-summon" href="mailto:aabushady214@gmail.com">Request Audience</a>
+</section>

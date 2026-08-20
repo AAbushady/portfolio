@@ -1,0 +1,33 @@
+---
+import ResonanceLayout from '../../layouts/ResonanceLayout.astro';
+import Audience from '../../components/resonance/Audience.astro';
+import ZoneHead from '../../components/resonance/ZoneHead.astro';
+import { buildRSNav } from '../../components/resonance/nav';
+import { getPublishedPosts } from '../../utils/collections';
+import { substituteYears } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const blogPosts = await getPublishedPosts();
+---
+
+<ResonanceLayout
+	title="Log | Alex Abushady"
+	description="Alex Abushady's development log: dev logs and project updates."
+	navItems={buildRSNav({ current: 'log', exitHref: '/blog/' })}
+>
+	<section class="rs-zone rs-reveal rs-first" aria-label="All blog posts">
+		<ZoneHead index="01" title="Log" note="THE WORK CONTINUES · LATEST FIRST" />
+		{blogPosts.map((post) => (
+			<article class="rs-glass rs-work">
+				<div class="top">
+					<h3><a href={`/resonance/blog/${post.id}/`}>{post.data.title}</a></h3>
+					<span class="yr">{formatDateISO(post.data.publishDate)}</span>
+				</div>
+				<p>{substituteYears(post.data.description)}</p>
+				<p class="tags">{post.data.tags.join(' · ')}</p>
+			</article>
+		))}
+	</section>
+
+	<Audience index="02" />
+</ResonanceLayout>

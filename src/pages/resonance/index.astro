@@ -10,8 +10,6 @@ const projects = (await getSortedProjects()).slice(0, 4);
 const blogPosts = (await getPublishedPosts()).slice(0, 3);
 const years = yearsOfExperience();
 
-// Work/blog entry links point at the terminal detail pages until the
-// /resonance/ subroutes exist (batch 2).
 const workYear = (date: Date): string => formatDateISO(date).slice(0, 4);
 ---
 
@@ -77,14 +75,14 @@ const workYear = (date: Date): string => formatDateISO(date).slice(0, 4);
 		{projects.map((project) => (
 			<article class="rs-glass rs-work">
 				<div class="top">
-					<h3><a href={`/work/${project.id}/`}>{project.data.title}</a></h3>
+					<h3><a href={`/resonance/work/${project.id}/`}>{project.data.title}</a></h3>
 					<span class="yr">{workYear(project.data.publishDate)}</span>
 				</div>
 				<p>{substituteYears(project.data.description)}</p>
 				<p class="tags">{project.data.tags.join(' · ')}</p>
 			</article>
 		))}
-		<a class="rs-more" href="/work/">All works</a>
+		<a class="rs-more" href="/resonance/work/">All works</a>
 	</section>
 
 	<!-- ============ LOG ============ -->
@@ -93,14 +91,14 @@ const workYear = (date: Date): string => formatDateISO(date).slice(0, 4);
 		<ul class="rs-log-list">
 			{blogPosts.map((post) => (
 				<li>
-					<a href={`/blog/${post.id}/`}>
+					<a href={`/resonance/blog/${post.id}/`}>
 						<span class="t">{post.data.title}</span>
 						<span class="d">{formatDateISO(post.data.publishDate)}</span>
 					</a>
 				</li>
 			))}
 		</ul>
-		<a class="rs-more" href="/blog/">Full log</a>
+		<a class="rs-more" href="/resonance/blog/">Full log</a>
 	</section>
 
 	<!-- ============ AUDIENCE ============ -->

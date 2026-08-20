@@ -1,0 +1,34 @@
+---
+import ResonanceLayout from '../../layouts/ResonanceLayout.astro';
+import Audience from '../../components/resonance/Audience.astro';
+import ZoneHead from '../../components/resonance/ZoneHead.astro';
+import { buildRSNav } from '../../components/resonance/nav';
+import { getSortedProjects } from '../../utils/collections';
+import { substituteYears } from '../../utils/experience';
+import { formatDateISO } from '../../utils/format';
+
+const projects = await getSortedProjects();
+const workYear = (date: Date): string => formatDateISO(date).slice(0, 4);
+---
+
+<ResonanceLayout
+	title="Works | Alex Abushady"
+	description="Alex Abushady's projects: production platform work, game prototypes, and LLM tooling."
+	navItems={buildRSNav({ current: 'work', exitHref: '/work/' })}
+>
+	<section class="rs-zone rs-reveal rs-first" aria-label="All work projects">
+		<ZoneHead index="01" title="Works" note={`EXAMINE THEM · N=${projects.length}`} />
+		{projects.map((project) => (
+			<article class="rs-glass rs-work">
+				<div class="top">
+					<h3><a href={`/resonance/work/${project.id}/`}>{project.data.title}</a></h3>
+					<span class="yr">{workYear(project.data.publishDate)}</span>
+				</div>
+				<p>{substituteYears(project.data.description)}</p>
+				<p class="tags">{project.data.tags.join(' · ')}</p>
+			</article>
+		))}
+	</section>
+
+	<Audience index="02" />
+</ResonanceLayout>
