@@ -919,32 +919,32 @@ body.sc h2[data-echo]::before {
 	pointer-events: none;
 }
 .sc-visit.on { opacity: 1; visibility: visible; }
+/* film grain sits OVER the face, like the game's frames */
 .sc-visit .vnoise {
 	position: absolute;
 	inset: 0;
-	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="190" height="190"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/><feColorMatrix type="saturate" values="0"/></filter><rect width="190" height="190" filter="url(%23n)" opacity="0.5"/></svg>');
-	opacity: 0.55;
+	z-index: 3;
+	background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="190" height="190"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="3"/><feColorMatrix type="saturate" values="0"/></filter><rect width="190" height="190" filter="url(%23n)" opacity="0.6"/></svg>');
+	opacity: 0.32;
 }
-.sc-visit .tear {
-	position: absolute;
-	left: -2%;
-	right: -2%;
-	background: rgba(233, 228, 218, 0.75);
-	filter: blur(1.5px);
-}
-.sc-visit .tear-a { top: 17%; height: 12px; transform: skewY(-1deg); }
-.sc-visit .tear-b { top: 72%; height: 5px; opacity: 0.6; }
 .sc-visit .face {
-	position: relative;
-	left: 3%;
-	width: min(64vh, 86vw);
-	opacity: 0.92;
-	filter: drop-shadow(0 0 36px rgba(238, 27, 46, 0.25));
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	opacity: 0.95;
+	/* screen blending sinks the negative's blacks into the static behind it,
+	   so he reads as part of the signal, not an image over it. The flash is
+	   pure monochrome, like the game's smash cuts; red stays out of it. */
+	mix-blend-mode: screen;
 }
 .sc-visit.on .face { animation: sc-facejolt 0.3s steps(3) both; }
+/* the base render is a negative; one frame of the jolt cuts back to
+   positive, the way the game does */
 @keyframes sc-facejolt {
-	0% { transform: scaleX(1.03); }
-	34% { transform: scale(1.06) translateX(-9px); }
-	67% { transform: scaleX(0.97) translateX(6px) skewX(-2deg); }
-	100% { transform: scale(1.03); }
+	0% { transform: scaleX(1.03); filter: none; }
+	34% { transform: scale(1.06) translateX(-9px); filter: invert(1); }
+	67% { transform: scaleX(0.97) translateX(6px) skewX(-2deg); filter: none; }
+	100% { transform: scale(1.03); filter: none; }
 }

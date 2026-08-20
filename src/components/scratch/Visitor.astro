@@ -1,33 +1,68 @@
 ---
-// The visitor: a full-screen jump-cut of static, tracking tears, and a
-// smeared face. Fired by scratch-ui.ts (paced by nextVisitDelay, or summoned
-// with the S key). The face is original SVG art pushed through a displacement
-// filter so it reads as "something in the static", and each firing is a
-// single ~300ms flash so it stays clear of photosensitivity thresholds.
+// The visitor: a full-screen jump-cut of static, tracking tears, and Alex's
+// own headshot infected by the dark place. Fired by scratch-ui.ts (paced by
+// nextVisitDelay, or summoned with the S key).
+//
+// Modeled on AW2's actual smash cuts (studied from capture frames): the image
+// takes the whole screen, no framing device, rendered as a monochrome photo
+// NEGATIVE — hair, glasses, and eyes glow while the bright wall dies to
+// black — smudged, smeared, and veiled in turbulent gray smoke. The jolt
+// animation cuts to positive for one frame (see sc-facejolt). All of the
+// corruption is render time SVG filter work on the ordinary About-page
+// headshot; the repo holds only the normal photo. Each firing is a single
+// ~300ms flash so it stays clear of photosensitivity thresholds.
+import { getImage } from 'astro:assets';
+import headshot from '../../assets/alex-headshot.jpg';
+
+const face = await getImage({ src: headshot, width: 960, format: 'webp' });
 ---
 
 <div class="sc-visit" id="sc-visit" aria-hidden="true">
 	<div class="vnoise"></div>
-	<div class="tear tear-a"></div>
-	<div class="tear tear-b"></div>
-	<svg class="face" viewBox="0 0 400 480">
+	<svg class="face" viewBox="0 0 400 480" preserveAspectRatio="xMidYMid slice">
 		<defs>
-			<filter id="sc-smear" x="-20%" y="-20%" width="140%" height="140%">
-				<feTurbulence type="fractalNoise" baseFrequency="0.002 0.12" numOctaves="1" seed="7" result="n" />
-				<feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G" />
+			<!-- main face: vertical motion smudge, gentle warp, desaturate,
+			     INVERT, then a hard threshold curve — most tones crush to
+			     black, only the top band glows -->
+			<filter id="sc-infect" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="0.6 2.2" result="soft" />
+				<feTurbulence type="fractalNoise" baseFrequency="0.008 0.03" numOctaves="2" seed="7" result="n" />
+				<feDisplacementMap in="soft" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G" result="d" />
+				<feColorMatrix in="d" type="saturate" values="0" result="g" />
+				<feComponentTransfer in="g" result="neg">
+					<feFuncR type="table" tableValues="1 0" />
+					<feFuncG type="table" tableValues="1 0" />
+					<feFuncB type="table" tableValues="1 0" />
+				</feComponentTransfer>
+				<feComponentTransfer in="neg">
+					<feFuncR type="linear" slope="1.6" intercept="-0.35" />
+					<feFuncG type="linear" slope="1.6" intercept="-0.35" />
+					<feFuncB type="linear" slope="1.6" intercept="-0.35" />
+				</feComponentTransfer>
 			</filter>
-			<g id="sc-visage" fill="none" stroke-linecap="round">
-				<path d="M200 40 C 120 44, 84 120, 88 220 C 91 320, 130 430, 200 436 C 270 430, 310 316, 312 216 C 314 118, 282 44, 200 40 Z" stroke-width="5" />
-				<ellipse cx="148" cy="200" rx="26" ry="34" fill="#000" stroke-width="4" />
-				<ellipse cx="252" cy="192" rx="24" ry="38" fill="#000" stroke-width="4" />
-				<path d="M120 158 l52 -12 M230 144 l52 14" stroke-width="4" />
-				<path d="M118 300 C 160 356, 240 356, 286 292" stroke-width="6" />
-				<path d="M118 300 C 164 336, 238 338, 286 292" stroke-width="3" opacity="0.7" />
-				<path d="M140 318 l0 16 M164 332 l0 18 M190 340 l0 20 M216 340 l0 20 M242 332 l0 18 M266 316 l0 14" stroke-width="3" />
-			</g>
+			<!-- gray afterimage: heavier vertical smear, same negative, dimmer -->
+			<filter id="sc-infect-ghost" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+				<feGaussianBlur in="SourceGraphic" stdDeviation="0 4" result="soft" />
+				<feTurbulence type="fractalNoise" baseFrequency="0.008 0.026" numOctaves="2" seed="3" result="n" />
+				<feDisplacementMap in="soft" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G" result="d" />
+				<feColorMatrix in="d" type="saturate" values="0" result="g" />
+				<feComponentTransfer in="g" result="neg">
+					<feFuncR type="table" tableValues="1 0" />
+					<feFuncG type="table" tableValues="1 0" />
+					<feFuncB type="table" tableValues="1 0" />
+				</feComponentTransfer>
+				<feComponentTransfer in="neg">
+					<feFuncR type="linear" slope="1.4" intercept="-0.5" />
+					<feFuncG type="linear" slope="1.4" intercept="-0.5" />
+					<feFuncB type="linear" slope="1.4" intercept="-0.5" />
+				</feComponentTransfer>
+			</filter>
 		</defs>
-		<use href="#sc-visage" stroke="#ee1b2e" opacity="0.5" transform="translate(-10 2)" filter="url(#sc-smear)" />
-		<use href="#sc-visage" stroke="#8e0f1c" opacity="0.45" transform="translate(9 -2)" filter="url(#sc-smear)" />
-		<use href="#sc-visage" stroke="#e9e4da" filter="url(#sc-smear)" />
+		<!-- the image sits larger than the viewBox so the slice-fit crop stays
+		     tight on the face at any aspect ratio -->
+		<g transform="translate(9 -4)" opacity="0.25" style="mix-blend-mode: screen;">
+			<image href={face.src} x="-50" y="-30" width="500" height="667" filter="url(#sc-infect-ghost)" />
+		</g>
+		<image href={face.src} x="-50" y="-30" width="500" height="667" filter="url(#sc-infect)" />
 	</svg>
 </div>
