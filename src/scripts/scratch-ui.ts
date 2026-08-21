@@ -32,6 +32,9 @@ function initReveals(): void {
 		chapters.forEach((el) => el.classList.add('on'));
 		return;
 	}
+	// threshold is a fraction of the TARGET, so an entry page's single tall
+	// article can never reach it on a phone; trigger on the viewport instead
+	// (any pixel past the bottom 12% of the screen).
 	const io = new IntersectionObserver(
 		(entries) => {
 			entries.forEach((entry) => {
@@ -41,7 +44,7 @@ function initReveals(): void {
 				}
 			});
 		},
-		{ threshold: 0.16 }
+		{ rootMargin: '0px 0px -12% 0px', threshold: 0 }
 	);
 	chapters.forEach((el) => io.observe(el));
 }
